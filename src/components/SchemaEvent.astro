@@ -1,0 +1,75 @@
+---
+interface Props {
+  nazev: string;
+  datum: Date;
+  cas: string;
+  misto: string | undefined;
+  cena: string;
+  obrazek: string;
+  kratkyPopis: string;
+  odkazFormular: string | undefined;
+  siteUrl: string;
+  slug: string;
+}
+
+const {
+  nazev,
+  datum,
+  cas,
+  misto,
+  cena,
+  obrazek,
+  kratkyPopis,
+  odkazFormular,
+  siteUrl,
+  slug,
+} = Astro.props;
+
+const datumISO = datum.toISOString().split('T')[0];
+const startDate = `${datumISO}T${cas}:00`;
+
+const placeName = misto ?? 'Zahálka';
+
+function parsePrice(cenaStr: string): string {
+  if (cenaStr.trim().toLowerCase() === 'zdarma') return '0';
+  const match = cenaStr.match(/\d+/);
+  return match ? match[0] : '0';
+}
+
+const eventSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: nazev,
+  startDate,
+  description: kratkyPopis,
+  image: `${siteUrl}${obrazek}`,
+  url: `${siteUrl}/akce/${slug}`,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Place',
+    name: placeName,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Benešovo nám. 3282',
+      addressLocality: 'Teplice',
+      postalCode: '415 01',
+      addressCountry: 'CZ',
+    },
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: 'Zahálka',
+    url: siteUrl,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: parsePrice(cena),
+    priceCurrency: 'CZK',
+    availability: 'https://schema.org/InStock',
+    ...(odkazFormular ? { url: odkazFormular } : {}),
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(eventSchema)} />

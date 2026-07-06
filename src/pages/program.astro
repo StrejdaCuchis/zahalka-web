@@ -1,0 +1,201 @@
+---
+import { getCollection } from 'astro:content';
+import Zaklad from '../layouts/Zaklad.astro';
+import KartaAkce from '../components/KartaAkce.astro';
+
+const vsechnyAkce = await getCollection('akce');
+
+const dnes = new Date();
+dnes.setHours(0, 0, 0, 0);
+
+const nadchazejici = vsechnyAkce
+  .filter((a) => a.data.datum >= dnes)
+  .sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime());
+
+const minule = vsechnyAkce
+  .filter((a) => a.data.datum < dnes)
+  .sort((a, b) => b.data.datum.getTime() - a.data.datum.getTime());
+---
+
+<Zaklad
+  title="Program akcí – Zahálka"
+  description="Přehled všech nadcházejících akcí kulturního prostoru Zahálka v Teplicích — besedy, workshopy, festivaly a dílny pro děti."
+  canonicalPath="/program"
+>
+  <main>
+    <div class="obal">
+      <h1>Program</h1>
+
+      <div class="filtry" role="group" aria-label="Filtrovat podle typu akce">
+        <button class="filtr aktivni" data-filtr="vse">Vše</button>
+        <button class="filtr" data-filtr="beseda">Beseda</button>
+        <button class="filtr" data-filtr="workshop">Workshop</button>
+        <button class="filtr" data-filtr="festival">Festival</button>
+        <button class="filtr" data-filtr="deti">Pro děti</button>
+      </div>
+
+      {nadchazejici.length > 0 && (
+        <section aria-label="Nadcházející akce">
+          <h2>Nadcházející akce</h2>
+          <div class="mrizka">
+            {nadchazejici.map((akce) => (
+              <KartaAkce entry={akce} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {nadchazejici.length === 0 && (
+        <p class="zadne-akce">Momentálně neplánujeme žádné akce. Sledujte nás na Instagramu.</p>
+      )}
+
+      {minule.length > 0 && (
+        <section class="minule" aria-label="Proběhlé akce">
+          <h2>Proběhlé akce</h2>
+          <ul class="minule-seznam">
+            {minule.map((akce) => (
+              <li data-typ={akce.data.typ}>
+                <a href={`/akce/${akce.id}`}>
+                  <span class="minula-nazev">{akce.data.nazev}</span>
+                  <time datetime={akce.data.datum.toISOString().split('T')[0]} class="minula-datum">
+                    {akce.data.datum.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </main>
+</Zaklad>
+
+<script>
+  const filtry = document.querySelectorAll<HTMLButtonElement>('[data-filtr]');
+  const karty  = document.querySelectorAll<HTMLElement>('[data-typ]');
+
+  filtry.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filtry.forEach((b) => b.classList.remove('aktivni'));
+      btn.classList.add('aktivni');
+
+      const vybrany = btn.dataset.filtr;
+      karty.forEach((el) => {
+        el.hidden = vybrany !== 'vse' && el.dataset.typ !== vybrany;
+      });
+    });
+  });
+</script>
+
+<style>
+  main {
+    padding-block: 3rem 5rem;
+  }
+
+  .obal {
+    max-width: 1100px;
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+    opacity: 0.6;
+  }
+
+  section {
+    margin-bottom: 4rem;
+  }
+
+  .filtry {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .filtr {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.45rem 1rem;
+    border: 1.5px solid var(--barva-text);
+    border-radius: 100vw;
+    background: transparent;
+    color: var(--barva-text);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    opacity: 0.6;
+  }
+
+  .filtr:hover,
+  .filtr.aktivni {
+    background: var(--barva-text);
+    color: var(--barva-pozadi);
+    opacity: 1;
+  }
+
+  .mrizka {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .zadne-akce {
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  .minule {
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
+    padding-top: 2.5rem;
+  }
+
+  .minule-seznam {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .minule-seznam li {
+    border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
+  }
+
+  .minule-seznam a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+  }
+
+  .minule-seznam a:hover {
+    opacity: 1;
+  }
+
+  .minula-nazev {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .minula-datum {
+    font-size: 0.8rem;
+    opacity: 0.75;
+  }
+</style>

@@ -1,17 +1,212 @@
 ---
+import { getCollection } from 'astro:content';
+import Zaklad from '../layouts/Zaklad.astro';
+import KartaAkce from '../components/KartaAkce.astro';
 
+const vsechnyAkce = await getCollection('akce');
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Zahálka',
+  url: siteUrl,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Benešovo nám. 3282',
+    addressLocality: 'Teplice',
+    postalCode: '415 01',
+    addressCountry: 'CZ',
+  },
+  sameAs: [
+    'https://instagram.com/zahalkatesla',
+    'https://facebook.com/zahalkatesla',
+  ],
+};
+
+const dnes = new Date();
+dnes.setHours(0, 0, 0, 0);
+
+const nejblizsiAkce = vsechnyAkce
+  .filter((a) => a.data.datum >= dnes)
+  .sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime())
+  .slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Zaklad
+  title="Zahálka – kulturní prostor Teplice"
+  description="Zahálka je kulturní prostor v Teplicích pro besedy, workshopy a festivaly. Přijďte na akci — dveře otevíráme pro každého."
+  canonicalPath="/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+  </Fragment>
+
+  <main>
+    <section class="hero" aria-label="Úvod">
+      <div class="hero-obsah">
+        <h1>Zahálka</h1>
+        <p class="hero-podtitul">Kulturní&nbsp;prostor, Teplice</p>
+        <p class="hero-text">
+          Jsme prostor v centru Teplic, kde se potkávají lidé na besedách, workshopech a festivalech.
+          Otvíráme dveře na každou akci — přijďte, jak jste.
+        </p>
+        <a href="/program" class="btn-cta">Prohlédnout program</a>
+      </div>
+    </section>
+
+    {nejblizsiAkce.length > 0 && (
+      <section class="nejblizsi" aria-label="Nejbližší akce">
+        <div class="obal">
+          <h2>Nejbližší akce</h2>
+          <div class="mrizka">
+            {nejblizsiAkce.map((akce) => (
+              <KartaAkce entry={akce} />
+            ))}
+          </div>
+          <div class="vice-link">
+            <a href="/program">Zobrazit celý program →</a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    {nejblizsiAkce.length === 0 && (
+      <section class="zadne-akce-hero">
+        <p>
+          Momentálně neplánujeme nové akce. Sledujte nás na{' '}
+          <a href="https://instagram.com/zahalkatesla" target="_blank" rel="noopener">Instagramu</a>.
+        </p>
+      </section>
+    )}
+
+    <section class="adresa-socky" aria-label="Kde nás najdete">
+      <div class="obal">
+        <p>
+          Benešovo nám. 3282, Teplice &nbsp;·&nbsp;
+          <a href="https://instagram.com/zahalkatesla" target="_blank" rel="noopener">@zahalkatesla</a>
+        </p>
+      </div>
+    </section>
+  </main>
+</Zaklad>
+
+<style>
+  .hero {
+    padding: 5rem 2rem 4rem;
+    display: flex;
+    align-items: center;
+    min-height: 55vh;
+  }
+
+  .hero-obsah {
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .hero-podtitul {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 52ch;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+  }
+
+  .btn-cta {
+    display: inline-block;
+    background-color: var(--barva-text);
+    color: var(--barva-pozadi);
+    text-decoration: none;
+    padding: 0.8rem 2rem;
+    border-radius: 100vw;
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: background-color 0.15s;
+  }
+
+  .btn-cta:hover {
+    background-color: var(--barva-text-d);
+    color: var(--barva-pozadi);
+  }
+
+  .obal {
+    max-width: 1100px;
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
+  .nejblizsi {
+    padding-block: 2rem 5rem;
+  }
+
+  h2 {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    opacity: 0.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .mrizka {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .vice-link {
+    margin-top: 2rem;
+    text-align: right;
+  }
+
+  .vice-link a {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+  }
+
+  .vice-link a:hover {
+    opacity: 1;
+  }
+
+  .zadne-akce-hero {
+    padding: 2rem;
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  .adresa-socky {
+    padding: 2rem 0 4rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+  }
+
+  .adresa-socky p {
+    font-size: 0.85rem;
+    opacity: 0.6;
+  }
+</style>

@@ -1,0 +1,155 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'akce'>;
+}
+
+const { entry } = Astro.props;
+const { nazev, datum, cas, typ, obrazek, altText, kratkyPopis, misto } = entry.data;
+
+const typLabely: Record<string, string> = {
+  beseda:   'Beseda',
+  workshop: 'Workshop',
+  festival: 'Festival',
+  deti:     'Pro děti',
+};
+
+const typBarvy: Record<string, string> = {
+  beseda:   'var(--levandule)',
+  workshop: 'var(--oranzova)',
+  festival: 'var(--fialova)',
+  deti:     'var(--limetka)',
+};
+
+const moznostMisto = misto ?? 'Benešovo nám. 3282, Teplice';
+const datumISO = datum.toISOString().split('T')[0];
+const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
+  day:   'numeric',
+  month: 'long',
+  year:  'numeric',
+});
+---
+
+<article class="karta" data-typ={typ}>
+  <a href={`/akce/${entry.id}`} class="karta-odkaz">
+    <figure class="karta-obrazek">
+      <img
+        src={obrazek}
+        alt={altText}
+        width="600"
+        height="400"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="karta-telo">
+      <span class="karta-typ" style={`background-color: ${typBarvy[typ]}`}>
+        {typLabely[typ]}
+      </span>
+
+      <h3 class="karta-nazev">{nazev}</h3>
+
+      <time class="karta-datum" datetime={`${datumISO}T${cas}:00`}>
+        {datumFormatovany}, {cas}
+      </time>
+
+      <p class="karta-misto">{moznostMisto}</p>
+
+      <p class="karta-popis">{kratkyPopis}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .karta {
+    background-color: color-mix(in srgb, var(--barva-pozadi) 60%, white);
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .karta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--barva-text) 12%, transparent);
+  }
+
+  .karta-odkaz {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .karta-odkaz::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .karta-obrazek {
+    margin: 0;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
+  }
+
+  .karta-obrazek img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .karta:hover .karta-obrazek img {
+    transform: scale(1.03);
+  }
+
+  .karta-telo {
+    padding: 1.25rem 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+  }
+
+  .karta-typ {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100vw;
+    color: var(--barva-text-d);
+  }
+
+  .karta-nazev {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-top: 0.2rem;
+    color: var(--barva-text-d);
+  }
+
+  .karta-datum {
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  .karta-misto {
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+
+  .karta-popis {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    opacity: 0.85;
+    margin-top: 0.4rem;
+  }
+</style>

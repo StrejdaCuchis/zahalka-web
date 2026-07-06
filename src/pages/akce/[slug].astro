@@ -1,16 +1,18 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
+import SchemaEvent from '../../components/SchemaEvent.astro';
+import KartaAkce from '../../components/KartaAkce.astro';
 
 export async function getStaticPaths() {
-  const akce = await getCollection('akce');
-  return akce.map((akce) => ({
+  const alleAkce = await getCollection('akce');
+  return alleAkce.map((akce) => ({
     params: { slug: akce.id },
-    props: { akce },
+    props: { akce, alleAkce },
   }));
 }
 
-const { akce } = Astro.props;
+const { akce, alleAkce } = Astro.props;
 const { Content } = await render(akce);
 
 const {
@@ -26,9 +28,10 @@ const {
   misto,
 } = akce.data;
 
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
+
 const datumISO = datum.toISOString().split('T')[0];
 const datumCasISO = `${datumISO}T${cas}:00`;
-
 const moznostMisto = misto ?? 'Zahálka, Benešovo nám. 3282, Teplice';
 
 const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
@@ -37,6 +40,39 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
   month: 'long',
   day: 'numeric',
 });
+
+const dnes = new Date();
+dnes.setHours(0, 0, 0, 0);
+
+const dalsiAkce = alleAkce
+  .filter((a) => a.id !== akce.id && a.data.datum >= dnes)
+  .sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime())
+  .slice(0, 2);
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Domů',
+      item: `${siteUrl}/`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Program',
+      item: `${siteUrl}/program`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: nazev,
+      item: `${siteUrl}/akce/${akce.id}`,
+    },
+  ],
+};
 ---
 
 <Zaklad
@@ -46,7 +82,31 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
   ogType="event"
   canonicalPath={`/akce/${akce.id}`}
 >
+  <Fragment slot="head">
+    <SchemaEvent
+      nazev={nazev}
+      datum={datum}
+      cas={cas}
+      misto={misto}
+      cena={cena}
+      obrazek={obrazek}
+      kratkyPopis={kratkyPopis}
+      odkazFormular={odkazFormular}
+      siteUrl={siteUrl}
+      slug={akce.id}
+    />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  </Fragment>
+
   <main>
+    <nav aria-label="Drobečková navigace" class="drobeky">
+      <ol>
+        <li><a href="/">Domů</a></li>
+        <li><a href="/program">Program</a></li>
+        <li aria-current="page">{nazev}</li>
+      </ol>
+    </nav>
+
     <article>
       <header>
         <h1>{nazev}</h1>
@@ -104,7 +164,22 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
       <div class="obsah-akce">
         <Content />
       </div>
+
+      <footer class="akce-paticka">
+        <a href="/program" class="zpet-na-program">← Zpět na program</a>
+      </footer>
     </article>
+
+    {dalsiAkce.length > 0 && (
+      <section aria-label="Další akce" class="dalsi-akce">
+        <h2>Další akce</h2>
+        <div class="dalsi-mrizka">
+          {dalsiAkce.map((a) => (
+            <KartaAkce entry={a} />
+          ))}
+        </div>
+      </section>
+    )}
   </main>
 </Zaklad>
 
@@ -112,7 +187,38 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
   main {
     max-width: 72ch;
     margin-inline: auto;
-    padding: 2rem 1rem 4rem;
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  .drobeky {
+    margin-bottom: 1.5rem;
+  }
+
+  .drobeky ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+
+  .drobeky li + li::before {
+    content: '›';
+    margin-right: 0.25rem;
+  }
+
+  .drobeky a {
+    text-decoration: none;
+  }
+
+  .drobeky a:hover {
+    text-decoration: underline;
+  }
+
+  .drobeky [aria-current='page'] {
+    font-weight: 600;
+    opacity: 1;
   }
 
   h1 {
@@ -144,18 +250,23 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
 
   .tlacitko-prihlasit {
     display: inline-block;
-    background-color: #2d5a3d;
-    color: #F0EFE9;
+    background-color: var(--barva-text);
+    color: var(--barva-pozadi);
     text-decoration: none;
     padding: 0.75rem 1.75rem;
     border-radius: 2rem;
+    font-family: var(--pismo-nadpisy);
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     margin-bottom: 2rem;
+    transition: background-color 0.15s;
   }
 
   .tlacitko-prihlasit:hover {
-    background-color: #1e3a2f;
+    background-color: var(--barva-text-d);
+    color: var(--barva-pozadi);
   }
 
   figure {
@@ -173,7 +284,8 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
 
   figcaption {
     font-size: 0.875rem;
-    color: #555;
+    color: var(--barva-text);
+    opacity: 0.6;
     padding: 0.4rem 0.75rem;
     font-style: italic;
   }
@@ -186,5 +298,54 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
 
   .obsah-akce :global(p) {
     margin-bottom: 1rem;
+  }
+
+  .obsah-akce :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .akce-paticka {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+  }
+
+  .zpet-na-program {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+  }
+
+  .zpet-na-program:hover {
+    opacity: 1;
+  }
+
+  .dalsi-akce {
+    max-width: 1100px;
+    margin-inline: auto;
+    margin-top: 4rem;
+    padding-inline: 1rem;
+    padding-bottom: 4rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+    padding-top: 3rem;
+  }
+
+  .dalsi-akce h2 {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .dalsi-mrizka {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
   }
 </style>
