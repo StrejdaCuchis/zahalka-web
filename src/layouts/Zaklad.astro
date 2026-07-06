@@ -1,5 +1,6 @@
 ---
 import '../styly/global.css';
+import Analytika from '../components/Analytika.astro';
 
 interface Props {
   title: string;
@@ -61,6 +62,7 @@ const ogImageUrl = ogImage
   <body>
     <header>
       <nav aria-label="Hlavní navigace">
+        <a href="/">Domů</a>
         <a href="/program">Program</a>
         <a href="/tabor">Tábor</a>
         <a href="/o-nas">O nás</a>
@@ -74,6 +76,8 @@ const ogImageUrl = ogImage
     </header>
 
     <slot />
+
+    <Analytika />
 
     <footer>
       <div class="paticka-obsah">

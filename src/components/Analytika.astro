@@ -1,0 +1,229 @@
+---
+// IDs come from env vars — never hardcoded.
+// Empty string means "not configured" → graceful no-op.
+const gaId      = import.meta.env.PUBLIC_GA_ID      ?? '';
+const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
+---
+
+<!--
+  Cookie consent bar. Kept hidden via [hidden] until JS decides whether to show it.
+  role="dialog" + aria-modal="false" tells screen readers this needs attention
+  but does not trap focus — the rest of the page stays accessible.
+-->
+<div
+  id="cookie-lista"
+  role="dialog"
+  aria-label="Souhlas s analytickými cookies"
+  aria-modal="false"
+  hidden
+>
+  <p id="cookie-text">
+    Používáme analytické cookies (Google Analytics a&nbsp;Microsoft Clarity),
+    abychom pochopili, jak web používáte, a&nbsp;mohli ho zlepšovat.
+  </p>
+  <div class="cookie-akce">
+    <button id="cookie-odmitnout" type="button">Odmítnout</button>
+    <button id="cookie-prijmout"  type="button">Přijmout</button>
+  </div>
+</div>
+
+<!--
+  define:vars implies is:inline — script is rendered literally, not bundled.
+  Order inside the script is the only ordering guarantee we need: consent defaults
+  are set BEFORE the GA4 script element is appended to the DOM.
+-->
+<script define:vars={{ gaId, clarityId }}>
+  // ── 1. gtag stub + Consent Mode v2 defaults ────────────────────────────
+  //    Must run before any tracking script; data collection denied by default.
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+
+  gtag('consent', 'default', {
+    ad_storage:          'denied',
+    ad_user_data:        'denied',
+    ad_personalization:  'denied',
+    analytics_storage:   'denied',
+    wait_for_update:     500,
+  });
+
+  // ── 2. Load tracking scripts ───────────────────────────────────────────
+  //    Scripts are always present when IDs are configured.
+  //    Consent Mode controls what they collect — not whether they load.
+  //    (Avoids the if-souhlas-then-inject pattern that breaks Cookiebot migration.)
+
+  if (gaId) {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', gaId);
+  }
+
+  if (clarityId) {
+    /* global clarity */
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1;
+      t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', clarityId);
+  }
+
+  // ── 3. Conversion tracking listener ───────────────────────────────────
+  //    Activated only after consent. Listens for any [data-event] click once,
+  //    capture phase so we catch it before navigation fires.
+  let trackingActive = false;
+  function aktivovatTracking() {
+    if (trackingActive) return;
+    trackingActive = true;
+
+    document.addEventListener('click', function (e) {
+      const el = e.target.closest('[data-event]');
+      if (!el) return;
+      gtag('event', el.dataset.event, {
+        akce_nazev: el.dataset.akce || '',
+        odkaz:      el.href         || '',
+      });
+    }, true);
+
+    if (typeof clarity === 'function') clarity('consent');
+  }
+
+  // ── 4. Grant consent ───────────────────────────────────────────────────
+  function udelit() {
+    gtag('consent', 'update', {
+      analytics_storage:  'granted',
+      ad_storage:         'denied',   // not running ads
+      ad_user_data:       'denied',
+      ad_personalization: 'denied',
+    });
+    aktivovatTracking();
+  }
+
+  // ── 5. Cookie bar logic ────────────────────────────────────────────────
+  const KLIC  = 'zahalka_cookie_consent';
+  const lista = document.getElementById('cookie-lista');
+  const volba = localStorage.getItem(KLIC);
+
+  if (volba === 'granted') {
+    // Returning visitor who already accepted — restore consent immediately.
+    udelit();
+  } else if (volba !== 'denied' && (gaId || clarityId)) {
+    // No prior choice and tracking is configured — show the bar.
+    // requestAnimationFrame delays by one frame to avoid layout shift on load.
+    requestAnimationFrame(function () {
+      if (lista) {
+        lista.hidden = false;
+        // Move focus to first button so keyboard users see the dialog immediately.
+        lista.querySelector('button')?.focus();
+      }
+    });
+  }
+
+  document.getElementById('cookie-prijmout')?.addEventListener('click', function () {
+    localStorage.setItem(KLIC, 'granted');
+    udelit();
+    if (lista) lista.hidden = true;
+  });
+
+  document.getElementById('cookie-odmitnout')?.addEventListener('click', function () {
+    localStorage.setItem(KLIC, 'denied');
+    if (lista) lista.hidden = true;
+  });
+</script>
+
+<style>
+  /* Override Astro's component-scoped h2/p rules so the bar never inherits
+     page-specific text transforms or font overrides. */
+  #cookie-lista {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 200;
+    background-color: var(--barva-pozadi);
+    border-top: 1.5px solid color-mix(in srgb, var(--barva-text) 18%, transparent);
+    box-shadow: 0 -4px 24px color-mix(in srgb, var(--barva-text) 8%, transparent);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* [hidden] on a flex element needs explicit override */
+  #cookie-lista[hidden] {
+    display: none;
+  }
+
+  #cookie-lista p {
+    flex: 1 1 260px;
+    font-size: 0.85rem;
+    font-family: var(--pismo-text);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 64ch;
+    opacity: 0.82;
+    color: var(--barva-text);
+  }
+
+  .cookie-akce {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  #cookie-prijmout,
+  #cookie-odmitnout {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    padding: 0.5rem 1.2rem;
+    border-radius: 100vw;
+    border: 1.5px solid var(--barva-text);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, opacity 0.15s, border-color 0.15s;
+  }
+
+  #cookie-prijmout {
+    background-color: var(--barva-text);
+    color: var(--barva-pozadi);
+  }
+
+  #cookie-prijmout:hover {
+    background-color: var(--barva-text-d);
+    border-color: var(--barva-text-d);
+  }
+
+  #cookie-odmitnout {
+    background-color: transparent;
+    color: var(--barva-text);
+    opacity: 0.6;
+  }
+
+  #cookie-odmitnout:hover {
+    opacity: 1;
+  }
+
+  /* Visible focus rings for keyboard navigation */
+  #cookie-prijmout:focus-visible,
+  #cookie-odmitnout:focus-visible {
+    outline: 3px solid var(--barva-akcent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 540px) {
+    #cookie-lista {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1.25rem 1.25rem 1.5rem;
+    }
+  }
+</style>

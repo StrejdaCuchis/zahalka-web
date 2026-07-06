@@ -1,0 +1,217 @@
+---
+import Zaklad from '../layouts/Zaklad.astro';
+import Blob from '../components/Blob.astro';
+---
+
+<Zaklad
+  title="O nás – Zahálka"
+  description="Zahálka je kulturní prostor v centru Teplic provozovaný malým týmem lidí, kteří věří, že kultura patří blízko k lidem. Zjistěte, kdo za ní stojí a proč vznikla."
+  canonicalPath="/o-nas"
+>
+  <main>
+    <Blob color="oranzova"  position="top-left"     size={420} opacity={0.58} />
+    <Blob color="salvej"    position="bottom-right" size={360} opacity={0.48} />
+
+    <div class="obal">
+      <article>
+        <header class="uvod">
+          <h1>O nás</h1>
+          <p class="perex">
+            Jsme malý tým lidí z Teplic. Otevřeli jsme Zahálku, protože jsme chtěli místo,
+            kde kultura není podívaná — ale setkání.
+          </p>
+        </header>
+
+        <section>
+          <h2>Jak Zahálka vznikla</h2>
+          <p>
+            Zahálka se otevřela na podzim 2024 v pronajatém prostoru na Benešově náměstí.
+            Předtím jsme pořádali besedy po kavárnách a dílny po soukromých ateliérech —
+            vždy někde jinde, vždy s pocitem, že místo nebylo úplně naše.
+            Rozhodli jsme se to změnit.
+          </p>
+          <p>
+            Prostoru jsme říkali Zahálka záměrně. Zahálení bývá odsuzováno — přitom
+            chvíle bez spěchu, kdy si sednete a povídáte, tvoříte nebo jen posloucháte,
+            jsou přesně to, co nás drží pohromadě jako komunitu.
+          </p>
+
+          <figure>
+            <img
+              src="/obrazky/o-nas/prostor-01.jpg"
+              alt="Světlý interiér Zahálky s dřevěnými stoly, bílými stěnami a policemi s knihami"
+              width="1200"
+              height="800"
+              loading="lazy"
+            />
+            <figcaption>Hlavní sál Zahálky na Benešově náměstí připravený na besedový večer.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>Co se u nás děje</h2>
+          <p>
+            Zahálka se otvírá pouze na akce — záměrně. Nejsme kavárna ani galerie s pevnou
+            otevírací dobou. Každé otevření je příležitost: beseda s odborníkem, workshop,
+            kde si něco vlastníma rukama vytvoříte, nebo festival, kde se sejde celé město.
+          </p>
+          <p>
+            Program stavíme tak, aby měl smysl pro různé generace. Část akcí je pro dospělé —
+            přednášky, kreativní dílny, rozhovory nad mapou města. Část je pro děti a rodiny —
+            tvoření, pohyb, setkání. A část je pro oba najednou.
+          </p>
+
+          <figure>
+            <img
+              src="/obrazky/o-nas/tvoreni.jpg"
+              alt="Skupina dospělých a dětí společně tvoří z přírodních materiálů"
+              width="1200"
+              height="800"
+              loading="lazy"
+            />
+            <figcaption>Rodinná tvůrčí dílna — taková setkání jsou pro nás Zahálka v nejlepším slova smyslu.</figcaption>
+          </figure>
+        </section>
+
+        <section class="tabor-sekce">
+          <h2>Letní tábor</h2>
+          <p>
+            Jednou za rok se Zahálka promění v základnu příměstského tábora. Děti tráví
+            dopoledne kreativitou, pohybem a objevováním — a odpoledne se vrátí domů.
+            Žádné stany, žádné odloučení od rodiny. Jen týden plný zážitků v centru města.
+          </p>
+          <p>
+            Pokud hledáte pro své dítě tábor, kde se nezatratí ani citlivé a tišší děti —
+            přečtěte si více na stránce <a href="/tabor">Letní tábor</a>.
+            Kapacita je každý rok omezená a místa se plní rychle.
+          </p>
+        </section>
+
+        <section>
+          <h2>Tým</h2>
+          <p>
+            Za Zahálkou stojí tři lidé: Markéta, Ondřej a Jana. Markéta má na starosti
+            program a komunikaci, Ondřej techniku a prostor, Jana koordinuje lektory
+            a stará se o spolupráce. Mimo ně přichází na každou akci kohorta dobrovolníků,
+            bez nichž by to nefungovalo.
+          </p>
+          <p>
+            Nejsme neziskovka ani příspěvková organizace. Provozujeme Zahálku z přesvědčení
+            a ze vstupného. To, co vybereme, jde zpátky do programu.
+          </p>
+
+          <figure>
+            <img
+              src="/obrazky/o-nas/tym.jpg"
+              alt="Tříčlenný tým Zahálky stojí před vstupem do prostoru"
+              width="1200"
+              height="800"
+              loading="lazy"
+            />
+            <figcaption>Markéta, Ondřej a Jana — tým Zahálky.</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>Přijďte se podívat</h2>
+          <p>
+            Nejlépe nás poznáte na akci. Podívejte se na <a href="/program">program</a>
+            a přijďte na to, co vás zaujme. Dveře otvíráme vždy chvíli před začátkem
+            a zavíráme, až se vyřídí poslední rozhovor.
+          </p>
+          <p>
+            Máte-li dotazy, pište na
+            <a href="mailto:zahalkatesla@gmail.com">zahalkatesla@gmail.com</a>
+            nebo sledujte
+            <a href="https://instagram.com/zahalkatesla" target="_blank" rel="noopener">@zahalkatesla</a>
+            na Instagramu.
+          </p>
+        </section>
+      </article>
+    </div>
+  </main>
+</Zaklad>
+
+<style>
+  main {
+    position: relative;
+    overflow: hidden;
+    padding-block: 3rem 5rem;
+  }
+
+  .obal {
+    position: relative;
+    z-index: 1;
+    max-width: 72ch;
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
+  .uvod {
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .perex {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    max-width: 58ch;
+    opacity: 0.85;
+  }
+
+  section {
+    margin-bottom: 3.5rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  figure {
+    margin-block: 1.75rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
+  }
+
+  figure img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  figcaption {
+    font-size: 0.85rem;
+    font-style: italic;
+    opacity: 0.65;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .tabor-sekce {
+    background-color: color-mix(in srgb, var(--oranzova) 12%, var(--barva-pozadi));
+    border-radius: 1rem;
+    padding: 1.75rem 2rem;
+    margin-inline: -0.5rem;
+  }
+
+  .tabor-sekce h2 {
+    margin-bottom: 0.75rem;
+  }
+</style>

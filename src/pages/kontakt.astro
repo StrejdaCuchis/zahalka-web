@@ -1,0 +1,307 @@
+---
+import Zaklad from '../layouts/Zaklad.astro';
+import Blob from '../components/Blob.astro';
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Zahálka',
+  url: siteUrl,
+  email: 'zahalkatesla@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Benešovo nám. 3282',
+    addressLocality: 'Teplice',
+    postalCode: '415 01',
+    addressCountry: 'CZ',
+  },
+  sameAs: [
+    'https://instagram.com/zahalkatesla',
+    'https://facebook.com/zahalkatesla',
+  ],
+};
+---
+
+<Zaklad
+  title="Kontakt – Zahálka"
+  description="Kde nás najdete: Zahálka sídlí na Benešově náměstí 3282 v Teplicích. Pište na zahalkatesla@gmail.com nebo sledujte @zahalkatesla."
+  canonicalPath="/kontakt"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+  </Fragment>
+
+  <main>
+    <Blob color="levandule" position="top-right"   size={380} opacity={0.58} />
+    <Blob color="oranzova"  position="bottom-left" size={320} opacity={0.48} />
+
+    <div class="obal">
+      <h1>Kontakt</h1>
+
+      <div class="grid">
+        <section class="adresa-sekce">
+          <h2>Kde nás najdete</h2>
+          <address>
+            <p class="nazev-mista">Zahálka – kulturní prostor</p>
+            <p>Benešovo nám. 3282</p>
+            <p>415 01 Teplice</p>
+          </address>
+          <p class="otev-info">
+            Prostor se otvírá pouze na akce. Nejdříve se podívejte na
+            <a href="/program">program</a> a přijďte na to, co vás zaujme.
+          </p>
+        </section>
+
+        <section class="spojeni-sekce">
+          <h2>Spojte se s námi</h2>
+
+          <div class="kontakt-polozka">
+            <span class="kontakt-typ">E-mail</span>
+            <a href="mailto:zahalkatesla@gmail.com" class="kontakt-hodnota">
+              zahalkatesla@gmail.com
+            </a>
+          </div>
+
+          <div class="kontakt-polozka">
+            <span class="kontakt-typ">Instagram</span>
+            <a
+              href="https://instagram.com/zahalkatesla"
+              target="_blank"
+              rel="noopener"
+              class="kontakt-hodnota"
+            >
+              @zahalkatesla
+            </a>
+          </div>
+
+          <div class="kontakt-polozka">
+            <span class="kontakt-typ">Facebook</span>
+            <a
+              href="https://facebook.com/zahalkatesla"
+              target="_blank"
+              rel="noopener"
+              class="kontakt-hodnota"
+            >
+              Zahálka Teplice
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <section class="mapa-sekce" aria-label="Mapa polohy">
+        <h2>Jak se k nám dostat</h2>
+        <figure class="mapa-figura">
+          <a
+            href="https://maps.google.com/?q=Benešovo+náměstí+3282,+415+01+Teplice"
+            target="_blank"
+            rel="noopener"
+            aria-label="Otevřít Zahálku na Mapách Google"
+            class="mapa-odkaz"
+          >
+            <img
+              src="/obrazky/mapa-zahálka.jpg"
+              alt="Poloha Zahálky na mapě — Benešovo náměstí 3282, Teplice"
+              width="1200"
+              height="500"
+              loading="lazy"
+              class="mapa-img"
+            />
+            <span class="mapa-btn">Zobrazit na Mapách Google →</span>
+          </a>
+          <figcaption>Benešovo nám. 3282, 415 01 Teplice</figcaption>
+        </figure>
+
+        <div class="doprava">
+          <h3>Příjezd</h3>
+          <ul>
+            <li>
+              <strong>Tramvaj:</strong> zastávka Benešovo nám. — linky 1, 2, 4 (2 min pěšky)
+            </li>
+            <li>
+              <strong>Autem:</strong> parkoviště na Benešově náměstí, příjezd z ul. Komenského
+            </li>
+            <li>
+              <strong>Vlakem:</strong> nádraží Teplice v Čechách — 10 min pěšky nebo tramvají
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+</Zaklad>
+
+<style>
+  main {
+    position: relative;
+    overflow: hidden;
+    padding-block: 3rem 5rem;
+  }
+
+  .obal {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 3rem;
+  }
+
+  h2 {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    opacity: 0.5;
+    margin-bottom: 1.25rem;
+  }
+
+  h3 {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  address {
+    font-style: normal;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .nazev-mista {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.25rem;
+  }
+
+  .otev-info {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.75;
+  }
+
+  .otev-info a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .kontakt-polozka {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+  }
+
+  .kontakt-polozka:first-of-type {
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+  }
+
+  .kontakt-typ {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.45;
+  }
+
+  .kontakt-hodnota {
+    font-size: 1rem;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .kontakt-hodnota:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .mapa-sekce {
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+    padding-top: 3rem;
+  }
+
+  .mapa-figura {
+    margin-bottom: 2rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
+  }
+
+  .mapa-odkaz {
+    display: block;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .mapa-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 12 / 5;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.2s;
+  }
+
+  .mapa-odkaz:hover .mapa-img {
+    opacity: 0.85;
+  }
+
+  .mapa-btn {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: var(--barva-text);
+    color: var(--barva-pozadi);
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.45rem 0.9rem;
+    border-radius: 100vw;
+  }
+
+  figcaption {
+    font-size: 0.85rem;
+    font-style: italic;
+    opacity: 0.65;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .doprava ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .doprava li {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    padding-left: 1rem;
+    border-left: 2px solid color-mix(in srgb, var(--barva-text) 25%, transparent);
+  }
+</style>

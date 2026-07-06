@@ -43,6 +43,7 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; /* safety net: blobs clipped by their sections but belt+suspenders */
 }
 
 main {

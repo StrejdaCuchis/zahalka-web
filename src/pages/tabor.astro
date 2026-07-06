@@ -1,0 +1,705 @@
+---
+import Zaklad from '../layouts/Zaklad.astro';
+import Blob from '../components/Blob.astro';
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
+
+/* TODO: Před spuštěním registrace vyplňte skutečné hodnoty */
+const ODKAZ_FORMULAR  = 'https://docs.google.com/forms/d/e/1FAIpQLSfCAA19-WBB-sc2N4fJIHTYPz5c8dW_WiaJHlaNxBFuEsCHfA/closedform';
+const DATUM_OD_ISO    = '2026-07-20';          // TODO: první den tábora
+const DATUM_DO_ISO    = '2026-07-24';          // TODO: poslední den tábora
+const DATUM_DISPLAY   = '20.–24. července 2026'; // TODO: aktualizovat s datem
+const CENA            = '2 500 Kč';            // TODO: skutečná cena
+const VEK             = '6–12 let';
+const KAPACITA        = '15 dětí';
+
+const campSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: 'Příměstský tábor Zahálka 2026',
+  startDate: DATUM_OD_ISO,
+  endDate: DATUM_DO_ISO,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  description:
+    'Příměstský tábor pro děti ve věku 6–12 let. Týden plný tvoření, pohybu a nových přátelství v centru Teplic. Každý večer dítě spí doma.',
+  url: `${siteUrl}/tabor`,
+  image: `${siteUrl}/og-default.png`,
+  organizer: {
+    '@type': 'Organization',
+    name: 'Zahálka',
+    url: siteUrl,
+  },
+  location: {
+    '@type': 'Place',
+    name: 'Zahálka – kulturní prostor',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Benešovo nám. 3282',
+      addressLocality: 'Teplice',
+      postalCode: '415 01',
+      addressCountry: 'CZ',
+    },
+  },
+  offers: {
+    '@type': 'Offer',
+    price: '2500',
+    priceCurrency: 'CZK',
+    availability: 'https://schema.org/InStock',
+  },
+};
+---
+
+<Zaklad
+  title="Příměstský tábor – Zahálka Teplice"
+  description="Příměstský tábor pro děti 6–12 let v centru Teplic. Tvoření, pohyb, nová přátelství — a každý večer doma. Kapacita omezena, přihlášení online."
+  canonicalPath="/tabor"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(campSchema)} />
+  </Fragment>
+
+  <main>
+
+    <!-- ═══ HERO ═══════════════════════════════════════════════════════════ -->
+    <section class="hero" aria-label="O táboře">
+      <Blob color="limetka"  position="top-right"   size={500} opacity={0.65} />
+      <Blob color="oranzova" position="bottom-left" size={400} opacity={0.55} />
+
+      <div class="hero-obsah">
+        <p class="znacka">Příměstský tábor · Teplice</p>
+        <h1>Tábor Zahálka</h1>
+        <p class="hero-perex">
+          Týden plný tvoření, pohybu a nových přátelství — a každý večer doma.
+          Pro děti {VEK}.
+        </p>
+
+        <dl class="klic-fakta">
+          <div class="fakt">
+            <dt>Kdy</dt>
+            <dd><time datetime={DATUM_OD_ISO}>{DATUM_DISPLAY}</time></dd>
+          </div>
+          <div class="fakt">
+            <dt>Věk</dt>
+            <dd>{VEK}</dd>
+          </div>
+          <div class="fakt">
+            <dt>Cena</dt>
+            <dd>{CENA}</dd>
+          </div>
+          <div class="fakt">
+            <dt>Kapacita</dt>
+            <dd>{KAPACITA}</dd>
+          </div>
+        </dl>
+
+        <a
+          href={ODKAZ_FORMULAR}
+          target="_blank"
+          rel="noopener"
+          class="btn-prihlasit"
+          data-event="prihlaseni"
+          data-akce="Příměstský tábor"
+        >
+          Přihlásit dítě →
+        </a>
+        <p class="hero-upozorneni">
+          Kapacita omezena na {KAPACITA}. Registraci otevřeme v lednu 2026.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ DENNÍ PROGRAM ══════════════════════════════════════════════════ -->
+    <section class="sekce" aria-labelledby="denni-program">
+      <div class="obal">
+        <h2 id="denni-program">Jak vypadá den v táboře</h2>
+        <p class="sekce-uvod">
+          Každý den má svůj rytmus — dopoledne tvoříme a přemýšlíme, odpoledne
+          se hýbeme a zkoumáme okolí. Žádný pevný plán minutu po minutě, ale jasná
+          struktura, která dětem dává bezpečí.
+        </p>
+
+        <dl class="program-dne">
+          <div class="program-radek">
+            <dt><time datetime="08:00">8:00</time></dt>
+            <dd>Příchod, ranní kroužek a rozcvička</dd>
+          </div>
+          <div class="program-radek">
+            <dt><time datetime="09:00">9:00</time></dt>
+            <dd>Hlavní kreativní blok — tvoření, divadlo, výtvarné techniky, řemesla</dd>
+          </div>
+          <div class="program-radek">
+            <dt><time datetime="12:00">12:00</time></dt>
+            <dd>Oběd (každý s sebou) a volná chvíle</dd>
+          </div>
+          <div class="program-radek">
+            <dt><time datetime="13:00">13:00</time></dt>
+            <dd>Pohybová aktivita nebo výlet do centra Teplic</dd>
+          </div>
+          <div class="program-radek">
+            <dt><time datetime="15:00">15:00</time></dt>
+            <dd>Svačina, reflexe dne, příprava na odchod</dd>
+          </div>
+          <div class="program-radek">
+            <dt><time datetime="16:00">16:00</time></dt>
+            <dd>Odchod domů</dd>
+          </div>
+        </dl>
+
+        <p class="sekce-poznamka">
+          Každý den má jiné téma: dřevo, textil, hlína, příroda, příběhy.
+          Týdenní plán sdílíme rodičům e-mailem před začátkem tábora.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ PRO KOHO ════════════════════════════════════════════════════════ -->
+    <section class="sekce sekce-tint-limetka" aria-labelledby="pro-koho">
+      <div class="obal">
+        <h2 id="pro-koho">Pro koho je tábor</h2>
+        <p class="sekce-uvod">
+          Tábor je pro děti ve věku {VEK} z Teplic a okolí. Záleží nám na tom,
+          aby se u nás cítilo dobře i dítě, které je citlivější nebo tišší —
+          skupina je záměrně malá právě proto.
+        </p>
+        <ul class="seznam-znacky">
+          <li>Děti, které rády tvoří rukama — malování, keramika, textil, divadlo</li>
+          <li>Zvídavci, kteří se nebojí experimentovat a zkusit něco nového</li>
+          <li>Děti, pro které je důležité bezpečné a klidné prostředí</li>
+          <li>Sourozenci jsou vítáni — při zájmu je zohledníme ve skupinkách</li>
+        </ul>
+        <p>
+          Nejste si jistí, jestli je tábor pro vaše dítě? Napište nám na
+          <a href="mailto:zahalkatesla@gmail.com">zahalkatesla@gmail.com</a> —
+          rádi odpovíme na všechny otázky.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ CO JE V CENĚ ═══════════════════════════════════════════════════ -->
+    <section class="sekce" aria-labelledby="v-cene">
+      <div class="obal">
+        <h2 id="v-cene">Co je v ceně</h2>
+        <ul class="seznam-check">
+          <li>Vedení zkušeného lektora a pomocného vedoucího po celý den</li>
+          <li>Veškeré materiály a pomůcky ke kreativním aktivitám</li>
+          <li>Odpolední svačina každý den</li>
+          <li>Úrazové pojištění po dobu tábora</li>
+          <li>Táborové tričko a výrobky k odnesení domů</li>
+        </ul>
+        <p class="sekce-poznamka">
+          Oběd si děti přinášejí v dóze. K dispozici je místo k sezení a klidný
+          čas bez organizovaného programu.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ PRAKTICKÉ INFORMACE ════════════════════════════════════════════ -->
+    <section class="sekce" aria-labelledby="prakticke-info">
+      <div class="obal">
+        <h2 id="prakticke-info">Praktické informace</h2>
+        <dl class="prakticke-info">
+          <div class="info-radek">
+            <dt>Příchod</dt>
+            <dd>7:45–8:15 (prosíme dodržet)</dd>
+          </div>
+          <div class="info-radek">
+            <dt>Odchod</dt>
+            <dd>
+              15:45–16:15
+              <span class="info-detail">(po domluvě i dřív)</span>
+            </dd>
+          </div>
+          <div class="info-radek">
+            <dt>Místo konání</dt>
+            <dd>Zahálka, Benešovo nám. 3282, 415 01 Teplice</dd>
+          </div>
+          <div class="info-radek">
+            <dt>Co vzít s sebou</dt>
+            <dd>
+              Svačina a oběd v dóze, pití (min. 1 l), oblečení do tvoření
+              (starší, může se zašpinit), sluneční krém
+            </dd>
+          </div>
+          <div class="info-radek">
+            <dt>Komunikace</dt>
+            <dd>Týdenní program + skupinový chat pro rodiče</dd>
+          </div>
+          <div class="info-radek">
+            <dt>Platba</dt>
+            <dd>
+              Po potvrzení přihlášky na základě výzvy e-mailem
+              <span class="info-detail">(bankovním převodem)</span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ═══ PROČ ZAHÁLKA (trust) ════════════════════════════════════════════ -->
+    <section class="sekce sekce-tint-oranzova" aria-labelledby="proc-zahalka">
+      <div class="obal">
+        <h2 id="proc-zahalka">Proč Zahálka</h2>
+        <ul class="duvera-seznam">
+          <li class="duvera-karta">
+            <h3>Malá skupina, velká pozornost</h3>
+            <p>
+              Maximálně {KAPACITA} — záměr, ne náhoda. Každé dítě dostane
+              pozornost. Vedoucí si všimnou, kdo potřebuje povzbudit,
+              a kdo zrovna potřebuje klid.
+            </p>
+          </li>
+          <li class="duvera-karta">
+            <h3>Zkušený tým</h3>
+            <p>
+              Tábor vedou lektoři s praxí v práci s dětmi — lidé, kteří
+              pracují se Zahálkou celoročně. Chcete vědět více o nás?
+              <a href="/o-nas">Přečtěte si o týmu</a>.
+            </p>
+          </li>
+          <li class="duvera-karta">
+            <h3>Bezpečné prostředí</h3>
+            <p>
+              Tábor se koná v uzavřeném prostoru v centru města. Příchody
+              a odchody dětí evidujeme. Pohyb mimo prostor výhradně
+              organizovaně s vedoucím.
+            </p>
+          </li>
+          <li class="duvera-karta">
+            <h3>Otevřená komunikace</h3>
+            <p>
+              Plán dostanete předem. Během týdne komunikujeme ve skupinovém
+              chatu — víte, co se dělo, a máte kam napsat.
+            </p>
+          </li>
+        </ul>
+        <p class="duvera-prolinka">
+          Tábor vyrůstá z celoročního programu Zahálky. Podívejte se na náš
+          <a href="/program">program pro děti</a> nebo si přečtěte
+          <a href="/o-nas">příběh prostoru</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ BOTTOM CTA ══════════════════════════════════════════════════════ -->
+    <section class="sekce sekce-cta" aria-labelledby="cta-nadpis" id="prihlasit-se">
+      <div class="obal">
+        <h2 id="cta-nadpis">Chcete místo pro vaše dítě?</h2>
+        <p>
+          Přihlášení probíhá přes online formulář. Kapacita je omezena — pokud
+          máte zájem, neváhejte.
+        </p>
+        <a
+          href={ODKAZ_FORMULAR}
+          target="_blank"
+          rel="noopener"
+          class="btn-prihlasit btn-prihlasit-cta"
+          data-event="prihlaseni"
+          data-akce="Příměstský tábor"
+        >
+          Přihlásit dítě →
+        </a>
+        <p class="cta-kontakt">
+          Dotazy? Pište na
+          <a href="mailto:zahalkatesla@gmail.com">zahalkatesla@gmail.com</a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+</Zaklad>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────────────────────────── */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 2rem 5rem;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-obsah {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin-inline: auto;
+  }
+
+  .znacka {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.5;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .hero-perex {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    max-width: 52ch;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+  }
+
+  /* Key facts row */
+  .klic-fakta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    margin-bottom: 2.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 20%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 20%, transparent);
+    padding-block: 0;
+  }
+
+  .fakt {
+    flex: 1 1 auto;
+    min-width: 120px;
+    padding: 0.9rem 1rem;
+    border-right: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
+  }
+
+  .fakt:last-child {
+    border-right: none;
+  }
+
+  .klic-fakta dt {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.45;
+    margin-bottom: 0.2rem;
+  }
+
+  .klic-fakta dd {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* CTA button */
+  .btn-prihlasit {
+    display: inline-block;
+    background-color: var(--barva-text);
+    color: var(--barva-pozadi);
+    text-decoration: none;
+    padding: 1rem 2.25rem;
+    border-radius: 100vw;
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: background-color 0.15s, transform 0.1s;
+    margin-bottom: 1rem;
+  }
+
+  .btn-prihlasit:hover {
+    background-color: var(--barva-text-d);
+    color: var(--barva-pozadi);
+    transform: translateY(-1px);
+  }
+
+  .hero-upozorneni {
+    font-size: 0.82rem;
+    opacity: 0.6;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Shared section styles ────────────────────────────────────────────── */
+
+  .sekce {
+    padding-block: 4rem 4.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
+  }
+
+  .obal {
+    max-width: 820px;
+    margin-inline: auto;
+    padding-inline: 2rem;
+  }
+
+  h2 {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    margin-bottom: 1.25rem;
+  }
+
+  h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .sekce-uvod {
+    font-size: 1.05rem;
+    max-width: 62ch;
+    margin-bottom: 1.75rem;
+  }
+
+  .sekce-poznamka {
+    font-size: 0.88rem;
+    opacity: 0.7;
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  /* Tinted section backgrounds */
+  .sekce-tint-limetka {
+    background-color: color-mix(in srgb, var(--limetka) 10%, var(--barva-pozadi));
+  }
+
+  .sekce-tint-oranzova {
+    background-color: color-mix(in srgb, var(--oranzova) 10%, var(--barva-pozadi));
+  }
+
+  /* ── Daily program dl ─────────────────────────────────────────────────── */
+
+  .program-dne {
+    margin-block: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .program-radek {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.65rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
+  }
+
+  .program-radek:first-child {
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
+  }
+
+  .program-dne dt {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    opacity: 0.55;
+  }
+
+  .program-dne dd {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  /* ── Lists ─────────────────────────────────────────────────────────────── */
+
+  .seznam-znacky,
+  .seznam-check {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-block: 1rem 1.5rem;
+  }
+
+  .seznam-znacky li,
+  .seznam-check li {
+    padding-left: 1.5rem;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .seznam-znacky li::before {
+    content: '·';
+    position: absolute;
+    left: 0.4rem;
+    font-weight: 700;
+    opacity: 0.5;
+  }
+
+  .seznam-check li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    font-size: 0.8rem;
+    color: var(--salvej);
+    font-weight: 700;
+  }
+
+  /* ── Practical info dl ─────────────────────────────────────────────────── */
+
+  .prakticke-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .info-radek {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.8rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
+  }
+
+  .info-radek:first-child {
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
+  }
+
+  .prakticke-info dt {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.55;
+  }
+
+  .prakticke-info dd {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  .info-detail {
+    font-size: 0.85rem;
+    opacity: 0.65;
+  }
+
+  /* ── Trust / Proč Zahálka ─────────────────────────────────────────────── */
+
+  .duvera-seznam {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-block: 1.5rem;
+  }
+
+  .duvera-karta {
+    background-color: color-mix(in srgb, var(--barva-text) 5%, var(--barva-pozadi));
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .duvera-karta h3 {
+    margin-bottom: 0.6rem;
+  }
+
+  .duvera-karta p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  .duvera-prolinka {
+    font-size: 0.9rem;
+    opacity: 0.75;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Bottom CTA ─────────────────────────────────────────────────────────── */
+
+  .sekce-cta {
+    background-color: var(--barva-text);
+    border-top: none;
+    padding-block: 5rem 6rem;
+    text-align: center;
+  }
+
+  .sekce-cta h2,
+  .sekce-cta p {
+    color: var(--barva-pozadi);
+  }
+
+  .sekce-cta h2 {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .sekce-cta p {
+    opacity: 0.8;
+    max-width: 46ch;
+    margin-inline: auto;
+    margin-bottom: 2rem;
+  }
+
+  .btn-prihlasit-cta {
+    background-color: var(--barva-pozadi);
+    color: var(--barva-text);
+    font-size: 1rem;
+    padding: 1.1rem 2.75rem;
+  }
+
+  .btn-prihlasit-cta:hover {
+    background-color: var(--levandule-l);
+    color: var(--barva-text);
+    transform: translateY(-1px);
+  }
+
+  .cta-kontakt {
+    margin-top: 1.5rem;
+    font-size: 0.88rem;
+    opacity: 0.65;
+  }
+
+  .cta-kontakt a {
+    color: var(--levandule-l);
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────────────────── */
+
+  @media (max-width: 600px) {
+    .hero {
+      min-height: unset;
+      padding-block: 3.5rem 4rem;
+    }
+
+    .klic-fakta {
+      flex-direction: column;
+    }
+
+    .fakt {
+      border-right: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+      padding: 0.65rem 0;
+    }
+
+    .fakt:last-child {
+      border-bottom: none;
+    }
+
+    .info-radek {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+
+    .prakticke-info dt {
+      opacity: 0.45;
+    }
+
+    .duvera-seznam {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
