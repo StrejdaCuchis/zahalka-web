@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
 import Blob from '../components/Blob.astro';
-
 const vsechnyAkce = await getCollection('akce');
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
@@ -21,8 +20,8 @@ const organizationSchema = {
     addressCountry: 'CZ',
   },
   sameAs: [
-    'https://instagram.com/zahalkatesla',
-    'https://facebook.com/zahalkatesla',
+    'https://www.instagram.com/zahalkateplice/',
+    'https://www.facebook.com/zahalkateplice',
   ],
 };
 
@@ -55,8 +54,9 @@ const nejblizsiAkce = vsechnyAkce
         <h1>Zahálka</h1>
         <p class="hero-podtitul">Kulturní&nbsp;prostor, Teplice</p>
         <p class="hero-text">
-          Jsme prostor v centru Teplic, kde se potkávají lidé na besedách, workshopech a festivalech.
-          Otvíráme dveře na každou akci — přijďte, jak jste.
+          Jsme prostor v centru Teplic, kde se potkávají lidé na besedách,
+          workshopech a festivalech. Otvíráme dveře na každou akci — přijďte,
+          jak jste.
         </p>
         <a href="/program" class="btn-cta">Prohlédnout program</a>
       </div>
@@ -83,7 +83,7 @@ const nejblizsiAkce = vsechnyAkce
       <section class="zadne-akce-hero">
         <p>
           Momentálně neplánujeme nové akce. Sledujte nás na{' '}
-          <a href="https://instagram.com/zahalkatesla" target="_blank" rel="noopener">Instagramu</a>.
+          <a href="https://www.instagram.com/zahalkateplice/" target="_blank" rel="noopener">Instagramu</a>.
         </p>
       </section>
     )}
@@ -92,7 +92,7 @@ const nejblizsiAkce = vsechnyAkce
       <div class="obal">
         <p>
           Benešovo nám. 3282, Teplice &nbsp;·&nbsp;
-          <a href="https://instagram.com/zahalkatesla" target="_blank" rel="noopener">@zahalkatesla</a>
+          <a href="https://www.instagram.com/zahalkateplice/" target="_blank" rel="noopener">@zahalkateplice</a>
         </p>
       </div>
     </section>
@@ -103,25 +103,22 @@ const nejblizsiAkce = vsechnyAkce
   .hero {
     position: relative;
     overflow: hidden;
-    padding: 5rem 2rem 4rem;
+    padding: 4rem 2rem 4rem;
     display: flex;
     align-items: center;
-    min-height: 55vh;
+    min-height: 60vh;
   }
 
   .hero-obsah {
     position: relative;
     z-index: 1;
-    max-width: 680px;
+    max-width: 600px;
     margin-inline: auto;
   }
 
   h1 {
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    line-height: 1;
-    margin-bottom: 0.4rem;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    margin-bottom: 1rem;
   }
 
   .hero-podtitul {
@@ -131,11 +128,11 @@ const nejblizsiAkce = vsechnyAkce
     letter-spacing: 0.12em;
     text-transform: uppercase;
     opacity: 0.5;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-text {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     line-height: 1.7;
     max-width: 52ch;
     opacity: 0.85;
@@ -161,6 +158,8 @@ const nejblizsiAkce = vsechnyAkce
     background-color: var(--barva-text-d);
     color: var(--barva-pozadi);
   }
+
+  /* ── Sections below hero ─────────────────────────────── */
 
   .obal {
     position: relative;

@@ -28,6 +28,6 @@ Ideální pro sousedy, kteří sledují, co se staví vedle domu, pro studenty a
 
 ## Co si vzít
 
-Stačí přijít. Ke kávě nebo čaji vás pohostíme — nápojem z naší kuchyně. Pokud máte konkrétní fotografie nebo dokumenty k lokalitě, kterou chcete probrat, klidně je přineste nebo pošlete předem na mail zahalkatesla@gmail.com.
+Stačí přijít. Ke kávě nebo čaji vás pohostíme — nápojem z naší kuchyně. Pokud máte konkrétní fotografie nebo dokumenty k lokalitě, kterou chcete probrat, klidně je přineste nebo pošlete předem na mail zahalkateplice@gmail.com.
 
 Kapacita je omezena na 30 míst, proto prosíme o přihlášení přes formulář výše.

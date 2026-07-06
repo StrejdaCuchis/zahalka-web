@@ -9,7 +9,8 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'Zahálka',
   url: siteUrl,
-  email: 'zahalkatesla@gmail.com',
+  email: 'zahalkateplice@gmail.com',
+  telephone: '+420721258386',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Benešovo nám. 3282',
@@ -18,15 +19,15 @@ const organizationSchema = {
     addressCountry: 'CZ',
   },
   sameAs: [
-    'https://instagram.com/zahalkatesla',
-    'https://facebook.com/zahalkatesla',
+    'https://www.instagram.com/zahalkateplice/',
+    'https://www.facebook.com/zahalkateplice',
   ],
 };
 ---
 
 <Zaklad
   title="Kontakt – Zahálka"
-  description="Kde nás najdete: Zahálka sídlí na Benešově náměstí 3282 v Teplicích. Pište na zahalkatesla@gmail.com nebo sledujte @zahalkatesla."
+  description="Kde nás najdete: Zahálka sídlí na Benešově náměstí 3282 v Teplicích. Pište na zahalkateplice@gmail.com nebo sledujte @zahalkateplice."
   canonicalPath="/kontakt"
 >
   <Fragment slot="head">
@@ -59,27 +60,32 @@ const organizationSchema = {
 
           <div class="kontakt-polozka">
             <span class="kontakt-typ">E-mail</span>
-            <a href="mailto:zahalkatesla@gmail.com" class="kontakt-hodnota">
-              zahalkatesla@gmail.com
+            <a href="mailto:zahalkateplice@gmail.com" class="kontakt-hodnota">
+              zahalkateplice@gmail.com
             </a>
+          </div>
+
+          <div class="kontakt-polozka">
+            <span class="kontakt-typ">Telefon</span>
+            <a href="tel:+420721258386" class="kontakt-hodnota">721 258 386</a>
           </div>
 
           <div class="kontakt-polozka">
             <span class="kontakt-typ">Instagram</span>
             <a
-              href="https://instagram.com/zahalkatesla"
+              href="https://www.instagram.com/zahalkateplice/"
               target="_blank"
               rel="noopener"
               class="kontakt-hodnota"
             >
-              @zahalkatesla
+              @zahalkateplice
             </a>
           </div>
 
           <div class="kontakt-polozka">
             <span class="kontakt-typ">Facebook</span>
             <a
-              href="https://facebook.com/zahalkatesla"
+              href="https://www.facebook.com/zahalkateplice"
               target="_blank"
               rel="noopener"
               class="kontakt-hodnota"

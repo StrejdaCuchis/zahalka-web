@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
 import Blob from '../components/Blob.astro';
-
 const vsechnyAkce = await getCollection('akce');
 
 const dnes = new Date();
