@@ -1,0 +1,190 @@
+---
+import { getCollection, render } from 'astro:content';
+import Zaklad from '../../layouts/Zaklad.astro';
+
+export async function getStaticPaths() {
+  const akce = await getCollection('akce');
+  return akce.map((akce) => ({
+    params: { slug: akce.id },
+    props: { akce },
+  }));
+}
+
+const { akce } = Astro.props;
+const { Content } = await render(akce);
+
+const {
+  nazev,
+  datum,
+  cas,
+  cena,
+  kapacita,
+  odkazFormular,
+  obrazek,
+  altText,
+  kratkyPopis,
+  misto,
+} = akce.data;
+
+const datumISO = datum.toISOString().split('T')[0];
+const datumCasISO = `${datumISO}T${cas}:00`;
+
+const moznostMisto = misto ?? 'Zahálka, Benešovo nám. 3282, Teplice';
+
+const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Zaklad
+  title={`${nazev} – Zahálka`}
+  description={kratkyPopis}
+  ogImage={obrazek}
+  ogType="event"
+  canonicalPath={`/akce/${akce.id}`}
+>
+  <main>
+    <article>
+      <header>
+        <h1>{nazev}</h1>
+
+        <dl>
+          <div>
+            <dt>Kdy</dt>
+            <dd>
+              <time datetime={datumCasISO}>
+                {datumFormatovany}, {cas}
+              </time>
+            </dd>
+          </div>
+          <div>
+            <dt>Kde</dt>
+            <dd>{moznostMisto}</dd>
+          </div>
+          <div>
+            <dt>Vstupné</dt>
+            <dd>{cena}</dd>
+          </div>
+          {kapacita && (
+            <div>
+              <dt>Kapacita</dt>
+              <dd>{kapacita}</dd>
+            </div>
+          )}
+        </dl>
+
+        {odkazFormular && (
+          <a
+            href={odkazFormular}
+            target="_blank"
+            rel="noopener"
+            data-event="prihlaseni"
+            data-akce={nazev}
+            class="tlacitko-prihlasit"
+          >
+            Přihlásit se
+          </a>
+        )}
+      </header>
+
+      <figure>
+        <img
+          src={obrazek}
+          alt={altText}
+          width="1200"
+          height="630"
+          loading="eager"
+        />
+        <figcaption>{altText}</figcaption>
+      </figure>
+
+      <div class="obsah-akce">
+        <Content />
+      </div>
+    </article>
+  </main>
+</Zaklad>
+
+<style>
+  main {
+    max-width: 72ch;
+    margin-inline: auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  dl {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  dl > div {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  dt {
+    font-weight: 700;
+    min-width: 7ch;
+  }
+
+  dt::after {
+    content: ':';
+  }
+
+  .tlacitko-prihlasit {
+    display: inline-block;
+    background-color: #2d5a3d;
+    color: #F0EFE9;
+    text-decoration: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .tlacitko-prihlasit:hover {
+    background-color: #1e3a2f;
+  }
+
+  figure {
+    margin-bottom: 2rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  figure img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  figcaption {
+    font-size: 0.875rem;
+    color: #555;
+    padding: 0.4rem 0.75rem;
+    font-style: italic;
+  }
+
+  .obsah-akce :global(h2) {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .obsah-akce :global(p) {
+    margin-bottom: 1rem;
+  }
+</style>

@@ -1,0 +1,45 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --barva-pozadi: #F0EFE9;
+  --barva-text: #1e3a2f;
+  --barva-akcent: #2d5a3d;
+  --barva-akcent-svetly: #e8f0ea;
+  --pismo-zaklad: system-ui, -apple-system, sans-serif;
+  --mezera-s: 0.5rem;
+  --mezera-m: 1rem;
+  --mezera-l: 2rem;
+  --mezera-xl: 4rem;
+  --sirka-obsahu: 72ch;
+}
+
+html {
+  font-family: var(--pismo-zaklad);
+  background-color: var(--barva-pozadi);
+  color: var(--barva-text);
+  line-height: 1.6;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--barva-akcent);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--barva-akcent);
+  outline-offset: 2px;
+}
