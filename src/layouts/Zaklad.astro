@@ -61,6 +61,11 @@ const ogImageUrl = ogImage
   </head>
   <body>
     <header>
+      <a href="/" class="logo" aria-label="Zahálka – domovská stránka">
+        <span class="logo-nazev">ZAHÁLKA</span>
+        <span class="logo-podtitul">KULTURNÍ&nbsp;PROSTOR</span>
+      </a>
+
       <nav aria-label="Hlavní navigace">
         <a href="/">Domů</a>
         <a href="/program">Program</a>
@@ -68,11 +73,6 @@ const ogImageUrl = ogImage
         <a href="/o-nas">O nás</a>
         <a href="/kontakt">Kontakt</a>
       </nav>
-
-      <a href="/" class="logo" aria-label="Zahálka – domovská stránka">
-        <span class="logo-nazev">ZAHÁLKA</span>
-        <span class="logo-podtitul">KULTURNÍ&nbsp;PROSTOR</span>
-      </a>
     </header>
 
     <slot />
@@ -121,7 +121,7 @@ const ogImageUrl = ogImage
   .logo {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     text-decoration: none;
     line-height: 1.1;
   }
