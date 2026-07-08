@@ -122,6 +122,12 @@ const ogImageUrl = ogImage
           a.addEventListener('click', closeNav);
         });
 
+        document.addEventListener('click', function (e) {
+          if (hdr.classList.contains('nav-open') && !hdr.contains(e.target)) {
+            closeNav();
+          }
+        });
+
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape' && hdr.classList.contains('nav-open')) {
             closeNav();
