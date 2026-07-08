@@ -58,6 +58,8 @@ const ogImageUrl = ogImage
     />
 
     <slot name="head" />
+    <!-- JS-mode flag: set before first paint to prevent mobile nav flash -->
+    <script>document.documentElement.classList.add('js');</script>
   </head>
   <body>
     <header>
@@ -66,7 +68,22 @@ const ogImageUrl = ogImage
         <span class="logo-podtitul">KULTURNÍ&nbsp;PROSTOR</span>
       </a>
 
-      <nav aria-label="Hlavní navigace">
+      <!-- Hidden until JS activates; without JS the nav stays always visible -->
+      <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="hlavni-nav" hidden>
+        <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" fill="currentColor">
+          <g class="hbg-lines">
+            <rect x="0" y="2.75"  width="22" height="2.5" rx="1.25"/>
+            <rect x="0" y="9.75"  width="22" height="2.5" rx="1.25"/>
+            <rect x="0" y="16.75" width="22" height="2.5" rx="1.25"/>
+          </g>
+          <g class="hbg-close" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none">
+            <line x1="3" y1="3" x2="19" y2="19"/>
+            <line x1="19" y1="3" x2="3" y2="19"/>
+          </g>
+        </svg>
+      </button>
+
+      <nav id="hlavni-nav" aria-label="Hlavní navigace">
         <a href="/">Domů</a>
         <a href="/program">Program</a>
         <a href="/tabor">Tábor</a>
@@ -78,6 +95,41 @@ const ogImageUrl = ogImage
     <slot />
 
     <Analytika />
+
+    <script is:inline>
+      (function () {
+        var btn = document.querySelector('.hamburger');
+        var nav = document.getElementById('hlavni-nav');
+        if (!btn || !nav) return;
+        var hdr = btn.closest('header');
+
+        btn.removeAttribute('hidden');
+
+        function openNav() {
+          hdr.classList.add('nav-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+        function closeNav() {
+          hdr.classList.remove('nav-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+
+        btn.addEventListener('click', function () {
+          hdr.classList.contains('nav-open') ? closeNav() : openNav();
+        });
+
+        nav.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', closeNav);
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && hdr.classList.contains('nav-open')) {
+            closeNav();
+            btn.focus();
+          }
+        });
+      })();
+    </script>
 
     <footer>
       <div class="paticka-obsah">
@@ -93,31 +145,19 @@ const ogImageUrl = ogImage
 </html>
 
 <style>
+  /* ── Header bar ───────────────────────────────────────────────────────── */
   header {
+    position: relative;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1.25rem 2rem;
     border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
+    background: var(--barva-pozadi);
   }
 
-  nav a {
-    font-family: var(--pismo-nadpisy);
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    text-decoration: none;
-    margin-right: 1.5rem;
-    opacity: 0.75;
-    transition: opacity 0.15s;
-  }
-
-  nav a:hover,
-  nav a:focus-visible {
-    opacity: 1;
-  }
-
+  /* ── Logo ─────────────────────────────────────────────────────────────── */
   .logo {
     display: flex;
     flex-direction: column;
@@ -143,6 +183,50 @@ const ogImageUrl = ogImage
     opacity: 0.7;
   }
 
+  /* ── Desktop nav links ────────────────────────────────────────────────── */
+  nav a {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    margin-right: 1.5rem;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+  }
+
+  nav a:hover,
+  nav a:focus-visible {
+    opacity: 1;
+  }
+
+  /* ── Hamburger button (hidden on desktop) ─────────────────────────────── */
+  .hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0.35rem;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--barva-text-d);
+    line-height: 0;
+  }
+
+  .hamburger:focus-visible {
+    outline: 3px solid var(--barva-akcent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Icon swap: hamburger ↔ close */
+  .hbg-close { display: none; }
+  header.nav-open .hbg-close { display: block; }
+  header.nav-open .hbg-lines { display: none; }
+
+  /* ── Footer ───────────────────────────────────────────────────────────── */
   footer {
     margin-top: auto;
     border-top: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
@@ -190,14 +274,49 @@ const ogImageUrl = ogImage
     opacity: 1;
   }
 
+  /* ── Mobile ───────────────────────────────────────────────────────────── */
   @media (max-width: 600px) {
     header {
-      padding: 1rem;
+      padding: 1rem 1.25rem;
     }
 
-    header nav a {
-      margin-right: 0.75rem;
-      font-size: 0.7rem;
+    /* Show hamburger button */
+    .hamburger {
+      display: flex;
+    }
+
+    /* Nav panel: drops below the header bar */
+    header > nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--barva-pozadi);
+      border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    header > nav a {
+      margin-right: 0;
+      padding: 0.9rem 1.5rem;
+      font-size: 0.9rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
+      opacity: 0.85;
+    }
+
+    header > nav a:last-child {
+      border-bottom: none;
+    }
+
+    /* With JS: nav hidden by default; shown only when open */
+    html.js header > nav {
+      display: none;
+    }
+
+    html.js header.nav-open > nav {
+      display: flex;
     }
 
     footer nav {
