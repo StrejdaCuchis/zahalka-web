@@ -20,5 +20,8 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Grafický balíček — zdrojové soubory, nepatří do repozitáře
+Zahálka grafický balíček/
+
 # jetbrains setting folder
 .idea/

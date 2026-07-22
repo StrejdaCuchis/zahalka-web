@@ -50,13 +50,6 @@ const ogImageUrl = ogImage
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Manrope:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
-
     <slot name="head" />
     <!-- JS-mode flag: set before first paint to prevent mobile nav flash -->
     <script>document.documentElement.classList.add('js');</script>
@@ -64,8 +57,7 @@ const ogImageUrl = ogImage
   <body>
     <header>
       <a href="/" class="logo" aria-label="Zahálka – domovská stránka">
-        <span class="logo-nazev">ZAHÁLKA</span>
-        <span class="logo-podtitul">KULTURNÍ&nbsp;PROSTOR</span>
+        <img src="/zahalka-logo.svg" alt="Zahálka kulturní prostor" class="logo-img" width="88" height="50" />
       </a>
 
       <!-- Hidden until JS activates; without JS the nav stays always visible -->
@@ -166,34 +158,20 @@ const ogImageUrl = ogImage
   /* ── Logo ─────────────────────────────────────────────────────────────── */
   .logo {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     text-decoration: none;
-    line-height: 1.1;
+    flex-shrink: 0;
   }
 
-  .logo-nazev {
-    font-family: var(--pismo-nadpisy);
-    font-size: 1.1rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    color: var(--barva-text-d);
-  }
-
-  .logo-podtitul {
-    font-family: var(--pismo-nadpisy);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--barva-text);
-    opacity: 0.7;
+  .logo-img {
+    height: 44px;
+    width: auto;
   }
 
   /* ── Desktop nav links ────────────────────────────────────────────────── */
   nav a {
     font-family: var(--pismo-nadpisy);
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     text-decoration: none;
@@ -249,7 +227,7 @@ const ogImageUrl = ogImage
 
   .paticka-nazev {
     font-family: var(--pismo-nadpisy);
-    font-weight: 700;
+    font-weight: 600;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -267,7 +245,7 @@ const ogImageUrl = ogImage
   footer nav a {
     font-family: var(--pismo-nadpisy);
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     text-decoration: none;

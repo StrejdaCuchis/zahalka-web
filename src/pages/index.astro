@@ -51,14 +51,26 @@ const nejblizsiAkce = vsechnyAkce
       <Blob color="fialova"   position="bottom-right" size={540} opacity={0.76} />
 
       <div class="hero-obsah">
-        <h1>Zahálka</h1>
-        <p class="hero-podtitul">Kulturní&nbsp;prostor, Teplice</p>
-        <p class="hero-text">
-          Jsme prostor v centru Teplic, kde se potkávají lidé na besedách,
-          workshopech a festivalech. Otvíráme dveře na každou akci — přijďte,
-          jak jste.
-        </p>
-        <a href="/program" class="btn-cta">Prohlédnout program</a>
+        <div class="hero-text-blok">
+          <h1>Zahálka</h1>
+          <p class="hero-podtitul">Kulturní&nbsp;prostor, Teplice</p>
+          <p class="hero-text">
+            Jsme prostor v centru Teplic, kde se potkávají lidé na besedách,
+            workshopech a festivalech. Otvíráme dveře na každou akci — přijďte,
+            jak jste.
+          </p>
+          <a href="/program" class="btn-cta">Prohlédnout program</a>
+        </div>
+
+        <img
+          src="/ilustrace/web/novy-kabat-web.webp"
+          alt=""
+          class="hero-ilustrace"
+          width="283"
+          height="400"
+          loading="eager"
+          aria-hidden="true"
+        />
       </div>
     </section>
 
@@ -103,7 +115,7 @@ const nejblizsiAkce = vsechnyAkce
   .hero {
     position: relative;
     overflow: hidden;
-    padding: 4rem 2rem 4rem;
+    padding: 4rem 2rem 0;
     display: flex;
     align-items: center;
     min-height: 60vh;
@@ -112,8 +124,39 @@ const nejblizsiAkce = vsechnyAkce
   .hero-obsah {
     position: relative;
     z-index: 1;
-    max-width: 600px;
+    max-width: 760px;
     margin-inline: auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr minmax(160px, 220px);
+    align-items: end;
+    gap: 2.5rem;
+  }
+
+  .hero-text-blok {
+    padding-bottom: 4rem;
+  }
+
+  .hero-ilustrace {
+    display: block;
+    width: 100%;
+    height: auto;
+    align-self: end;
+    pointer-events: none;
+  }
+
+  @media (max-width: 700px) {
+    .hero-obsah {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-text-blok {
+      padding-bottom: 2rem;
+    }
+
+    .hero-ilustrace {
+      display: none;
+    }
   }
 
   h1 {
@@ -124,7 +167,7 @@ const nejblizsiAkce = vsechnyAkce
   .hero-podtitul {
     font-family: var(--pismo-nadpisy);
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     opacity: 0.5;
@@ -148,7 +191,7 @@ const nejblizsiAkce = vsechnyAkce
     border-radius: 100vw;
     font-family: var(--pismo-nadpisy);
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     transition: background-color 0.15s;
@@ -196,7 +239,7 @@ const nejblizsiAkce = vsechnyAkce
   .vice-link a {
     font-family: var(--pismo-nadpisy);
     font-size: 0.78rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     text-decoration: none;
