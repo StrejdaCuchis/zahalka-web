@@ -23,5 +23,8 @@ pnpm-debug.log*
 # Grafický balíček — zdrojové soubory, nepatří do repozitáře
 Zahálka grafický balíček/
 
+# Surové ilustrace (velké PNG), pouze web-optimalizované soubory v web/ podadresáři patří do repozitáře
+public/ilustrace/*.png
+
 # jetbrains setting folder
 .idea/
