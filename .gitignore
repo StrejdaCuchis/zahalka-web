@@ -23,6 +23,9 @@ pnpm-debug.log*
 # Grafický balíček — zdrojové soubory, nepatří do repozitáře
 Zahálka grafický balíček/
 
+# Podklady pro články (screenshoty, PDF exporty) — obsahují mj. fotky dětí, nepatří do repozitáře
+články/
+
 # Surové ilustrace (velké PNG), pouze web-optimalizované soubory v web/ podadresáři patří do repozitáře
 public/ilustrace/*.png
 

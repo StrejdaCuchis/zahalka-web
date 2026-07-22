@@ -4,6 +4,12 @@ import Blob from '../components/Blob.astro';
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
 
+const mapaLat = 50.642588;
+const mapaLon = 13.8267325;
+const mapaBbox = `${mapaLon - 0.004},${mapaLat - 0.002},${mapaLon + 0.004},${mapaLat + 0.002}`;
+const mapaEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(mapaBbox)}&layer=mapnik&marker=${mapaLat}%2C${mapaLon}`;
+const mapaOdkazUrl = `https://www.openstreetmap.org/?mlat=${mapaLat}&mlon=${mapaLon}#map=17/${mapaLat}/${mapaLon}`;
+
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -99,37 +105,29 @@ const organizationSchema = {
       <section class="mapa-sekce" aria-label="Mapa polohy">
         <h2>Jak se k nám dostat</h2>
         <figure class="mapa-figura">
-          <a
-            href="https://maps.google.com/?q=Benešovo+náměstí+3282,+415+01+Teplice"
-            target="_blank"
-            rel="noopener"
-            aria-label="Otevřít Zahálku na Mapách Google"
-            class="mapa-odkaz"
-          >
-            <img
-              src="/obrazky/mapa-zahálka.jpg"
-              alt="Poloha Zahálky na mapě — Benešovo náměstí 3282, Teplice"
-              width="1200"
-              height="500"
-              loading="lazy"
-              class="mapa-img"
-            />
-            <span class="mapa-btn">Zobrazit na Mapách Google →</span>
-          </a>
-          <figcaption>Benešovo nám. 3282, 415 01 Teplice</figcaption>
+          <iframe
+            class="mapa-iframe"
+            src={mapaEmbedUrl}
+            title="Mapa s polohou Zahálky na Benešově náměstí 3282, Teplice"
+            loading="lazy"
+          ></iframe>
+          <figcaption>
+            Benešovo nám. 3282, 415 01 Teplice —{' '}
+            <a href={mapaOdkazUrl} target="_blank" rel="noopener">zobrazit celou mapu ↗</a>
+          </figcaption>
         </figure>
 
         <div class="doprava">
           <h3>Příjezd</h3>
           <ul>
             <li>
-              <strong>Tramvaj:</strong> zastávka Benešovo nám. — linky 1, 2, 4 (2 min pěšky)
+              <strong>Autobusem:</strong> zastávka Benešovo náměstí přímo u vchodu — hlavní přestupní uzel MHD, staví tu linky 101–109 a 112
             </li>
             <li>
-              <strong>Autem:</strong> parkoviště na Benešově náměstí, příjezd z ul. Komenského
+              <strong>Autem:</strong> parkoviště na Benešově náměstí, příjezd z ul. Školní nebo U Radnice
             </li>
             <li>
-              <strong>Vlakem:</strong> nádraží Teplice v Čechách — 10 min pěšky nebo tramvají
+              <strong>Vlakem:</strong> Hlavní nádraží Teplice — 10 min pěšky nebo autobusem (linky 102, 103)
             </li>
           </ul>
         </div>
@@ -256,38 +254,11 @@ const organizationSchema = {
     background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
   }
 
-  .mapa-odkaz {
-    display: block;
-    position: relative;
-    text-decoration: none;
-  }
-
-  .mapa-img {
+  .mapa-iframe {
     width: 100%;
-    height: auto;
     aspect-ratio: 12 / 5;
-    object-fit: cover;
+    border: 0;
     display: block;
-    transition: opacity 0.2s;
-  }
-
-  .mapa-odkaz:hover .mapa-img {
-    opacity: 0.85;
-  }
-
-  .mapa-btn {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    background-color: var(--barva-text);
-    color: var(--barva-pozadi);
-    font-family: var(--pismo-nadpisy);
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0.45rem 0.9rem;
-    border-radius: 100vw;
   }
 
   figcaption {
@@ -295,6 +266,12 @@ const organizationSchema = {
     font-style: italic;
     opacity: 0.65;
     padding: 0.5rem 0.75rem;
+  }
+
+  figcaption a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .doprava ul {
