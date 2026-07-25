@@ -46,11 +46,17 @@ const nejblizsiAkce = vsechnyAkce
   <main>
     <section class="hero" aria-label="Úvod">
       <!-- Blobs: decorative, aria-hidden, behind content via z-index -->
-      <Blob color="levandule" position="top-left"     size={580} opacity={0.84} />
-      <Blob color="oranzova"  position="top-right"    size={490} opacity={0.78} />
-      <Blob color="fialova"   position="bottom-right" size={350} opacity={0.76} bleed={0} />
+      <Blob color="levandule" position="top-left"  size={580} opacity={0.84} />
+      <Blob color="oranzova"  position="top-right" size={400} opacity={0.78} bleed={0.5} />
 
       <div class="hero-obsah">
+        <!-- Anchored to the illustration's corner, not the full section, so it stays
+             a companion to the figure at every viewport width instead of drifting
+             into the top-right blob. Hidden together with the illustration on mobile. -->
+        <div class="hero-blob-ilustrace">
+          <Blob color="fialova" position="bottom-right" size={320} opacity={0.76} bleed={0} />
+        </div>
+
         <div class="hero-text-blok">
           <h1>Zahálka</h1>
           <p class="hero-podtitul">Kulturní&nbsp;prostor, Teplice</p>
@@ -134,17 +140,24 @@ const nejblizsiAkce = vsechnyAkce
   }
 
   .hero-text-blok {
+    position: relative;
     padding-bottom: 4rem;
   }
 
   .hero-ilustrace {
+    position: relative;
     display: block;
     width: 100%;
     height: auto;
-    align-self: start;
+    align-self: end;
+    margin-bottom: 3rem;
     pointer-events: none;
-    transform: translate(-180px, -45px) scale(0.72);
-    transform-origin: top right;
+  }
+
+  .hero-blob-ilustrace {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
 
   @media (max-width: 700px) {
@@ -156,7 +169,8 @@ const nejblizsiAkce = vsechnyAkce
       padding-bottom: 2rem;
     }
 
-    .hero-ilustrace {
+    .hero-ilustrace,
+    .hero-blob-ilustrace {
       display: none;
     }
   }
