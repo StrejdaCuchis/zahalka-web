@@ -13,9 +13,10 @@ interface Props {
   position:  BlobPosition;
   size?:     number;   // px diameter; SVG is square
   opacity?:  number;   // 0–1 overall opacity
+  bleed?:    number;   // 0–1, how far the blob shifts past its corner (default 0.35)
 }
 
-const { color, position, size = 500, opacity = 0.85 } = Astro.props;
+const { color, position, size = 500, opacity = 0.85, bleed = 0.35 } = Astro.props;
 
 // Organic paths — each differs slightly so same color at different positions reads as distinct
 const shapes: Record<BlobColor, string> = {
@@ -35,12 +36,13 @@ const stops: Record<BlobColor, [string, string]> = {
   limetka:   ['#C7C84A', '#D4D45E'],
 };
 
-// How much the blob bleeds off its corner (~35% of size)
+// How much the blob bleeds off its corner
+const pct = `${bleed * 100}%`;
 const translate: Record<BlobPosition, string> = {
-  'top-left':     'translate(-35%, -35%)',
-  'top-right':    'translate(35%, -35%)',
-  'bottom-left':  'translate(-35%, 35%)',
-  'bottom-right': 'translate(35%, 35%)',
+  'top-left':     `translate(-${pct}, -${pct})`,
+  'top-right':    `translate(${pct}, -${pct})`,
+  'bottom-left':  `translate(-${pct}, ${pct})`,
+  'bottom-right': `translate(${pct}, ${pct})`,
 };
 
 const anchor: Record<BlobPosition, string> = {

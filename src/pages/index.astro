@@ -48,7 +48,7 @@ const nejblizsiAkce = vsechnyAkce
       <!-- Blobs: decorative, aria-hidden, behind content via z-index -->
       <Blob color="levandule" position="top-left"     size={580} opacity={0.84} />
       <Blob color="oranzova"  position="top-right"    size={490} opacity={0.78} />
-      <Blob color="fialova"   position="bottom-right" size={540} opacity={0.76} />
+      <Blob color="fialova"   position="bottom-right" size={350} opacity={0.76} bleed={0} />
 
       <div class="hero-obsah">
         <div class="hero-text-blok">
@@ -141,9 +141,10 @@ const nejblizsiAkce = vsechnyAkce
     display: block;
     width: 100%;
     height: auto;
-    align-self: end;
-    margin-bottom: 4rem;
+    align-self: start;
     pointer-events: none;
+    transform: translate(-180px, -45px) scale(0.72);
+    transform-origin: top right;
   }
 
   @media (max-width: 700px) {
