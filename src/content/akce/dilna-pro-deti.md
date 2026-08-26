@@ -1,16 +1,16 @@
 ---
 nazev: "Dílna pro děti: prázdninové tvoření"
-datum: 2026-09-12
-cas: "10:00"
-typ: "deti"
-cena: "od 200 Kč"
-kapacita: "15 dětí"
-odkazFormular: "https://forms.gle/dilna-deti-zari-2026"
-obrazek: "/obrazky/akce/dilna-pro-deti.jpg"
-altText: "Děti sedící u stolu s barevnými papíry, nůžkami a lepidlem"
-kratkyPopis: "Tvůrčí dopoledne pro děti od 5 do 10 let — stříháme, lepíme, malujeme a stavíme z přírodních materiálů."
+datum: 2026-09-11
+cas: 10:00
+typ: deti
+cena: od 200 Kč
+kapacita: 15 dětí
+odkazFormular: https://forms.gle/dilna-deti-zari-2026
+obrazek: /obrazky/akce/dilna-pro-deti.jpg
+altText: Děti sedící u stolu s barevnými papíry, nůžkami a lepidlem
+kratkyPopis: Tvůrčí dopoledne pro děti od 5 do 10 let — stříháme, lepíme,
+  malujeme a stavíme z přírodních materiálů.
 ---
-
 Prázdninové dílny jsou navržené tak, aby si děti vyzkoušely práci s různými materiály a přitom nemusely sedět v klidu. Každá dílna má volné téma — letos tvoříme svět malých tvorů.
 
 ## Co vás čeká
