@@ -20,6 +20,8 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
   <p id="cookie-text">
     Používáme analytické cookies (Google Analytics a&nbsp;Microsoft Clarity),
     abychom pochopili, jak web používáte, a&nbsp;mohli ho zlepšovat.
+    {' '}
+    <a href="/cookies">Více informací</a>
   </p>
   <div class="cookie-akce">
     <button id="cookie-odmitnout" type="button">Odmítnout</button>
@@ -87,7 +89,28 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
       });
     }, true);
 
-    if (typeof clarity === 'function') clarity('consent');
+    if (typeof clarity === 'function') {
+      clarity('consentv2', {
+        ad_Storage: 'denied',
+        analytics_Storage: 'granted',
+      });
+    }
+  }
+
+  function odeprit() {
+    gtag('consent', 'update', {
+      analytics_storage:  'denied',
+      ad_storage:         'denied',
+      ad_user_data:       'denied',
+      ad_personalization: 'denied',
+    });
+
+    if (typeof clarity === 'function') {
+      clarity('consentv2', {
+        ad_Storage: 'denied',
+        analytics_Storage: 'denied',
+      });
+    }
   }
 
   // ── 4. Grant consent ───────────────────────────────────────────────────
@@ -109,7 +132,9 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
   if (volba === 'granted') {
     // Returning visitor who already accepted — restore consent immediately.
     udelit();
-  } else if (volba !== 'denied' && (gaId || clarityId)) {
+  } else if (volba === 'denied') {
+    odeprit();
+  } else if (gaId || clarityId) {
     // No prior choice and tracking is configured — show the bar.
     // requestAnimationFrame delays by one frame to avoid layout shift on load.
     requestAnimationFrame(function () {
@@ -129,7 +154,14 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
 
   document.getElementById('cookie-odmitnout')?.addEventListener('click', function () {
     localStorage.setItem(KLIC, 'denied');
+    odeprit();
     if (lista) lista.hidden = true;
+  });
+
+  document.addEventListener('zahalka:otevrit-cookies', function () {
+    if (!lista) return;
+    lista.hidden = false;
+    lista.querySelector('button')?.focus();
   });
 </script>
 
@@ -168,6 +200,11 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
     max-width: 64ch;
     opacity: 0.82;
     color: var(--barva-text);
+  }
+
+  #cookie-lista p a {
+    color: inherit;
+    font-weight: 600;
   }
 
   .cookie-akce {

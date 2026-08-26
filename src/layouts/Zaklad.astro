@@ -146,6 +146,7 @@ const pouzivaVychoziOg = !ogImage;
       <div class="paticka-obsah">
         <p class="paticka-nazev">Zahálka – kulturní prostor</p>
         <address>Benešovo nám. 3282, 415 01 Teplice</address>
+        <a href="/cookies" class="paticka-cookies">Cookies</a>
         <nav aria-label="Sociální sítě">
           <a href="https://www.instagram.com/zahalkateplice/" target="_blank" rel="noopener">Instagram</a>
           <a href="https://www.facebook.com/zahalkateplice" target="_blank" rel="noopener">Facebook</a>
@@ -249,6 +250,21 @@ const pouzivaVychoziOg = !ogImage;
   address {
     font-style: normal;
     opacity: 0.75;
+  }
+
+  .paticka-cookies {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    opacity: 0.75;
+  }
+
+  .paticka-cookies:hover,
+  .paticka-cookies:focus-visible {
+    opacity: 1;
   }
 
   footer nav {

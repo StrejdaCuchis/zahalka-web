@@ -1,0 +1,218 @@
+---
+import Zaklad from '../layouts/Zaklad.astro';
+import Blob from '../components/Blob.astro';
+---
+
+<Zaklad
+  title="Cookies a ochrana soukromí – Zahálka"
+  description="Informace o používání cookies, Google Analytics a Microsoft Clarity na webu kulturního prostoru Zahálka."
+  canonicalPath="/cookies"
+>
+  <main>
+    <Blob color="levandule" position="top-right" size={420} opacity={0.5} />
+    <Blob color="salvej" position="bottom-left" size={330} opacity={0.38} />
+
+    <article>
+      <header>
+        <p class="stitky">Soukromí návštěvníků</p>
+        <h1>Cookies</h1>
+        <p class="perex">
+          Tento web používá nezbytné uložení vaší volby a po vašem souhlasu také
+          analytické služby. Analytické cookies nám pomáhají zjistit, které stránky
+          jsou užitečné a kde můžeme web zlepšit.
+        </p>
+      </header>
+
+      <section aria-labelledby="nezbytne">
+        <h2 id="nezbytne">Nezbytné uložení volby</h2>
+        <p>
+          V prohlížeči ukládáme položku <code>zahalka_cookie_consent</code>, která si
+          pamatuje, zda jste analytiku přijali, nebo odmítli. Nejde o sledovací cookie
+          a neposílá se na žádný server. Zůstává uložená, dokud svou volbu nezměníte
+          nebo nevymažete data webu v prohlížeči.
+        </p>
+      </section>
+
+      <section aria-labelledby="analyticke">
+        <h2 id="analyticke">Analytické cookies</h2>
+        <p>
+          Analytické cookies jsou volitelné. Použijeme je pouze tehdy, když stisknete
+          „Přijmout“. Odmítnutí nemá vliv na fungování webu.
+        </p>
+
+        <dl class="sluzby">
+          <div>
+            <dt>Google Analytics 4</dt>
+            <dd>
+              Pomáhá nám porozumět návštěvnosti a používání webu. Může ukládat cookies{' '}
+              <code>_ga</code> a <code>_ga_&lt;ID&gt;</code>, obvykle nejdéle na dva roky.
+              Reklamní souhlas na tomto webu neudělujeme.{' '}
+              <a
+                href="https://support.google.com/analytics/answer/11397207?hl=cs"
+                target="_blank"
+                rel="noopener"
+              >Informace společnosti Google o cookies</a>.
+            </dd>
+          </div>
+          <div>
+            <dt>Microsoft Clarity</dt>
+            <dd>
+              Ukazuje nám souhrnně, jak návštěvníci používají jednotlivé části webu.
+              Po souhlasu může používat například cookies <code>_clck</code> a
+              {' '}<code>_clsk</code> a související cookies společnosti Microsoft.{' '}
+              <a
+                href="https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-cookies"
+                target="_blank"
+                rel="noopener"
+              >Přehled cookies Microsoft Clarity</a>.
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <section aria-labelledby="volba">
+        <h2 id="volba">Jak změnit svou volbu</h2>
+        <p>
+          Souhlas můžete kdykoli změnit nebo odvolat. Po stisknutí tlačítka se znovu
+          otevře lišta s volbou. Při odmítnutí se analytické ukládání vypne a Clarity
+          odstraní své cookies pro tento web.
+        </p>
+        <button type="button" class="tlacitko" id="zmenit-cookies">
+          Změnit nastavení cookies
+        </button>
+      </section>
+
+      <section aria-labelledby="kontakt">
+        <h2 id="kontakt">Kontakt</h2>
+        <p>
+          Máte-li otázku k používání cookies na tomto webu, napište nám na
+          {' '}
+          <a href="mailto:zahalkateplice@gmail.com">zahalkateplice@gmail.com</a>.
+        </p>
+      </section>
+
+      <p class="aktualizace">Poslední aktualizace: 26. srpna 2026</p>
+    </article>
+  </main>
+</Zaklad>
+
+<script>
+  document.getElementById('zmenit-cookies')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('zahalka:otevrit-cookies'));
+  });
+</script>
+
+<style>
+  main {
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 1.25rem 6rem;
+  }
+
+  article {
+    position: relative;
+    z-index: 1;
+    max-width: 72ch;
+    margin-inline: auto;
+  }
+
+  article > header {
+    margin-bottom: 3rem;
+  }
+
+  .stitky {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 7vw, 4.75rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .perex {
+    max-width: 60ch;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    opacity: 0.82;
+  }
+
+  section {
+    margin-top: 2.75rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.8rem;
+  }
+
+  p,
+  dd {
+    line-height: 1.75;
+  }
+
+  code {
+    font-size: 0.88em;
+    padding: 0.12em 0.35em;
+    border-radius: 0.3rem;
+    background: color-mix(in srgb, var(--barva-text) 8%, transparent);
+  }
+
+  .sluzby {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .sluzby > div {
+    padding: 1.25rem;
+    border: 1px solid color-mix(in srgb, var(--barva-text) 14%, transparent);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--barva-pozadi) 82%, white);
+  }
+
+  dt {
+    font-family: var(--pismo-nadpisy);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  .tlacitko {
+    margin-top: 1rem;
+    padding: 0.8rem 1.6rem;
+    border: 0;
+    border-radius: 100vw;
+    background: var(--barva-text);
+    color: var(--barva-pozadi);
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .tlacitko:hover {
+    background: var(--barva-text-d);
+  }
+
+  .tlacitko:focus-visible {
+    outline: 3px solid var(--barva-akcent);
+    outline-offset: 3px;
+  }
+
+  .aktualizace {
+    margin-top: 3.5rem;
+    font-size: 0.8rem;
+    opacity: 0.58;
+  }
+</style>

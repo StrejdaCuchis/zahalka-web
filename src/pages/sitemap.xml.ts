@@ -15,7 +15,7 @@ function escapeXml(hodnota: string) {
 
 export async function GET() {
   const akce = await getCollection('akce');
-  const statickeCesty = ['/', '/program', '/tabor', '/o-nas', '/kontakt'];
+  const statickeCesty = ['/', '/program', '/tabor', '/o-nas', '/kontakt', '/cookies'];
   const cestyAkci = akce.map((polozka) => `/akce/${polozka.id}`);
   const cesty = [...statickeCesty, ...cestyAkci];
 
