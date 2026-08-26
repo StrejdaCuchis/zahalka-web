@@ -1,0 +1,274 @@
+media:
+  - name: obrazky
+    label: Obrázky webu
+    input: public/obrazky
+    output: /obrazky
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp, avif]
+    rename: safe
+
+settings:
+  hide: true
+  content:
+    merge: true
+  commit:
+    identity: user
+    templates:
+      create: 'Přidat {path} přes Pages CMS'
+      update: 'Upravit {path} přes Pages CMS'
+      delete: 'Odstranit {path} přes Pages CMS'
+
+components:
+  fotografie:
+    type: object
+    label: Fotografie
+    fields:
+      - name: obrazek
+        label: Soubor obrázku
+        type: image
+        required: true
+        options:
+          media: obrazky
+          path: public/obrazky/stranky
+      - name: altText
+        label: Popis obrázku pro nevidomé
+        type: text
+        required: true
+        description: Stručně popište, co je na fotografii. Nepište „obrázek“ ani „fotografie“.
+      - name: popisek
+        label: Viditelný popisek pod fotografií
+        type: text
+
+content:
+  - name: akce
+    label: Akce
+    type: collection
+    path: src/content/akce
+    format: yaml-frontmatter
+    filename:
+      template: '{nazev}.md'
+      field: create
+    view:
+      primary: nazev
+      fields: [nazev, datum, typ, cena]
+      sort: [datum, nazev, typ]
+      search: [nazev, kratkyPopis, typ]
+      default:
+        sort: datum
+        order: desc
+    fields:
+      - name: nazev
+        label: Název akce
+        type: string
+        required: true
+      - name: datum
+        label: Datum konání
+        type: date
+        required: true
+        options:
+          time: false
+          format: yyyy-MM-dd
+      - name: cas
+        label: Čas začátku
+        type: string
+        required: true
+        description: Zadejte ve formátu 18:00.
+        pattern:
+          regex: '^([01]\\d|2[0-3]):[0-5]\\d$'
+          message: Čas musí být ve formátu HH:MM, například 18:00.
+      - name: typ
+        label: Typ akce
+        type: select
+        required: true
+        options:
+          values:
+            - name: beseda
+              label: Beseda
+            - name: workshop
+              label: Workshop
+            - name: festival
+              label: Festival
+            - name: deti
+              label: Pro děti
+      - name: cena
+        label: Cena
+        type: string
+        required: true
+        description: Například „zdarma“ nebo „od 350 Kč“.
+      - name: kapacita
+        label: Kapacita
+        type: string
+        description: Volitelné, například „20 míst“.
+      - name: odkazFormular
+        label: Odkaz na přihlašovací formulář
+        type: string
+        description: Když zůstane prázdný, tlačítko Přihlásit se se nezobrazí.
+      - name: obrazek
+        label: Hlavní obrázek
+        type: image
+        required: true
+        options:
+          media: obrazky
+          path: public/obrazky/akce
+      - name: altText
+        label: Popis obrázku pro nevidomé
+        type: text
+        required: true
+        description: Stručně popište, co je na obrázku důležité.
+      - name: kratkyPopis
+        label: Krátký popis
+        type: text
+        required: true
+        description: Jedna až dvě věty pro Google a sdílení na sociálních sítích, ideálně kolem 150 znaků.
+        options:
+          maxlength: 220
+      - name: misto
+        label: Jiné místo konání
+        type: string
+        description: Vyplňte jen tehdy, když se akce nekoná v Zahálce.
+      - name: body
+        label: Text detailu akce
+        type: rich-text
+        required: true
+        description: Používejte mezititulky druhé úrovně, například „Co vás čeká“ a „Pro koho“.
+        options:
+          format: markdown
+          media: false
+
+  - name: tabor
+    label: Tábor
+    type: file
+    path: src/content/stranky/tabor.md
+    format: yaml-frontmatter
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      - name: nazev
+        label: Název stránky
+        type: string
+        required: true
+      - name: metaPopis
+        label: Popis pro Google a sociální sítě
+        type: text
+        required: true
+        options:
+          maxlength: 220
+      - name: znacka
+        label: Malý text nad nadpisem
+        type: string
+        required: true
+      - name: perex
+        label: Úvodní text
+        type: text
+        required: true
+      - name: datumOd
+        label: První den tábora
+        type: date
+        required: true
+        options:
+          time: false
+          format: yyyy-MM-dd
+      - name: datumDo
+        label: Poslední den tábora
+        type: date
+        required: true
+        options:
+          time: false
+          format: yyyy-MM-dd
+      - name: datumText
+        label: Datum zobrazené návštěvníkům
+        type: string
+        required: true
+        description: Například „20.–24. července 2026“.
+      - name: vek
+        label: Věk dětí
+        type: string
+        required: true
+      - name: cena
+        label: Cena zobrazená návštěvníkům
+        type: string
+        required: true
+      - name: cenaCiselne
+        label: Cena jako číslo pro Google
+        type: number
+        description: Jen číslo bez Kč a mezer, například 2500.
+      - name: kapacita
+        label: Kapacita
+        type: string
+        required: true
+      - name: odkazFormular
+        label: Odkaz na přihlašovací formulář
+        type: string
+      - name: prihlaseniAktivni
+        label: Přihlašování je otevřené
+        type: boolean
+        required: true
+        description: Tlačítko se zobrazí pouze při zapnutém přepínači a vyplněném odkazu na formulář.
+      - name: upozorneni
+        label: Poznámka pod přihlášením
+        type: text
+        description: Například informace o otevření přihlášek nebo posledních místech.
+      - name: hlavniObrazek
+        label: Hlavní obrázek tábora
+        type: image
+        options:
+          media: obrazky
+          path: public/obrazky/stranky
+      - name: hlavniObrazekAlt
+        label: Popis hlavního obrázku pro nevidomé
+        type: text
+      - name: body
+        label: Podrobný obsah stránky
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          media: false
+      - name: fotky
+        label: Fotogalerie
+        component: fotografie
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{altText}'
+
+  - name: o_nas
+    label: O nás
+    type: file
+    path: src/content/stranky/o-nas.md
+    format: yaml-frontmatter
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      - name: nazev
+        label: Název stránky
+        type: string
+        required: true
+      - name: metaPopis
+        label: Popis pro Google a sociální sítě
+        type: text
+        required: true
+        options:
+          maxlength: 220
+      - name: perex
+        label: Úvodní text
+        type: text
+        required: true
+      - name: body
+        label: Příběh Zahálky
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          media: false
+      - name: fotky
+        label: Fotogalerie
+        component: fotografie
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{altText}'

@@ -19,4 +19,53 @@ const akce = defineCollection({
   }),
 });
 
-export const collections = { akce };
+const tabor = defineCollection({
+  loader: glob({ pattern: 'tabor.md', base: './src/content/stranky' }),
+  schema: z.object({
+    nazev: z.string(),
+    metaPopis: z.string(),
+    znacka: z.string(),
+    perex: z.string(),
+    datumOd: z.coerce.date(),
+    datumDo: z.coerce.date(),
+    datumText: z.string(),
+    vek: z.string(),
+    cena: z.string(),
+    cenaCiselne: z.number().optional(),
+    kapacita: z.string(),
+    odkazFormular: z.string().optional(),
+    prihlaseniAktivni: z.boolean(),
+    upozorneni: z.string().optional(),
+    hlavniObrazek: z.string().optional(),
+    hlavniObrazekAlt: z.string().optional(),
+    fotky: z
+      .array(
+        z.object({
+          obrazek: z.string(),
+          altText: z.string(),
+          popisek: z.string().optional(),
+        }),
+      )
+      .optional(),
+  }),
+});
+
+const oNas = defineCollection({
+  loader: glob({ pattern: 'o-nas.md', base: './src/content/stranky' }),
+  schema: z.object({
+    nazev: z.string(),
+    metaPopis: z.string(),
+    perex: z.string(),
+    fotky: z
+      .array(
+        z.object({
+          obrazek: z.string(),
+          altText: z.string(),
+          popisek: z.string().optional(),
+        }),
+      )
+      .optional(),
+  }),
+});
+
+export const collections = { akce, tabor, oNas };
