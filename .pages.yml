@@ -74,7 +74,7 @@ content:
         required: true
         description: Zadejte ve formátu 18:00.
         pattern:
-          regex: '^([01]\\d|2[0-3]):[0-5]\\d$'
+          regex: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
           message: Čas musí být ve formátu HH:MM, například 18:00.
       - name: typ
         label: Typ akce
