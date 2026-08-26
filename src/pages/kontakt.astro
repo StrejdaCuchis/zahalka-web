@@ -6,9 +6,8 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
 
 const mapaLat = 50.642588;
 const mapaLon = 13.8267325;
-const mapaBbox = `${mapaLon - 0.004},${mapaLat - 0.002},${mapaLon + 0.004},${mapaLat + 0.002}`;
-const mapaEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(mapaBbox)}&layer=mapnik&marker=${mapaLat}%2C${mapaLon}`;
-const mapaOdkazUrl = `https://www.openstreetmap.org/?mlat=${mapaLat}&mlon=${mapaLon}#map=17/${mapaLat}/${mapaLon}`;
+const mapaEmbedUrl = `https://www.google.com/maps?q=${mapaLat},${mapaLon}&z=17&output=embed`;
+const mapaOdkazUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Zahálka, Benešovo náměstí 3282, 415 01 Teplice')}`;
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -110,6 +109,8 @@ const organizationSchema = {
             src={mapaEmbedUrl}
             title="Mapa s polohou Zahálky na Benešově náměstí 3282, Teplice"
             loading="lazy"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
           ></iframe>
           <figcaption>
             Benešovo nám. 3282, 415 01 Teplice —{' '}
