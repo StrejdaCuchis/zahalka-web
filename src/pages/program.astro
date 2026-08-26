@@ -14,7 +14,8 @@ const nadchazejici = vsechnyAkce
 
 const minule = vsechnyAkce
   .filter((a) => a.data.datum < dnes)
-  .sort((a, b) => b.data.datum.getTime() - a.data.datum.getTime());
+  .sort((a, b) => b.data.datum.getTime() - a.data.datum.getTime())
+  .slice(0, 5);
 ---
 
 <Zaklad
@@ -54,16 +55,18 @@ const minule = vsechnyAkce
 
       {minule.length > 0 && (
         <section class="minule" aria-label="Proběhlé akce">
-          <h2>Proběhlé akce</h2>
+          <h2>Proběhlo u nás</h2>
           <ul class="minule-seznam">
             {minule.map((akce) => (
               <li data-typ={akce.data.typ}>
-                <a href={`/akce/${akce.id}`}>
-                  <span class="minula-nazev">{akce.data.nazev}</span>
-                  <time datetime={akce.data.datum.toISOString().split('T')[0]} class="minula-datum">
-                    {akce.data.datum.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </time>
-                </a>
+                <article>
+                  <a href={`/akce/${akce.id}`}>
+                    <span class="minula-nazev">{akce.data.nazev}</span>
+                    <time datetime={akce.data.datum.toISOString().split('T')[0]} class="minula-datum">
+                      {akce.data.datum.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </time>
+                  </a>
+                </article>
               </li>
             ))}
           </ul>

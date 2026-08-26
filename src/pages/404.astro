@@ -1,0 +1,88 @@
+---
+import Zaklad from '../layouts/Zaklad.astro';
+import Blob from '../components/Blob.astro';
+---
+
+<Zaklad
+  title="Stránka nenalezena – Zahálka"
+  description="Požadovanou stránku se nepodařilo najít. Pokračujte na program kulturního prostoru Zahálka."
+  canonicalPath="/404"
+  noindex={true}
+>
+  <main>
+    <Blob color="levandule" position="top-left" size={420} opacity={0.55} />
+    <Blob color="oranzova" position="bottom-right" size={340} opacity={0.45} />
+
+    <section aria-labelledby="nenalezeno">
+      <p class="kod">404</p>
+      <h1 id="nenalezeno">Tady Zahálka není</h1>
+      <p>Stránka mohla změnit adresu nebo už neexistuje.</p>
+      <nav aria-label="Pokračovat na webu">
+        <a href="/program" class="hlavni-odkaz">Prohlédnout program</a>
+        <a href="/">Zpět na úvod</a>
+      </nav>
+    </section>
+  </main>
+</Zaklad>
+
+<style>
+  main {
+    position: relative;
+    overflow: hidden;
+    min-height: 65vh;
+    display: grid;
+    place-items: center;
+    padding: 4rem 2rem 6rem;
+  }
+
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 42rem;
+    text-align: center;
+  }
+
+  .kod {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    opacity: 0.5;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    margin-bottom: 1rem;
+  }
+
+  section > p:last-of-type {
+    font-size: 1.05rem;
+    opacity: 0.78;
+    margin-bottom: 2rem;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+
+  nav a {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .hlavni-odkaz {
+    padding: 0.8rem 1.7rem;
+    border-radius: 100vw;
+    background: var(--barva-text);
+    color: var(--barva-pozadi);
+    text-decoration: none;
+  }
+</style>

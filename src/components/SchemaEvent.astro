@@ -27,13 +27,16 @@ const {
 
 const datumISO = datum.toISOString().split('T')[0];
 const startDate = `${datumISO}T${cas}:00`;
+const dnes = new Date();
+dnes.setHours(0, 0, 0, 0);
+const jeMinula = datum < dnes;
 
 const placeName = misto ?? 'Zahálka';
 
 function parsePrice(cenaStr: string): string {
   if (cenaStr.trim().toLowerCase() === 'zdarma') return '0';
-  const match = cenaStr.match(/\d+/);
-  return match ? match[0] : '0';
+  const match = cenaStr.match(/\d[\d\s]*/);
+  return match ? match[0].replace(/\s/g, '') : '0';
 }
 
 const eventSchema = {
@@ -44,7 +47,9 @@ const eventSchema = {
   description: kratkyPopis,
   image: `${siteUrl}${obrazek}`,
   url: `${siteUrl}/akce/${slug}`,
-  eventStatus: 'https://schema.org/EventScheduled',
+  eventStatus: jeMinula
+    ? 'https://schema.org/EventCompleted'
+    : 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   location: {
     '@type': 'Place',
@@ -66,8 +71,10 @@ const eventSchema = {
     '@type': 'Offer',
     price: parsePrice(cena),
     priceCurrency: 'CZK',
-    availability: 'https://schema.org/InStock',
-    ...(odkazFormular ? { url: odkazFormular } : {}),
+    availability: jeMinula
+      ? 'https://schema.org/SoldOut'
+      : 'https://schema.org/InStock',
+    ...(odkazFormular && !jeMinula ? { url: odkazFormular } : {}),
   },
 };
 ---

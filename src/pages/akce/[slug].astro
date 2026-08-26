@@ -43,6 +43,7 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
 
 const dnes = new Date();
 dnes.setHours(0, 0, 0, 0);
+const jeMinula = datum < dnes;
 
 const dalsiAkce = alleAkce
   .filter((a) => a.id !== akce.id && a.data.datum >= dnes)
@@ -79,6 +80,7 @@ const breadcrumbSchema = {
   title={`${nazev} – Zahálka`}
   description={kratkyPopis}
   ogImage={obrazek}
+  ogImageAlt={altText}
   ogType="event"
   canonicalPath={`/akce/${akce.id}`}
 >
@@ -136,7 +138,7 @@ const breadcrumbSchema = {
           )}
         </dl>
 
-        {odkazFormular && (
+        {odkazFormular && !jeMinula && (
           <a
             href={odkazFormular}
             target="_blank"
@@ -148,6 +150,7 @@ const breadcrumbSchema = {
             Přihlásit se
           </a>
         )}
+        {jeMinula && <p class="stav-akce">Akce již proběhla.</p>}
       </header>
 
       <figure>
@@ -262,6 +265,16 @@ const breadcrumbSchema = {
     text-transform: uppercase;
     margin-bottom: 2rem;
     transition: background-color 0.15s;
+  }
+
+  .stav-akce {
+    display: inline-block;
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.65;
   }
 
   .tlacitko-prihlasit:hover {

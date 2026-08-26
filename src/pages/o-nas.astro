@@ -12,12 +12,14 @@ if (!oNas) {
 const { Content } = await render(oNas);
 const { nazev, metaPopis, perex, fotky = [] } = oNas.data;
 const ogImage = fotky.at(0)?.obrazek;
+const ogImageAlt = fotky.at(0)?.altText;
 ---
 
 <Zaklad
   title={`${nazev} – Zahálka`}
   description={metaPopis}
   ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
   canonicalPath="/o-nas"
 >
   <main>
