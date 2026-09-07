@@ -73,7 +73,10 @@ const nejnovejsiClanky = vsechnyClanky
             workshopech a festivalech. Otvíráme dveře na každou akci — přijďte,
             jak jste.
           </p>
-          <a href="/program" class="btn-cta">Prohlédnout program</a>
+          <nav class="hero-akce" aria-label="Hlavní odkazy">
+            <a href="/program" class="btn-cta">Prohlédnout program</a>
+            <a href="/newsletter" class="btn-cta btn-newsletter">Odebírat newsletter</a>
+          </nav>
         </div>
 
         <img
@@ -220,6 +223,8 @@ const nejnovejsiClanky = vsechnyClanky
 
   .btn-cta {
     display: inline-block;
+    width: 100%;
+    border: 1.5px solid transparent;
     background-color: var(--barva-text);
     color: var(--barva-pozadi);
     text-decoration: none;
@@ -230,12 +235,32 @@ const nejnovejsiClanky = vsechnyClanky
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    text-align: center;
     transition: background-color 0.15s;
+  }
+
+  .hero-akce {
+    display: grid;
+    width: max-content;
+    max-width: 100%;
+    gap: 0.7rem;
   }
 
   .btn-cta:hover {
     background-color: var(--barva-text-d);
     color: var(--barva-pozadi);
+  }
+
+  .btn-newsletter {
+    border-color: var(--barva-text);
+    background-color: var(--barva-pozadi);
+    color: var(--barva-text);
+  }
+
+  .btn-newsletter:hover,
+  .btn-newsletter:focus-visible {
+    background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
+    color: var(--barva-text-d);
   }
 
   /* ── Sections below hero ─────────────────────────────── */
