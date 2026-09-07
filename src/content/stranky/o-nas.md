@@ -1,10 +1,13 @@
 ---
-nazev: "O nás"
-metaPopis: "Zahálka je kulturní prostor v centru Teplic provozovaný malým týmem lidí, kteří věří, že kultura patří blízko k lidem."
-perex: "Jsme malý tým lidí z Teplic. Otevřeli jsme Zahálku, protože jsme chtěli místo, kde kultura není podívaná — ale setkání."
-fotky: []
+nazev: O nás
+metaPopis: Zahálka je kulturní prostor v centru Teplic provozovaný malým týmem
+  lidí, kteří věří, že kultura patří blízko k lidem.
+perex: Jsme malý tým lidí z Teplic. Otevřeli jsme Zahálku, protože jsme chtěli
+  místo, kde kultura není podívaná — ale setkání.
+fotky:
+  - obrazek: /obrazky/stranky/gkilogoinverse.jpeg
+    altText: logoextra
 ---
-
 ## Jak Zahálka vznikla
 
 Zahálka se otevřela na podzim 2024 v pronajatém prostoru na Benešově náměstí. Předtím jsme pořádali besedy po kavárnách a dílny po soukromých ateliérech — vždy někde jinde, vždy s pocitem, že místo nebylo úplně naše. Rozhodli jsme se to změnit.
