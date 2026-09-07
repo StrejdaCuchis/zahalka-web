@@ -10,7 +10,11 @@ if (!oNas) {
 }
 
 const { Content } = await render(oNas);
-const { nazev, metaPopis, perex, fotky = [] } = oNas.data;
+const { nazev, metaPopis, perex, fotky: vsechnyFotky = [] } = oNas.data;
+const fotky = vsechnyFotky.filter(
+  (fotka): fotka is typeof fotka & { obrazek: string; altText: string } =>
+    Boolean(fotka.obrazek && fotka.altText),
+);
 const ogImage = fotky.at(0)?.obrazek;
 const ogImageAlt = fotky.at(0)?.altText;
 ---

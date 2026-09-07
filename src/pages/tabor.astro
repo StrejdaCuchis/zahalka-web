@@ -27,8 +27,13 @@ const {
   upozorneni,
   hlavniObrazek,
   hlavniObrazekAlt,
-  fotky = [],
+  fotky: vsechnyFotky = [],
 } = tabor.data;
+
+const fotky = vsechnyFotky.filter(
+  (fotka): fotka is typeof fotka & { obrazek: string; altText: string } =>
+    Boolean(fotka.obrazek && fotka.altText),
+);
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
 const datumOdISO = datumOd.toISOString().split('T')[0];

@@ -1,0 +1,225 @@
+---
+import { getCollection, render } from 'astro:content';
+import Zaklad from '../../layouts/Zaklad.astro';
+import Newsletter from '../../components/Newsletter.astro';
+
+export async function getStaticPaths() {
+  const clanky = (await getCollection('blog')).filter((clanek) => clanek.data.publikovano);
+  return clanky.map((clanek) => ({ params: { slug: clanek.id }, props: { clanek } }));
+}
+
+const { clanek } = Astro.props;
+const { Content } = await render(clanek);
+const { nazev, datumPublikace, autor, obrazek, altText, kratkyPopis, stitky } = clanek.data;
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
+const datumISO = datumPublikace.toISOString().split('T')[0];
+const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: nazev,
+  description: kratkyPopis,
+  image: `${siteUrl}${obrazek}`,
+  datePublished: datumISO,
+  author: { '@type': 'Organization', name: autor ?? 'Zahálka' },
+  publisher: { '@type': 'Organization', name: 'Zahálka', url: siteUrl },
+  mainEntityOfPage: `${siteUrl}/blog/${clanek.id}`,
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Domů', item: `${siteUrl}/` },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` },
+    { '@type': 'ListItem', position: 3, name: nazev, item: `${siteUrl}/blog/${clanek.id}` },
+  ],
+};
+---
+
+<Zaklad
+  title={`${nazev} – Zahálka`}
+  description={kratkyPopis}
+  ogImage={obrazek}
+  ogImageAlt={altText}
+  ogType="article"
+  canonicalPath={`/blog/${clanek.id}`}
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={datumISO} />
+    {stitky.map((stitek) => <meta property="article:tag" content={stitek} />)}
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  </Fragment>
+
+  <main>
+    <nav aria-label="Drobečková navigace" class="drobeky">
+      <ol>
+        <li><a href="/">Domů</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li aria-current="page">{nazev}</li>
+      </ol>
+    </nav>
+
+    <article>
+      <header class="hlavicka-clanku">
+        {stitky.length > 0 && (
+          <ul aria-label="Témata článku">
+            {stitky.map((stitek) => <li>{stitek}</li>)}
+          </ul>
+        )}
+        <h1>{nazev}</h1>
+        <p class="perex">{kratkyPopis}</p>
+        <p class="metadata">
+          <time datetime={datumISO}>{datumFormatovany}</time>
+          {autor && <span> · {autor}</span>}
+        </p>
+      </header>
+
+      <figure class="hlavni-obrazek">
+        <img src={obrazek} alt={altText} width="1200" height="800" loading="eager" />
+      </figure>
+
+      <section class="obsah-clanku" aria-label="Obsah článku">
+        <Content />
+      </section>
+
+      <aside aria-label="Odběr newsletteru">
+        <Newsletter
+          nadpis="Ať vám další příběh neuteče"
+          text="Nové články i program posíláme přímo do e-mailu. Stručně a jen tehdy, když máme co říct."
+          kompaktni
+        />
+      </aside>
+
+      <footer class="paticka-clanku">
+        <a href="/blog">← Zpět na blog</a>
+      </footer>
+    </article>
+  </main>
+</Zaklad>
+
+<style>
+  main {
+    max-width: 76ch;
+    margin-inline: auto;
+    padding: 1.5rem 1rem 5rem;
+  }
+
+  .drobeky {
+    margin-bottom: 2rem;
+  }
+
+  .drobeky ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    list-style: none;
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+
+  .drobeky li + li::before {
+    content: '›';
+    margin-right: 0.25rem;
+  }
+
+  .drobeky a {
+    text-decoration: none;
+  }
+
+  .drobeky a:hover {
+    text-decoration: underline;
+  }
+
+  .hlavicka-clanku {
+    margin-bottom: 2rem;
+  }
+
+  .hlavicka-clanku ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+    list-style: none;
+  }
+
+  .hlavicka-clanku li {
+    padding: 0.2rem 0.65rem;
+    border-radius: 100vw;
+    background: var(--levandule-l);
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(1.9rem, 5vw, 3.2rem);
+  }
+
+  .perex {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    opacity: 0.85;
+  }
+
+  .metadata {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    opacity: 0.65;
+  }
+
+  .hlavni-obrazek {
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    border-radius: 1rem;
+  }
+
+  .hlavni-obrazek img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .obsah-clanku :global(h2) {
+    margin: 2.5rem 0 0.8rem;
+    font-size: 1.25rem;
+  }
+
+  .obsah-clanku :global(p) {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  .obsah-clanku :global(a) {
+    font-weight: 600;
+  }
+
+  aside {
+    margin-top: 3.5rem;
+  }
+
+  .paticka-clanku {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
+  }
+
+  .paticka-clanku a {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-decoration: none;
+    text-transform: uppercase;
+    opacity: 0.68;
+  }
+</style>

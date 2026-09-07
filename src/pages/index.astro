@@ -2,8 +2,11 @@
 import { getCollection } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
+import KartaClanku from '../components/KartaClanku.astro';
+import Newsletter from '../components/Newsletter.astro';
 import Blob from '../components/Blob.astro';
 const vsechnyAkce = await getCollection('akce');
+const vsechnyClanky = await getCollection('blog');
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
 
@@ -31,6 +34,11 @@ dnes.setHours(0, 0, 0, 0);
 const nejblizsiAkce = vsechnyAkce
   .filter((a) => a.data.datum >= dnes)
   .sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime())
+  .slice(0, 3);
+
+const nejnovejsiClanky = vsechnyClanky
+  .filter((clanek) => clanek.data.publikovano)
+  .sort((a, b) => b.data.datumPublikace.getTime() - a.data.datumPublikace.getTime())
   .slice(0, 3);
 ---
 
@@ -105,6 +113,24 @@ const nejblizsiAkce = vsechnyAkce
         </p>
       </section>
     )}
+
+    {nejnovejsiClanky.length > 0 && (
+      <section class="blog-vyber" aria-labelledby="blog-vyber-nadpis">
+        <div class="obal">
+          <h2 id="blog-vyber-nadpis">Čtení ze Zahálky</h2>
+          <div class="mrizka">
+            {nejnovejsiClanky.map((clanek) => (
+              <KartaClanku entry={clanek} urovenNadpisu={3} />
+            ))}
+          </div>
+          <p class="vice-link"><a href="/blog">Všechny články →</a></p>
+        </div>
+      </section>
+    )}
+
+    <aside class="newsletter-sekce" aria-label="Odběr newsletteru">
+      <Newsletter />
+    </aside>
 
   </main>
 </Zaklad>
@@ -228,6 +254,12 @@ const nejblizsiAkce = vsechnyAkce
     padding-block: 2rem 5rem;
   }
 
+  .blog-vyber {
+    position: relative;
+    padding-block: 4rem;
+    background: color-mix(in srgb, var(--levandule) 10%, transparent);
+  }
+
   h2 {
     font-size: 0.75rem;
     letter-spacing: 0.14em;
@@ -265,6 +297,12 @@ const nejblizsiAkce = vsechnyAkce
     padding: 2rem;
     text-align: center;
     opacity: 0.7;
+  }
+
+  .newsletter-sekce {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem 5rem;
   }
 
 </style>

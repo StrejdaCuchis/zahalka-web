@@ -1,0 +1,100 @@
+---
+import Zaklad from '../layouts/Zaklad.astro';
+import Newsletter from '../components/Newsletter.astro';
+import Blob from '../components/Blob.astro';
+---
+
+<Zaklad
+  title="Newsletter – Zahálka"
+  description="Přihlaste se k newsletteru Zahálky a dostávejte nový program, články a zprávy z kulturního prostoru v Teplicích."
+  canonicalPath="/newsletter"
+>
+  <main>
+    <Blob color="oranzova" position="top-left" size={430} opacity={0.5} />
+    <Blob color="levandule" position="bottom-right" size={390} opacity={0.5} />
+    <article>
+      <header>
+        <p class="znacka">Pár dobrých zpráv</p>
+        <h1>Newsletter</h1>
+        <p>
+          Chcete vědět, co se chystá, dřív než zmizí poslední místo? Přihlaste se k odběru.
+          Program, nové články a občas něco ze zákulisí pošleme přímo vám.
+        </p>
+      </header>
+
+      <Newsletter
+        nadpis="Zůstaňme v kontaktu"
+        text="Píšeme jen ve chvíli, kdy máme nový program nebo téma, které stojí za váš čas."
+      />
+
+      <section aria-labelledby="co-cekat">
+        <h2 id="co-cekat">Co můžete čekat</h2>
+        <ul>
+          <li>pozvánky na besedy, workshopy a akce pro děti,</li>
+          <li>nové články ze Zahálky a z Teplic,</li>
+          <li>včasné informace o přihláškách na tábor.</li>
+        </ul>
+        <p>Odběr lze kdykoli zrušit odkazem v patičce každého e-mailu.</p>
+      </section>
+    </article>
+  </main>
+</Zaklad>
+
+<style>
+  main {
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 2rem 5rem;
+  }
+
+  article {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  article > header {
+    max-width: 64ch;
+    margin-bottom: 2.5rem;
+  }
+
+  .znacka {
+    margin-bottom: 0.5rem;
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(2.25rem, 6vw, 4rem);
+  }
+
+  article > header > p:last-child {
+    font-size: 1.08rem;
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  article > section {
+    max-width: 62ch;
+    margin-top: 3rem;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  ul {
+    margin: 0 0 1rem 1.25rem;
+  }
+
+  li {
+    margin-bottom: 0.45rem;
+  }
+</style>

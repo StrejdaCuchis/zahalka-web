@@ -1,0 +1,206 @@
+---
+interface Props {
+  nadpis?: string;
+  text?: string;
+  kompaktni?: boolean;
+}
+
+const {
+  nadpis = 'Zahálka do e-mailu',
+  text = 'Jednou za čas pošleme nový program, čerstvý článek a zprávy ze Zahálky. Žádný e-mailový hluk.',
+  kompaktni = false,
+} = Astro.props;
+
+const mailchimpAction = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION?.trim() ?? '';
+const jeMailchimpNastaveny = /^https:\/\/[^/]+\.list-manage\.com\/subscribe\/post/i.test(mailchimpAction);
+
+let honeypotName = '';
+if (jeMailchimpNastaveny) {
+  const actionUrl = new URL(mailchimpAction);
+  const accountId = actionUrl.searchParams.get('u');
+  const audienceId = actionUrl.searchParams.get('id');
+  if (accountId && audienceId) honeypotName = `b_${accountId}_${audienceId}`;
+}
+---
+
+<section class:list={['newsletter', { kompaktni }]} aria-labelledby="newsletter-nadpis">
+  <header>
+    <p class="znacka">Newsletter</p>
+    <h2 id="newsletter-nadpis">{nadpis}</h2>
+    <p class="uvod">{text}</p>
+  </header>
+
+  {jeMailchimpNastaveny ? (
+    <form action={mailchimpAction} method="post" target="_blank" rel="noopener">
+      <p class="pole">
+        <label for="newsletter-email">Váš e-mail</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="EMAIL"
+          autocomplete="email"
+          inputmode="email"
+          placeholder="vy@email.cz"
+          required
+          aria-describedby="newsletter-souhlas"
+        />
+      </p>
+
+      {honeypotName && (
+        <p class="past" aria-hidden="true">
+          <label for="newsletter-kontrola">Nevyplňujte</label>
+          <input id="newsletter-kontrola" type="text" name={honeypotName} tabindex="-1" autocomplete="off" />
+        </p>
+      )}
+
+      <p class="souhlas" id="newsletter-souhlas">
+        Odesláním souhlasíte se zasíláním novinek Zahálky. Odběr můžete kdykoli jedním kliknutím zrušit.
+      </p>
+      <button type="submit">Chci novinky</button>
+    </form>
+  ) : (
+    <p class="nenastaveno">
+      Odběr právě propojujeme. Zatím nám můžete napsat na
+      <a href="mailto:zahalkateplice@gmail.com?subject=Chci%20odeb%C3%ADrat%20newsletter">zahalkateplice@gmail.com</a>.
+    </p>
+  )}
+</section>
+
+<style>
+  .newsletter {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: center;
+    overflow: hidden;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--oranzova) 48%, transparent) 0 18%, transparent 19%),
+      color-mix(in srgb, var(--salvej) 18%, var(--barva-pozadi));
+  }
+
+  .newsletter.kompaktni {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 2rem;
+  }
+
+  .znacka {
+    margin-bottom: 0.55rem;
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  h2 {
+    max-width: 18ch;
+    margin-bottom: 0.8rem;
+    font-size: clamp(1.45rem, 3vw, 2.25rem);
+  }
+
+  .uvod {
+    max-width: 48ch;
+    line-height: 1.65;
+    opacity: 0.85;
+  }
+
+  form {
+    position: relative;
+  }
+
+  .pole {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  input[type='email'] {
+    min-width: 0;
+    border: 1.5px solid var(--barva-text);
+    border-radius: 100vw 0 0 100vw;
+    background: var(--barva-pozadi);
+    color: var(--barva-text-d);
+    padding: 0.82rem 1rem;
+    font: inherit;
+  }
+
+  input[type='email']:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 3px solid var(--barva-akcent);
+    outline-offset: 2px;
+  }
+
+  button {
+    border: 1.5px solid var(--barva-text);
+    border-left: 0;
+    border-radius: 0 100vw 100vw 0;
+    background: var(--barva-text);
+    color: var(--barva-pozadi);
+    padding: 0.82rem 1.2rem;
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: var(--barva-text-d);
+  }
+
+  .souhlas {
+    margin-top: 0.65rem;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    opacity: 0.68;
+  }
+
+  .past {
+    position: absolute;
+    left: -5000px;
+  }
+
+  .nenastaveno {
+    max-width: 44ch;
+    line-height: 1.6;
+  }
+
+  .nenastaveno a {
+    margin-left: 0.3em;
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .newsletter {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .pole {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+
+    input[type='email'],
+    button {
+      border: 1.5px solid var(--barva-text);
+      border-radius: 100vw;
+    }
+  }
+</style>

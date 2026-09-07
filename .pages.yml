@@ -135,6 +135,77 @@ content:
           format: markdown
           media: false
 
+  - name: blog
+    label: Blog
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    filename:
+      template: '{nazev}.md'
+      field: create
+    view:
+      primary: nazev
+      fields: [nazev, datumPublikace, publikovano]
+      sort: [datumPublikace, nazev]
+      search: [nazev, kratkyPopis, autor, stitky]
+      default:
+        sort: datumPublikace
+        order: desc
+    fields:
+      - name: nazev
+        label: Název článku
+        type: string
+        required: true
+      - name: datumPublikace
+        label: Datum publikace
+        type: date
+        required: true
+        options:
+          time: false
+          format: yyyy-MM-dd
+      - name: autor
+        label: Autor
+        type: string
+        description: Když zůstane prázdný, jako autor se uvede Zahálka.
+      - name: obrazek
+        label: Hlavní obrázek
+        type: image
+        required: true
+        options:
+          media: obrazky
+          path: public/obrazky/blog
+      - name: altText
+        label: Popis obrázku pro nevidomé
+        type: text
+        required: true
+        description: Stručně popište, co je na obrázku důležité.
+      - name: kratkyPopis
+        label: Krátký popis
+        type: text
+        required: true
+        description: Jedna až dvě věty pro výpis blogu, Google a sdílení, ideálně kolem 150 znaků.
+        options:
+          maxlength: 220
+      - name: stitky
+        label: Témata
+        type: string
+        list: true
+        description: Například „Děti a město“ nebo „Ze Zahálky“.
+      - name: publikovano
+        label: Publikováno
+        type: boolean
+        required: true
+        default: true
+        description: Vypněte, pokud chcete článek zatím uložit jako koncept.
+      - name: body
+        label: Text článku
+        type: rich-text
+        required: true
+        description: Delší text rozdělte mezititulky druhé úrovně.
+        options:
+          format: markdown
+          media: obrazky
+
   - name: tabor
     label: Tábor
     type: file
