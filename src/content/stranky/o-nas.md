@@ -5,8 +5,7 @@ metaPopis: Zahálka je kulturní prostor v centru Teplic provozovaný malým tý
 perex: Jsme malý tým lidí z Teplic. Otevřeli jsme Zahálku, protože jsme chtěli
   místo, kde kultura není podívaná — ale setkání.
 fotky:
-  - obrazek: /obrazky/stranky/gkilogoinverse.jpeg
-    altText: logoextra
+  - {}
 ---
 ## Jak Zahálka vznikla
 
