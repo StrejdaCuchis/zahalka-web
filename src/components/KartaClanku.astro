@@ -64,15 +64,16 @@ const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
   }
 
   figure {
-    aspect-ratio: 4 / 5;
+    margin: 0;
+    flex: none;
     overflow: hidden;
     background: var(--barva-pozadi);
   }
 
   img {
+    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;
   }
 
   header {

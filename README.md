@@ -33,6 +33,8 @@ Po uložení změny Pages CMS zapíše nový obsah do GitHubu. Připojený hosti
 
 Náhledový obrázek akce nebo článku připravujte v rozměru **1080 × 1350 px
 (4:5)**, jako celý plakát bez ořezu. Ideální je WebP přibližně do 250–350 kB.
+Karty zachovávají skutečný poměr obrázku: starší podklady na šířku se zobrazí
+bez ořezu i bez doplňovaných prázdných pásů, text navazuje přímo pod obrázkem.
 
 ## Propojení newsletteru s Mailchimpem
 
