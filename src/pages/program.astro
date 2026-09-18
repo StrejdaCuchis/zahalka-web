@@ -12,10 +12,6 @@ const nadchazejici = vsechnyAkce
   .filter((a) => a.data.datum >= dnes)
   .sort((a, b) => a.data.datum.getTime() - b.data.datum.getTime());
 
-const minule = vsechnyAkce
-  .filter((a) => a.data.datum < dnes)
-  .sort((a, b) => b.data.datum.getTime() - a.data.datum.getTime())
-  .slice(0, 5);
 ---
 
 <Zaklad
@@ -53,25 +49,6 @@ const minule = vsechnyAkce
         <p class="zadne-akce">Momentálně neplánujeme žádné akce. Sledujte nás na Instagramu.</p>
       )}
 
-      {minule.length > 0 && (
-        <section class="minule" aria-label="Proběhlé akce">
-          <h2>Proběhlo u nás</h2>
-          <ul class="minule-seznam">
-            {minule.map((akce) => (
-              <li data-typ={akce.data.typ}>
-                <article>
-                  <a href={`/akce/${akce.id}`}>
-                    <span class="minula-nazev">{akce.data.nazev}</span>
-                    <time datetime={akce.data.datum.toISOString().split('T')[0]} class="minula-datum">
-                      {akce.data.datum.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    </time>
-                  </a>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
     </div>
   </main>
 </Zaklad>
@@ -164,48 +141,4 @@ const minule = vsechnyAkce
     font-style: italic;
   }
 
-  .minule {
-    border-top: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
-    padding-top: 2.5rem;
-  }
-
-  .minule-seznam {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .minule-seznam li {
-    border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 10%, transparent);
-  }
-
-  .minule-seznam a {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.75rem 0;
-    text-decoration: none;
-    opacity: 0.7;
-    transition: opacity 0.15s;
-  }
-
-  .minule-seznam a:hover {
-    opacity: 1;
-  }
-
-  .minula-nazev {
-    font-family: var(--pismo-nadpisy);
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .minula-datum {
-    font-size: 0.8rem;
-    opacity: 0.75;
-  }
 </style>

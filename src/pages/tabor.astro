@@ -2,6 +2,9 @@
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import Blob from '../components/Blob.astro';
+import { kontakty } from '../data/kontakty';
+import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
+import { ceskaTypografie } from '../utils/typografie';
 
 const [tabor] = await getCollection('tabor');
 
@@ -36,11 +39,49 @@ const fotky = vsechnyFotky.filter(
 );
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
-const datumOdISO = datumOd.toISOString().split('T')[0];
-const datumDoISO = datumDo.toISOString().split('T')[0];
-const lzeSePrihlasit = prihlaseniAktivni && Boolean(odkazFormular);
+const jePlatneDatum = (hodnota: unknown): hodnota is Date =>
+  hodnota instanceof Date && !Number.isNaN(hodnota.getTime());
+const jePlatnaUrl = (hodnota: string | undefined) => {
+  if (!hodnota) return false;
+  try {
+    const url = new URL(hodnota);
+    return url.protocol === 'https:' || url.protocol === 'http:';
+  } catch {
+    return false;
+  }
+};
 
-const campSchema = {
+const datumyJsouPlatne = jePlatneDatum(datumOd)
+  && jePlatneDatum(datumDo)
+  && datumOd <= datumDo;
+const dnes = new Date();
+dnes.setHours(0, 0, 0, 0);
+const maKompletniTermin = datumyJsouPlatne
+  && datumDo >= dnes
+  && Boolean(datumText && vek && cena && kapacita)
+  && typeof cenaCiselne === 'number'
+  && Number.isFinite(cenaCiselne);
+
+if (prihlaseniAktivni && (!maKompletniTermin || !jePlatnaUrl(odkazFormular))) {
+  throw new Error(
+    'Přihlášky na příměšťák jsou aktivní, ale chybí platný budoucí termín, text data, věk, cena, číselná cena, kapacita nebo platný odkaz na formulář.',
+  );
+}
+
+const datumOdISO = datumyJsouPlatne ? datumOd.toISOString().split('T')[0] : undefined;
+const datumDoISO = datumyJsouPlatne ? datumDo.toISOString().split('T')[0] : undefined;
+const lzeSePrihlasit = prihlaseniAktivni && maKompletniTermin && jePlatnaUrl(odkazFormular);
+const rozmeryHlavnihoObrazku = hlavniObrazek
+  ? await rozmeryVerejnehoObrazku(hlavniObrazek)
+  : undefined;
+const fotkySRozmery = await Promise.all(
+  fotky.map(async (fotka) => ({
+    ...fotka,
+    rozmery: await rozmeryVerejnehoObrazku(fotka.obrazek),
+  })),
+);
+
+const campSchema = maKompletniTermin ? {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: nazev,
@@ -53,42 +94,42 @@ const campSchema = {
   image: hlavniObrazek ? `${siteUrl}${hlavniObrazek}` : `${siteUrl}/og-default.png`,
   organizer: {
     '@type': 'Organization',
-    name: 'Zahálka',
+    name: kontakty.nazev,
+    legalName: kontakty.pravniNazev,
+    email: kontakty.email,
     url: siteUrl,
   },
   location: {
     '@type': 'Place',
-    name: 'Zahálka – kulturní prostor',
+    name: kontakty.prostor.nazev,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Benešovo nám. 3282',
-      addressLocality: 'Teplice',
-      postalCode: '415 01',
-      addressCountry: 'CZ',
+      streetAddress: kontakty.prostor.ulice,
+      addressLocality: kontakty.prostor.mesto,
+      postalCode: kontakty.prostor.psc,
+      addressCountry: kontakty.prostor.zeme,
     },
   },
   offers: {
     '@type': 'Offer',
     price: cenaCiselne?.toString(),
     priceCurrency: 'CZK',
-    availability: lzeSePrihlasit
-      ? 'https://schema.org/InStock'
-      : 'https://schema.org/SoldOut',
+    ...(lzeSePrihlasit ? { availability: 'https://schema.org/InStock' } : {}),
     ...(odkazFormular ? { url: odkazFormular } : {}),
   },
-};
+} : undefined;
 ---
 
 <Zaklad
-  title={`${nazev} – Zahálka Teplice`}
+  title="Příměšťák – Zahálka Teplice"
   description={metaPopis}
   ogImage={hlavniObrazek}
   ogImageAlt={hlavniObrazekAlt}
-  ogType="event"
+  ogType={campSchema ? 'event' : 'website'}
   canonicalPath="/tabor"
 >
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify(campSchema)} />
+    {campSchema && <script type="application/ld+json" set:html={JSON.stringify(campSchema)} />}
   </Fragment>
 
   <main>
@@ -97,28 +138,23 @@ const campSchema = {
       <Blob color="oranzova" position="bottom-left" size={400} opacity={0.55} />
 
       <header class="hero-obsah">
-        <p class="znacka">{znacka}</p>
-        <h1>{nazev}</h1>
-        <p class="hero-perex">{perex} Pro děti {vek}.</p>
+        <p class="znacka">{ceskaTypografie(znacka)}</p>
+        <h1>{ceskaTypografie(nazev)}</h1>
+        <p class="hero-perex">{ceskaTypografie(perex)}</p>
 
-        <dl class="klic-fakta">
-          <div class="fakt">
-            <dt>Kdy</dt>
-            <dd><time datetime={datumOdISO}>{datumText}</time></dd>
-          </div>
-          <div class="fakt">
-            <dt>Věk</dt>
-            <dd>{vek}</dd>
-          </div>
-          <div class="fakt">
-            <dt>Cena</dt>
-            <dd>{cena}</dd>
-          </div>
-          <div class="fakt">
-            <dt>Kapacita</dt>
-            <dd>{kapacita}</dd>
-          </div>
-        </dl>
+        {(datumText || vek || cena || kapacita) && (
+          <dl class="klic-fakta">
+            {datumText && datumOdISO && (
+              <div class="fakt">
+                <dt>Kdy</dt>
+                <dd><time datetime={datumOdISO}>{ceskaTypografie(datumText)}</time></dd>
+              </div>
+            )}
+            {vek && <div class="fakt"><dt>Věk</dt><dd>{ceskaTypografie(vek)}</dd></div>}
+            {cena && <div class="fakt"><dt>Cena</dt><dd>{ceskaTypografie(cena)}</dd></div>}
+            {kapacita && <div class="fakt"><dt>Kapacita</dt><dd>{ceskaTypografie(kapacita)}</dd></div>}
+          </dl>
+        )}
 
         {lzeSePrihlasit && (
           <a
@@ -132,7 +168,6 @@ const campSchema = {
             Přihlásit dítě →
           </a>
         )}
-        {upozorneni && <p class="hero-upozorneni">{upozorneni}</p>}
       </header>
     </section>
 
@@ -141,8 +176,8 @@ const campSchema = {
         <img
           src={hlavniObrazek}
           alt={hlavniObrazekAlt ?? ''}
-          width="1200"
-          height="800"
+          width={rozmeryHlavnihoObrazku?.width}
+          height={rozmeryHlavnihoObrazku?.height}
           loading="eager"
         />
       </figure>
@@ -152,18 +187,25 @@ const campSchema = {
       <Content />
     </article>
 
-    {fotky.length > 0 && (
+    {!lzeSePrihlasit && upozorneni && (
+      <aside class="priprava" aria-label="Nové termíny příměstských táborů">
+        <strong>{ceskaTypografie(upozorneni)}</strong>
+        <a href="/newsletter" class="btn-prihlasit">Chci vědět o nových termínech</a>
+      </aside>
+    )}
+
+    {fotkySRozmery.length > 0 && (
       <section class="fotogalerie" aria-labelledby="fotogalerie-tabor">
         <h2 id="fotogalerie-tabor">Fotogalerie</h2>
         <ul>
-          {fotky.map((fotka) => (
+          {fotkySRozmery.map((fotka) => (
             <li>
               <figure>
                 <img
                   src={fotka.obrazek}
                   alt={fotka.altText}
-                  width="1200"
-                  height="800"
+                  width={fotka.rozmery.width}
+                  height={fotka.rozmery.height}
                   loading="lazy"
                 />
                 {fotka.popisek && <figcaption>{fotka.popisek}</figcaption>}
@@ -189,7 +231,7 @@ const campSchema = {
           Přihlásit dítě →
         </a>
         <p class="cta-kontakt">
-          Dotazy? Pište na <a href="mailto:zahalkateplice@gmail.com">zahalkateplice@gmail.com</a>
+          Dotazy? Pište na <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>
         </p>
       </section>
     )}
@@ -290,10 +332,22 @@ const campSchema = {
     color: var(--barva-pozadi);
   }
 
-  .hero-upozorneni {
-    font-size: 0.82rem;
-    opacity: 0.65;
-    margin-top: 0.75rem;
+  .priprava {
+    display: grid;
+    justify-items: start;
+    gap: 1.5rem;
+    width: min(820px, calc(100% - 4rem));
+    margin: 0 auto 5rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--oranzova) 24%, var(--barva-pozadi));
+  }
+
+  .priprava strong {
+    max-width: 45ch;
+    font-family: var(--pismo-nadpisy);
+    font-size: clamp(1.1rem, 3vw, 1.55rem);
+    line-height: 1.35;
   }
 
   .hlavni-fotka,

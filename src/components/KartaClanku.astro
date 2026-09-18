@@ -1,5 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
+import { ceskaTypografie } from '../utils/typografie';
 
 interface Props {
   entry: CollectionEntry<'blog'>;
@@ -9,6 +11,7 @@ interface Props {
 const { entry, urovenNadpisu = 2 } = Astro.props;
 const { nazev, datumPublikace, obrazek, altText, kratkyPopis, stitky } = entry.data;
 const Nadpis = `h${urovenNadpisu}` as 'h2' | 'h3';
+const rozmery = await rozmeryVerejnehoObrazku(obrazek);
 const datumISO = datumPublikace.toISOString().split('T')[0];
 const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
   day: 'numeric',
@@ -20,13 +23,13 @@ const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
 <article class="karta-clanku">
   <a href={`/blog/${entry.id}`}>
     <figure>
-      <img src={obrazek} alt={altText} width="600" height="400" loading="lazy" />
+      <img src={obrazek} alt={altText} width={rozmery.width} height={rozmery.height} loading="lazy" />
     </figure>
     <header>
       {stitky[0] && <p class="stitek">{stitky[0]}</p>}
-      <Nadpis>{nazev}</Nadpis>
+      <Nadpis>{ceskaTypografie(nazev)}</Nadpis>
       <time datetime={datumISO}>{datumFormatovany}</time>
-      <p class="popis">{kratkyPopis}</p>
+      <p class="popis">{ceskaTypografie(kratkyPopis)}</p>
       <span class="vice" aria-hidden="true">Číst článek →</span>
     </header>
   </a>
@@ -61,20 +64,15 @@ const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
   }
 
   figure {
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
-    background: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
+    background: var(--barva-pozadi);
   }
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-  }
-
-  .karta-clanku:hover img {
-    transform: scale(1.03);
+    object-fit: contain;
   }
 
   header {

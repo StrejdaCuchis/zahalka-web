@@ -1,6 +1,8 @@
 ---
 import '../styly/global.css';
 import Analytika from '../components/Analytika.astro';
+import { kontakty } from '../data/kontakty';
+import { ceskaTypografie } from '../utils/typografie';
 
 interface Props {
   title: string;
@@ -28,6 +30,9 @@ const ogImageUrl = ogImage
   ? `${siteUrl}${ogImage}`
   : `${siteUrl}/og-default.png`;
 const pouzivaVychoziOg = !ogImage;
+const typografickyTitle = ceskaTypografie(title);
+const typografickyDescription = ceskaTypografie(description);
+const typografickyOgAlt = ceskaTypografie(ogImageAlt);
 ---
 
 <!doctype html>
@@ -41,27 +46,27 @@ const pouzivaVychoziOg = !ogImage;
     <link rel="icon" type="image/x-icon" href="/favicon-zahalka.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title>{typografickyTitle}</title>
+    <meta name="description" content={typografickyDescription} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonicalUrl} />
 
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={typografickyTitle} />
+    <meta property="og:description" content={typografickyDescription} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:alt" content={typografickyOgAlt} />
     {pouzivaVychoziOg && <meta property="og:image:width" content="1200" />}
     {pouzivaVychoziOg && <meta property="og:image:height" content="630" />}
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="cs_CZ" />
-    <meta property="og:site_name" content="Zahálka" />
+    <meta property="og:site_name" content={kontakty.nazev} />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={typografickyTitle} />
+    <meta name="twitter:description" content={typografickyDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <meta name="twitter:image:alt" content={typografickyOgAlt} />
 
     <slot name="head" />
     <!-- JS-mode flag: set before first paint to prevent mobile nav flash -->
@@ -91,7 +96,7 @@ const pouzivaVychoziOg = !ogImage;
       <nav id="hlavni-nav" aria-label="Hlavní navigace">
         <a href="/">Domů</a>
         <a href="/program">Program</a>
-        <a href="/tabor">Tábor</a>
+        <a href="/tabor">Příměšťák</a>
         <a href="/blog">Blog</a>
         <a href="/o-nas">O nás</a>
         <a href="/kontakt">Kontakt</a>
@@ -145,7 +150,7 @@ const pouzivaVychoziOg = !ogImage;
 
     <footer>
       <div class="paticka-obsah">
-        <p class="paticka-nazev">Zahálka – kulturní prostor</p>
+        <p class="paticka-nazev">ZAHÁLKA • KULTURNÍ PROSTOR</p>
         <address>Benešovo nám. 3282, 415 01 Teplice</address>
         <a href="/cookies" class="paticka-cookies">Cookies</a>
         <p class="paticka-autor">
@@ -314,7 +319,9 @@ const pouzivaVychoziOg = !ogImage;
     opacity: 1;
   }
 
-  @media (max-width: 1100px) {
+  /* Delší české texty i zvětšení písma potřebují dvouřádkovou patičku
+     dřív, než by se pět sloupců začalo vodorovně přelévat. */
+  @media (max-width: 1500px) {
     .paticka-obsah {
       grid-template-columns: 1fr auto;
       grid-template-areas:

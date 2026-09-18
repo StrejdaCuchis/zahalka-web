@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import Newsletter from '../../components/Newsletter.astro';
+import { rozmeryVerejnehoObrazku } from '../../utils/obrazky';
+import { ceskaTypografie } from '../../utils/typografie';
 
 export async function getStaticPaths() {
   const clanky = (await getCollection('blog')).filter((clanek) => clanek.data.publikovano);
@@ -18,6 +20,7 @@ const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
   month: 'long',
   year: 'numeric',
 });
+const rozmeryObrazku = await rozmeryVerejnehoObrazku(obrazek);
 
 const articleSchema = {
   '@context': 'https://schema.org',
@@ -73,8 +76,8 @@ const breadcrumbSchema = {
             {stitky.map((stitek) => <li>{stitek}</li>)}
           </ul>
         )}
-        <h1>{nazev}</h1>
-        <p class="perex">{kratkyPopis}</p>
+        <h1>{ceskaTypografie(nazev)}</h1>
+        <p class="perex">{ceskaTypografie(kratkyPopis)}</p>
         <p class="metadata">
           <time datetime={datumISO}>{datumFormatovany}</time>
           {autor && <span> · {autor}</span>}
@@ -82,7 +85,13 @@ const breadcrumbSchema = {
       </header>
 
       <figure class="hlavni-obrazek">
-        <img src={obrazek} alt={altText} width="1200" height="800" loading="eager" />
+        <img
+          src={obrazek}
+          alt={altText}
+          width={rozmeryObrazku.width}
+          height={rozmeryObrazku.height}
+          loading="eager"
+        />
       </figure>
 
       <section class="obsah-clanku" aria-label="Obsah článku">
@@ -185,8 +194,7 @@ const breadcrumbSchema = {
 
   .hlavni-obrazek img {
     width: 100%;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
+    height: auto;
   }
 
   .obsah-clanku :global(h2) {

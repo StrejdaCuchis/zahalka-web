@@ -1,6 +1,7 @@
 ---
 import Zaklad from '../layouts/Zaklad.astro';
 import Blob from '../components/Blob.astro';
+import { kontakty, schemaOrganizace } from '../data/kontakty';
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
 
@@ -10,29 +11,14 @@ const mapaEmbedUrl = `https://www.google.com/maps?q=${mapaLat},${mapaLon}&z=17&o
 const mapaOdkazUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Zahálka, Benešovo náměstí 3282, 415 01 Teplice')}`;
 
 const organizationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Zahálka',
-  url: siteUrl,
-  email: 'zahalkateplice@gmail.com',
-  telephone: '+420721258386',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Benešovo nám. 3282',
-    addressLocality: 'Teplice',
-    postalCode: '415 01',
-    addressCountry: 'CZ',
-  },
-  sameAs: [
-    'https://www.instagram.com/zahalkateplice/',
-    'https://www.facebook.com/zahalkateplice',
-  ],
+  ...schemaOrganizace(siteUrl),
+  telephone: kontakty.telefony.map((telefon) => telefon.odkaz.replace('tel:', '')),
 };
 ---
 
 <Zaklad
   title="Kontakt – Zahálka"
-  description="Kde nás najdete: Zahálka sídlí na Benešově náměstí 3282 v Teplicích. Pište na zahalkateplice@gmail.com nebo sledujte @zahalkateplice."
+  description={`Kde nás najdete: Zahálka je na Benešově náměstí 3282 v Teplicích. Pište na ${kontakty.email} nebo sledujte @zahalkateplice.`}
   canonicalPath="/kontakt"
 >
   <Fragment slot="head">
@@ -46,60 +32,66 @@ const organizationSchema = {
     <div class="obal">
       <h1>Kontakt</h1>
 
-      <div class="grid">
+      <section class="grid" aria-label="Adresa a spojení">
         <section class="adresa-sekce">
           <h2>Kde nás najdete</h2>
           <address>
-            <p class="nazev-mista">Zahálka – kulturní prostor</p>
-            <p>Benešovo nám. 3282</p>
-            <p>415 01 Teplice</p>
+            <p class="nazev-mista">{kontakty.prostor.nazev}</p>
+            <p>{kontakty.prostor.ulice}</p>
+            <p>{kontakty.prostor.psc} {kontakty.prostor.mesto}</p>
           </address>
           <p class="otev-info">
-            Prostor se otvírá pouze na akce. Nejdříve se podívejte na
-            <a href="/program">program</a> a přijďte na to, co vás zaujme.
+            Máme otevřeno pouze na akce. Mrkněte se na <a href="/program">program</a>.
           </p>
         </section>
 
         <section class="spojeni-sekce">
           <h2>Spojte se s námi</h2>
 
-          <div class="kontakt-polozka">
-            <span class="kontakt-typ">E-mail</span>
-            <a href="mailto:zahalkateplice@gmail.com" class="kontakt-hodnota">
-              zahalkateplice@gmail.com
-            </a>
-          </div>
+          <dl class="kontakty-seznam">
+            <div class="kontakt-polozka">
+              <dt>E-mail</dt>
+              <dd><a href={`mailto:${kontakty.email}`} class="kontakt-hodnota">{kontakty.email}</a></dd>
+            </div>
 
-          <div class="kontakt-polozka">
-            <span class="kontakt-typ">Telefon</span>
-            <a href="tel:+420721258386" class="kontakt-hodnota">721 258 386</a>
-          </div>
+            {kontakty.telefony.map((telefon) => (
+              <div class="kontakt-polozka">
+                <dt>{telefon.jmeno}</dt>
+                <dd><a href={telefon.odkaz} class="kontakt-hodnota telefon">{telefon.zobrazene}</a></dd>
+              </div>
+            ))}
 
-          <div class="kontakt-polozka">
-            <span class="kontakt-typ">Instagram</span>
-            <a
-              href="https://www.instagram.com/zahalkateplice/"
-              target="_blank"
-              rel="noopener"
-              class="kontakt-hodnota"
-            >
-              @zahalkateplice
-            </a>
-          </div>
+            <div class="kontakt-polozka">
+              <dt>Instagram</dt>
+              <dd>
+                <a href={kontakty.instagram} target="_blank" rel="noopener" class="kontakt-hodnota">
+                  @zahalkateplice
+                </a>
+              </dd>
+            </div>
 
-          <div class="kontakt-polozka">
-            <span class="kontakt-typ">Facebook</span>
-            <a
-              href="https://www.facebook.com/zahalkateplice"
-              target="_blank"
-              rel="noopener"
-              class="kontakt-hodnota"
-            >
-              Zahálka Teplice
-            </a>
-          </div>
+            <div class="kontakt-polozka">
+              <dt>Facebook</dt>
+              <dd>
+                <a href={kontakty.facebook} target="_blank" rel="noopener" class="kontakt-hodnota">
+                  Zahálka • kulturní prostor
+                </a>
+              </dd>
+            </div>
+          </dl>
         </section>
-      </div>
+      </section>
+
+      <section class="provozovatel" aria-labelledby="provozovatel-nadpis">
+        <h2 id="provozovatel-nadpis">Provozovatel</h2>
+        <address>
+          <strong>{kontakty.pravniNazev}</strong><br />
+          {kontakty.sidlo.ulice}<br />
+          {kontakty.sidlo.psc} {kontakty.sidlo.mesto}<br />
+          IČO {kontakty.ico}<br />
+          datová schránka {kontakty.datovaSchranka}
+        </address>
+      </section>
 
       <section class="mapa-sekce" aria-label="Mapa polohy">
         <h2>Jak se k nám dostat</h2>
@@ -223,7 +215,7 @@ const organizationSchema = {
     border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
   }
 
-  .kontakt-typ {
+  .kontakt-polozka dt {
     font-family: var(--pismo-nadpisy);
     font-size: 0.65rem;
     font-weight: 700;
@@ -236,6 +228,16 @@ const organizationSchema = {
     font-size: 1rem;
     text-decoration: none;
     transition: opacity 0.15s;
+  }
+
+  .telefon {
+    white-space: nowrap;
+  }
+
+  .provozovatel {
+    margin-bottom: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
   }
 
   .kontakt-hodnota:hover {

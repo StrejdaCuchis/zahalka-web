@@ -1,4 +1,7 @@
 ---
+import { kontakty } from '../data/kontakty';
+import { ceskaTypografie } from '../utils/typografie';
+
 interface Props {
   nadpis?: string;
   text?: string;
@@ -13,6 +16,8 @@ const {
 
 const mailchimpAction = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION?.trim() ?? '';
 const jeMailchimpNastaveny = /^https:\/\/[^/]+\.list-manage\.com\/subscribe\/post/i.test(mailchimpAction);
+const jeVychoziNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zahálka do e-mailu';
+const jeKontaktniNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zůstaňme v kontaktu';
 
 let honeypotName = '';
 if (jeMailchimpNastaveny) {
@@ -26,8 +31,16 @@ if (jeMailchimpNastaveny) {
 <section class:list={['newsletter', { kompaktni }]} aria-labelledby="newsletter-nadpis">
   <header>
     <p class="znacka">Newsletter</p>
-    <h2 id="newsletter-nadpis">{nadpis}</h2>
-    <p class="uvod">{text}</p>
+    <h2 id="newsletter-nadpis">
+      {jeVychoziNadpis ? (
+        <><span class="nadpis-cast">Zahálka</span>{' '}<span class="nezalomit">do e-mailu</span></>
+      ) : jeKontaktniNadpis ? (
+        <><span class="nadpis-cast">Zůstaňme</span>{' '}<span class="nezalomit">v kontaktu</span></>
+      ) : (
+        ceskaTypografie(nadpis)
+      )}
+    </h2>
+    <p class="uvod">{ceskaTypografie(text)}</p>
   </header>
 
   {jeMailchimpNastaveny ? (
@@ -61,7 +74,7 @@ if (jeMailchimpNastaveny) {
   ) : (
     <p class="nenastaveno">
       Odběr právě propojujeme. Zatím nám můžete napsat na
-      <a href="mailto:zahalkateplice@gmail.com?subject=Chci%20odeb%C3%ADrat%20newsletter">zahalkateplice@gmail.com</a>.
+      <a href={`mailto:${kontakty.email}?subject=Chci%20odeb%C3%ADrat%20newsletter`}>{kontakty.email}</a>.
     </p>
   )}
 </section>
@@ -98,9 +111,12 @@ if (jeMailchimpNastaveny) {
   }
 
   h2 {
-    max-width: 18ch;
     margin-bottom: 0.8rem;
-    font-size: clamp(1.45rem, 3vw, 2.25rem);
+    font-size: clamp(1.25rem, 2.6vw, 2.15rem);
+  }
+
+  .nezalomit {
+    white-space: nowrap;
   }
 
   .uvod {
@@ -192,6 +208,10 @@ if (jeMailchimpNastaveny) {
   }
 
   @media (max-width: 440px) {
+    .nadpis-cast {
+      display: block;
+    }
+
     .pole {
       grid-template-columns: 1fr;
       gap: 0.6rem;

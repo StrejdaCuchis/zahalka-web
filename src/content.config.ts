@@ -10,6 +10,16 @@ const fotografie = z.object({
   popisek: z.string().optional(),
 });
 
+const volitelneDatum = z.preprocess(
+  (hodnota) => (hodnota === '' || hodnota === null ? undefined : hodnota),
+  z.coerce.date().optional(),
+);
+
+const volitelnyText = z.preprocess(
+  (hodnota) => (hodnota === '' || hodnota === null ? undefined : hodnota),
+  z.string().optional(),
+);
+
 const akce = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/akce' }),
   schema: z.object({
@@ -48,13 +58,13 @@ const tabor = defineCollection({
     metaPopis: z.string(),
     znacka: z.string(),
     perex: z.string(),
-    datumOd: z.coerce.date(),
-    datumDo: z.coerce.date(),
-    datumText: z.string(),
-    vek: z.string(),
-    cena: z.string(),
+    datumOd: volitelneDatum,
+    datumDo: volitelneDatum,
+    datumText: volitelnyText,
+    vek: volitelnyText,
+    cena: volitelnyText,
     cenaCiselne: z.number().optional(),
-    kapacita: z.string(),
+    kapacita: volitelnyText,
     odkazFormular: z.string().optional(),
     prihlaseniAktivni: z.boolean(),
     upozorneni: z.string().optional(),
@@ -69,8 +79,7 @@ const oNas = defineCollection({
   schema: z.object({
     nazev: z.string(),
     metaPopis: z.string(),
-    perex: z.string(),
-    fotky: z.array(fotografie).optional(),
+    perex: z.string().optional(),
   }),
 });
 

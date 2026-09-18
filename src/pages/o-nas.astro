@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import Blob from '../components/Blob.astro';
+import { kontakty } from '../data/kontakty';
+import { ceskaTypografie } from '../utils/typografie';
 
 const [oNas] = await getCollection('oNas');
 
@@ -10,17 +12,13 @@ if (!oNas) {
 }
 
 const { Content } = await render(oNas);
-const { nazev, metaPopis, perex, fotky: vsechnyFotky = [] } = oNas.data;
-const fotky = vsechnyFotky.filter(
-  (fotka): fotka is typeof fotka & { obrazek: string; altText: string } =>
-    Boolean(fotka.obrazek && fotka.altText),
-);
-const ogImage = fotky.at(0)?.obrazek;
-const ogImageAlt = fotky.at(0)?.altText;
+const { nazev, metaPopis, perex } = oNas.data;
+const ogImage = '/obrazky/stranky/o-nas-01.webp';
+const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v Teplicích';
 ---
 
 <Zaklad
-  title={`${nazev} – Zahálka`}
+  title="O nás – Zahálka • kulturní prostor"
   description={metaPopis}
   ogImage={ogImage}
   ogImageAlt={ogImageAlt}
@@ -32,35 +30,19 @@ const ogImageAlt = fotky.at(0)?.altText;
 
     <article>
       <header class="uvod">
-        <h1>{nazev}</h1>
-        <p class="perex">{perex}</p>
+        <h1>{ceskaTypografie(nazev)}</h1>
+        {perex && <p class="perex">{ceskaTypografie(perex)}</p>}
       </header>
 
       <section class="obsah" aria-label="Příběh Zahálky">
         <Content />
       </section>
 
-      {fotky.length > 0 && (
-        <section class="fotogalerie" aria-labelledby="fotogalerie-o-nas">
-          <h2 id="fotogalerie-o-nas">Fotogalerie</h2>
-          <ul>
-            {fotky.map((fotka) => (
-              <li>
-                <figure>
-                  <img
-                    src={fotka.obrazek}
-                    alt={fotka.altText}
-                    width="1200"
-                    height="800"
-                    loading="lazy"
-                  />
-                  {fotka.popisek && <figcaption>{fotka.popisek}</figcaption>}
-                </figure>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <nav class="souvisejici" aria-label="Související odkazy">
+        <a href="/program">Prohlédnout program</a>
+        <a href="/kontakt">Kontakt</a>
+        <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>
+      </nav>
     </article>
   </main>
 </Zaklad>
@@ -75,12 +57,14 @@ const ogImageAlt = fotky.at(0)?.altText;
   article {
     position: relative;
     z-index: 1;
-    max-width: 72ch;
+    max-width: 1100px;
     margin-inline: auto;
     padding-inline: 2rem;
   }
 
   .uvod {
+    max-width: 72ch;
+    margin-inline: auto;
     margin-bottom: 3rem;
   }
 
@@ -97,8 +81,11 @@ const ogImageAlt = fotky.at(0)?.altText;
   }
 
   .obsah :global(h2) {
+    max-width: 72ch;
+    margin-inline: auto;
     font-size: 1.1rem;
-    margin: 3.5rem 0 1rem;
+    margin-top: 3.5rem;
+    margin-bottom: 1rem;
   }
 
   .obsah :global(h2:first-child) {
@@ -106,6 +93,8 @@ const ogImageAlt = fotky.at(0)?.altText;
   }
 
   .obsah :global(p) {
+    max-width: 72ch;
+    margin-inline: auto;
     margin-bottom: 1rem;
     line-height: 1.7;
   }
@@ -115,39 +104,60 @@ const ogImageAlt = fotky.at(0)?.altText;
     text-underline-offset: 3px;
   }
 
-  .fotogalerie {
-    margin-top: 4rem;
-  }
-
-  .fotogalerie h2 {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-  }
-
-  .fotogalerie ul {
-    list-style: none;
+  .obsah :global(.foto-skupina) {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
+    width: 100%;
+    margin-block: 2.5rem 1rem;
   }
 
-  figure {
+  .obsah :global(.foto-skupina[data-pocet='2']) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .obsah :global(.foto-skupina[data-pocet='3']) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .obsah :global(.foto-skupina[data-pocet='1']) {
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
+  .obsah :global(.foto-v-clanku) {
     border-radius: 0.75rem;
     overflow: hidden;
     background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
   }
 
-  figure img {
+  .obsah :global(.foto-v-clanku img) {
     width: 100%;
     height: auto;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
     display: block;
   }
 
-  figcaption {
-    font-size: 0.85rem;
-    font-style: italic;
-    opacity: 0.65;
-    padding: 0.5rem 0.75rem;
+  .souvisejici {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    max-width: 72ch;
+    margin: 3rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
+  }
+
+  .souvisejici a {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 700px) {
+    .obsah :global(.foto-skupina[data-pocet]) {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

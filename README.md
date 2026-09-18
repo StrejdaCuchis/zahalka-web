@@ -9,8 +9,8 @@ Administrace umožňuje upravovat:
 - akce a jejich detailní texty,
 - blogové články včetně titulního obrázku, témat a stavu publikování,
 - obrázky akcí a stránek,
-- obsah stránky Tábor včetně stavu přihlašování,
-- obsah a fotogalerii stránky O nás.
+- obsah stránky Příměšťák včetně stavu přihlašování,
+- obsah a fotografie stránky O nás.
 
 ### První připojení
 
@@ -27,9 +27,12 @@ Po uložení změny Pages CMS zapíše nový obsah do GitHubu. Připojený hosti
 
 - `src/content/akce/` — jednotlivé akce
 - `src/content/blog/` — blogové články
-- `src/content/stranky/tabor.md` — stránka Tábor
+- `src/content/stranky/tabor.md` — stránka Příměšťák
 - `src/content/stranky/o-nas.md` — stránka O nás
 - `public/obrazky/` — obrázky spravované v administraci
+
+Náhledový obrázek akce nebo článku připravujte v rozměru **1080 × 1350 px
+(4:5)**, jako celý plakát bez ořezu. Ideální je WebP přibližně do 250–350 kB.
 
 ## Propojení newsletteru s Mailchimpem
 

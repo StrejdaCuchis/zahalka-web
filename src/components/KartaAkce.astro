@@ -1,5 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
+import { ceskaTypografie } from '../utils/typografie';
 
 interface Props {
   entry: CollectionEntry<'akce'>;
@@ -23,6 +25,7 @@ const typBarvy: Record<string, string> = {
 };
 
 const moznostMisto = misto ?? 'Benešovo nám. 3282, Teplice';
+const rozmery = await rozmeryVerejnehoObrazku(obrazek);
 const datumISO = datum.toISOString().split('T')[0];
 const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
   day:   'numeric',
@@ -37,8 +40,8 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
       <img
         src={obrazek}
         alt={altText}
-        width="600"
-        height="400"
+        width={rozmery.width}
+        height={rozmery.height}
         loading="lazy"
       />
     </figure>
@@ -48,15 +51,15 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
         {typLabely[typ]}
       </span>
 
-      <h3 class="karta-nazev">{nazev}</h3>
+      <h3 class="karta-nazev">{ceskaTypografie(nazev)}</h3>
 
       <time class="karta-datum" datetime={`${datumISO}T${cas}:00`}>
         {datumFormatovany}, {cas}
       </time>
 
-      <p class="karta-misto">{moznostMisto}</p>
+      <p class="karta-misto">{ceskaTypografie(moznostMisto)}</p>
 
-      <p class="karta-popis">{kratkyPopis}</p>
+      <p class="karta-popis">{ceskaTypografie(kratkyPopis)}</p>
     </div>
   </a>
 </article>
@@ -91,20 +94,15 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
 
   .karta-obrazek {
     margin: 0;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
-    background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
+    background-color: var(--barva-pozadi);
   }
 
   .karta-obrazek img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-  }
-
-  .karta:hover .karta-obrazek img {
-    transform: scale(1.03);
+    object-fit: contain;
   }
 
   .karta-telo {

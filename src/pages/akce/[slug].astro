@@ -3,6 +3,8 @@ import { getCollection, render } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import SchemaEvent from '../../components/SchemaEvent.astro';
 import KartaAkce from '../../components/KartaAkce.astro';
+import { rozmeryVerejnehoObrazku } from '../../utils/obrazky';
+import { ceskaTypografie } from '../../utils/typografie';
 
 export async function getStaticPaths() {
   const alleAkce = await getCollection('akce');
@@ -29,6 +31,7 @@ const {
 } = akce.data;
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
+const rozmeryObrazku = await rozmeryVerejnehoObrazku(obrazek);
 
 const datumISO = datum.toISOString().split('T')[0];
 const datumCasISO = `${datumISO}T${cas}:00`;
@@ -111,7 +114,7 @@ const breadcrumbSchema = {
 
     <article>
       <header>
-        <h1>{nazev}</h1>
+        <h1>{ceskaTypografie(nazev)}</h1>
 
         <dl>
           <div>
@@ -124,16 +127,16 @@ const breadcrumbSchema = {
           </div>
           <div>
             <dt>Kde</dt>
-            <dd>{moznostMisto}</dd>
+            <dd>{ceskaTypografie(moznostMisto)}</dd>
           </div>
           <div>
             <dt>Vstupné</dt>
-            <dd>{cena}</dd>
+            <dd>{ceskaTypografie(cena)}</dd>
           </div>
           {kapacita && (
             <div>
               <dt>Kapacita</dt>
-              <dd>{kapacita}</dd>
+              <dd>{ceskaTypografie(kapacita)}</dd>
             </div>
           )}
         </dl>
@@ -157,8 +160,8 @@ const breadcrumbSchema = {
         <img
           src={obrazek}
           alt={altText}
-          width="1200"
-          height="630"
+          width={rozmeryObrazku.width}
+          height={rozmeryObrazku.height}
           loading="eager"
         />
         <figcaption>{altText}</figcaption>
@@ -291,8 +294,6 @@ const breadcrumbSchema = {
   figure img {
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
   }
 
   figcaption {

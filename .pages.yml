@@ -107,6 +107,7 @@ content:
         label: Hlavní obrázek
         type: image
         required: true
+        description: 1080 × 1350 px, 4:5, celý plakát bez ořezu. Ideálně WebP do 250–350 kB.
         options:
           media: obrazky
           path: public/obrazky/akce
@@ -171,6 +172,7 @@ content:
         label: Hlavní obrázek
         type: image
         required: true
+        description: 1080 × 1350 px, 4:5, celý plakát bez ořezu. Ideálně WebP do 250–350 kB.
         options:
           media: obrazky
           path: public/obrazky/blog
@@ -207,7 +209,7 @@ content:
           media: obrazky
 
   - name: tabor
-    label: Tábor
+    label: Příměšťák
     type: file
     path: src/content/stranky/tabor.md
     format: yaml-frontmatter
@@ -237,30 +239,25 @@ content:
       - name: datumOd
         label: První den tábora
         type: date
-        required: true
         options:
           time: false
           format: yyyy-MM-dd
       - name: datumDo
         label: Poslední den tábora
         type: date
-        required: true
         options:
           time: false
           format: yyyy-MM-dd
       - name: datumText
         label: Datum zobrazené návštěvníkům
         type: string
-        required: true
-        description: Například „20.–24. července 2026“.
+        description: Například „19.–23. července 2027“.
       - name: vek
         label: Věk dětí
         type: string
-        required: true
       - name: cena
         label: Cena zobrazená návštěvníkům
         type: string
-        required: true
       - name: cenaCiselne
         label: Cena jako číslo pro Google
         type: number
@@ -268,7 +265,6 @@ content:
       - name: kapacita
         label: Kapacita
         type: string
-        required: true
       - name: odkazFormular
         label: Odkaz na přihlašovací formulář
         type: string
@@ -328,18 +324,11 @@ content:
       - name: perex
         label: Úvodní text
         type: text
-        required: true
+        description: Volitelné. Nevyplňujte, pokud by opakoval úvodní odstavec v textu.
       - name: body
         label: Příběh Zahálky
         type: rich-text
         required: true
         options:
           format: markdown
-          media: false
-      - name: fotky
-        label: Fotogalerie
-        component: fotografie
-        list:
-          collapsible:
-            collapsed: true
-            summary: '{altText}'
+          media: obrazky

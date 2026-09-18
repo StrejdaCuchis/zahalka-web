@@ -10,8 +10,6 @@ altText: Lidé stojí a sedí v zaplněném kulturním prostoru Zahálka během 
 kratkyPopis: Lidé stojí a sedí v zaplněném kulturním prostoru Zahálka během akce
   Back to School Party.
 ---
-# BACK TO SCHOOL PARTY
-
 VIDÍME SE 12. ZÁŘÍ od 15:00 V ZAHÁLCE! Těšíme se!
 
 ## PROGRAM
@@ -25,7 +23,8 @@ VIDÍME SE 12. ZÁŘÍ od 15:00 V ZAHÁLCE! Těšíme se!
 
 ## INFO K WORKSHOPŮM
 
-Prosíme, aby se nám zájemci o workshopy hlásili prostřednictvím e-mailu zahalkateplice@gmail. com, uveďte název workshopu a počet osob, pro které rezervujete místo.  
+Prosíme, aby se nám zájemci o workshopy hlásili prostřednictvím e-mailu [jsme@zahalkateplice.cz](mailto:jsme@zahalkateplice.cz), uveďte název workshopu a počet osob, pro které rezervujete místo.
+
 ✦ WORKSHOP TVORBY KOLÁŽÍ ⋆ 15:15–16: 45 / 250 Kč / kapacita 20 míst   
 ✦ WORKSHOP TVORBY LINORYTU ⋆ 16:45–18:15 / 350 Kč / kapacita 10 míst   
 ✦ důležité:   

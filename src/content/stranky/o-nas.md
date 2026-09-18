@@ -1,38 +1,79 @@
 ---
-nazev: O nás
-metaPopis: Zahálka je kulturní prostor v centru Teplic provozovaný malým týmem
-  lidí, kteří věří, že kultura patří blízko k lidem.
-perex: Jsme malý tým lidí z Teplic. Otevřeli jsme Zahálku, protože jsme chtěli
-  místo, kde kultura není podívaná — ale setkání.
-fotky:
-  - {}
+nazev: Zahálka • kulturní prostor
+metaPopis: Poznejte Zahálku, neziskový kulturní prostor v Teplicích. Propojujeme kulturu, umění a komunitu prostřednictvím akcí a společného tvoření.
 ---
-## Jak Zahálka vznikla
 
-Zahálka se otevřela na podzim 2024 v pronajatém prostoru na Benešově náměstí. Předtím jsme pořádali besedy po kavárnách a dílny po soukromých ateliérech — vždy někde jinde, vždy s pocitem, že místo nebylo úplně naše. Rozhodli jsme se to změnit.
+## Místo, kde se v Teplicích potkává kultura, umění a komunita
 
-Prostoru jsme říkali Zahálka záměrně. Zahálení bývá odsuzováno — přitom chvíle bez spěchu, kdy si sednete a povídáte, tvoříte nebo jen posloucháte, jsou přesně to, co nás drží pohromadě jako komunitu.
+**Teplice mají své lázně, architekturu i bohatou historii. K nim chceme přidat také živé místo pro současnou kulturu, umění a komunitní setkávání – Zahálku • kulturní prostor.** Pořádáme výtvarné workshopy a kurzy, debaty, přednášky, koncerty, filmová promítání, příměstské tábory i komunitní akce. Zajímají nás současná témata, vzdělávání a udržitelnost – ale především lidé a jejich chuť být součástí dění kolem sebe. Chceme vytvořit místo, kde se něco děje, kde se lidé potkávají a kde může vznikat něco nového.
 
-## Co se u nás děje
+## Jak šel čas
 
-Zahálka se otvírá pouze na akce — záměrně. Nejsme kavárna ani galerie s pevnou otevírací dobou. Každé otevření je příležitost: beseda s odborníkem, workshop, kde si něco vlastníma rukama vytvoříte, nebo festival, kde se sejde celé město.
+Zahálka • kulturní prostor je neziskový projekt spolku Zahálka Teplice. Projekt vznikl v roce 2020 z potřeby lidí, kteří mají k Teplicím osobní vztah a chtějí se podílet na jejich kulturním a komunitním životě. Náš tým spojují zkušenosti z kultury, umění, architektury a vzdělávání. Společně vytváříme program, který vzniká **s místními a pro místní**.
 
-Program stavíme tak, aby měl smysl pro různé generace. Část akcí je pro dospělé — přednášky, kreativní dílny, rozhovory nad mapou města. Část je pro děti a rodiny — tvoření, pohyb, setkání. A část je pro oba najednou.
+Začínali jsme v nelehkém období pandemie. I tehdy jsme připravovali kulturní program – například online koncerty, autorská čtení nebo site-specific taneční vystoupení. Postupně jsme se přesunuli do fyzického prostoru a přidali filmové projekce, přednášky, workshopy i výstavy mladých autorek a autorů z Teplic a okolí.
 
-## Letní tábor
+Jedním z výrazných momentů pro nás byla v roce 2023 příprava a realizace prvního ročníku *tepfestivalu*. Multižánrový festival v Domě kultury Teplice propojil výtvarné umění, film, divadlo, hudbu, tanec, přednášky a workshopy. Jeho tématem byla paměť severočeské krajiny a vztah místní kulturní identity k historii regionu.
 
-Jednou za rok se Zahálka promění v základnu příměstského tábora. Děti tráví dopoledne kreativitou, pohybem a objevováním — a odpoledne se vrátí domů. Žádné stany, žádné odloučení od rodiny. Jen týden plný zážitků v centru města.
+![Skupina účastníků na komentované procházce v parku v Teplicích](/obrazky/stranky/o-nas-01.webp)
 
-Pokud hledáte pro své dítě tábor, kde se neztratí ani citlivé a tišší děti, přečtěte si více na stránce [Letní tábor](/tabor). Kapacita je každý rok omezená a místa se plní rychle.
+![Účastníci programu sedí na dece v parku před Domem kultury Teplice](/obrazky/stranky/o-nas-02.webp)
 
-## Tým
+![Skupina lidí prochází krajinou na okraji Teplic](/obrazky/stranky/o-nas-03.webp)
 
-Za Zahálkou stojí tři lidé: Markéta, Ondřej a Jana. Markéta má na starosti program a komunikaci, Ondřej techniku a prostor, Jana koordinuje lektory a stará se o spolupráce. Mimo ně přichází na každou akci kohorta dobrovolníků, bez nichž by to nefungovalo.
+## Z bývalé dílny kulturní prostor
 
-Nejsme neziskovka ani příspěvková organizace. Provozujeme Zahálku z přesvědčení a ze vstupného. To, co vybereme, jde zpátky do programu.
+Další kapitolu našeho příběhu představuje kulturní a komunitní prostor v centru Teplic. Po několika letech fungování v původním prostoru v Šanově, který jsme postupně svépomocí opravovali, jsme se přestěhovali do většího prostoru v bývalé industriální provozovně na Benešově náměstí, v jednom ze skrytých vnitrobloků.
 
-## Přijďte se podívat
+Nové místo pro nás znamená také nový úkol: upravit ho tak, aby mohl dlouhodobě fungovat jako kulturní a komunitní centrum.
 
-Nejlépe nás poznáte na akci. Podívejte se na [program](/program) a přijďte na to, co vás zaujme. Dveře otvíráme vždy chvíli před začátkem a zavíráme, až se vyřídí poslední rozhovor.
+![Dva lidé při rekonstrukci klenutého prostoru budoucí Zahálky](/obrazky/stranky/o-nas-04.webp)
 
-Máte-li dotazy, pište na [zahalkateplice@gmail.com](mailto:zahalkateplice@gmail.com) nebo sledujte [@zahalkateplice](https://www.instagram.com/zahalkateplice/) na Instagramu.
+![Úpravy klenutého interiéru Zahálky s žebříky a pracovním stolem](/obrazky/stranky/o-nas-05.webp)
+
+## Prostor pro film, výstavu i sousedské setkání
+
+Chceme vytvořit otevřenou platformu, která bude sloužit různým generacím a různým podobám kulturního a komunitního života.
+
+Připravujeme filmové projekce, koncerty, divadelní představení, výstavy, přednášky, debaty a výtvarné či vzdělávací workshopy. Součástí programu mohou být také kurzy, markety, swapy, komentované procházky nebo společné výlety a exkurze.
+
+Důležitou složkou naší práce je také propojování se s dalšími lidmi a místními organizacemi. Spolupracujeme a navazujeme kontakty s dalšími spolky a iniciativami v Teplicích.
+
+Nechceme vytvořit místo, které pouze nabízí hotový program. Chceme prostor, do jehož života mohou lidé sami vstupovat, přicházet s vlastními nápady, potkávat se a něco společně vytvářet.
+
+## Kultura, která se týká města
+
+Kulturu vnímáme jako způsob, jak mluvit o místě, ve kterém žijeme. Proto se vedle uměleckého programu věnujeme také tématům spojeným s Teplicemi a širším regionem.
+
+V minulosti jsme se zabývali například městskou zelení, modro-zelenou infrastrukturou, životem ve městě, architekturou, krajinou nebo vztahem člověka k prostředí, ve kterém žije. Právě propojení kultury, vzdělávání a veřejné debaty je pro nás jedním z pilířů projektu.
+
+Pracujeme s různými věkovými skupinami. Naše programy v minulosti navštěvovaly děti a rodiny, studenti i senioři. Chceme být místem, kde se mohou potkávat lidé, kteří by se jinak možná nepotkali.
+
+![Návštěvníci se setkávají v hlavním sále Zahálky během kulturní akce](/obrazky/stranky/o-nas-06.webp)
+
+![Tři hudebnice vystupují v Zahálce s mikrofony a kytarou](/obrazky/stranky/o-nas-07.webp)
+
+![Přednášející a publikum během projekce v Zahálce](/obrazky/stranky/o-nas-08.webp)
+
+## Místo, které vzniká odspodu
+
+Důležitá je pro nás i samotná cesta, jakou prostor vzniká. Projekt stojí z velké části na dobrovolnické práci a spolupráci lidí, kteří chtějí svému městu něco nabídnout.
+
+Právě v tom spočívá jedna z hlavních myšlenek Zahálky: kulturní prostor nemusí vzniknout hotový. Může se postupně vytvářet společně s lidmi, kteří ho budou používat, navštěvovat a pomáhat mu žít.
+
+![Debata dvou hostů před publikem v oranžově nasvíceném sále Zahálky](/obrazky/stranky/o-nas-09.webp)
+
+![Návštěvníci sedí v kruhu během komunitního setkání v Zahálce](/obrazky/stranky/o-nas-10.webp)
+
+![Usmívající se hudebnice po vystoupení v Zahálce](/obrazky/stranky/o-nas-11.webp)
+
+## Zahálka jako součást Teplic
+
+Zahálka vznikla z našeho osobního vztahu k Teplicím. Strávili jsme tu část života, studovali zde a už jako studenti se zapojovali do místního kulturního dění. Později jsme získávali zkušenosti ve větších městech a po návratu do Teplic je začali využívat při vlastních kulturních projektech. Dnes se naše zkušenosti potkávají právě v Zahálce.
+
+**Zahálka je pro nás především pozvánkou ke společnému trávení času, tvorbě a debatě. Místem, kde se může potkat kultura s každodenním životem města – a kde mohou nové nápady vznikat přímo mezi lidmi, kteří v Teplicích žijí.**
+
+Vaše Zahálka \
+Maro, Jakub a Daniel
+
+![Skupina dětí při poznávací aktivitě u historického pomníku v teplickém parku](/obrazky/stranky/o-nas-12.webp)

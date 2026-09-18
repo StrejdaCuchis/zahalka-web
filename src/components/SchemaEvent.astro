@@ -1,4 +1,6 @@
 ---
+import { kontakty } from '../data/kontakty';
+
 interface Props {
   nazev: string;
   datum: Date;
@@ -31,7 +33,7 @@ const dnes = new Date();
 dnes.setHours(0, 0, 0, 0);
 const jeMinula = datum < dnes;
 
-const placeName = misto ?? 'Zahálka';
+const placeName = misto ?? kontakty.prostor.nazev;
 
 function parsePrice(cenaStr: string): string {
   if (cenaStr.trim().toLowerCase() === 'zdarma') return '0';
@@ -56,15 +58,29 @@ const eventSchema = {
     name: placeName,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Benešovo nám. 3282',
-      addressLocality: 'Teplice',
-      postalCode: '415 01',
-      addressCountry: 'CZ',
+      streetAddress: kontakty.prostor.ulice,
+      addressLocality: kontakty.prostor.mesto,
+      postalCode: kontakty.prostor.psc,
+      addressCountry: kontakty.prostor.zeme,
     },
   },
   organizer: {
     '@type': 'Organization',
-    name: 'Zahálka',
+    name: kontakty.nazev,
+    legalName: kontakty.pravniNazev,
+    email: kontakty.email,
+    identifier: {
+      '@type': 'PropertyValue',
+      propertyID: 'IČO',
+      value: kontakty.ico,
+    },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: kontakty.sidlo.ulice,
+      addressLocality: kontakty.sidlo.mesto,
+      postalCode: kontakty.sidlo.psc,
+      addressCountry: kontakty.sidlo.zeme,
+    },
     url: siteUrl,
   },
   offers: {
