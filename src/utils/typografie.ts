@@ -1,4 +1,4 @@
-const JEDNOPISMENNE_SLOVO = /(^|[\s(\[{„“"'])([ksvzouai])[ \t]+(?=\S)/giu;
+const JEDNOPISMENNE_SLOVO = /(?<![\p{L}\p{N}_])([ksvzouai])[ \t]+(?=\S)/giu;
 
 /**
  * Sváže české jednopísmenné předložky a spojky s následujícím slovem.
@@ -7,6 +7,6 @@ const JEDNOPISMENNE_SLOVO = /(^|[\s(\[{„“"'])([ksvzouai])[ \t]+(?=\S)/giu;
 export function ceskaTypografie(text: string): string {
   return text.replace(
     JEDNOPISMENNE_SLOVO,
-    (_shoda, zacatek: string, slovo: string) => `${zacatek}${slovo}\u00a0`,
+    (_shoda, slovo: string) => `${slovo}\u00a0`,
   );
 }

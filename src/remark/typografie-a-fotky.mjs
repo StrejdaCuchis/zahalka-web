@@ -1,10 +1,10 @@
-const jednopismenneSlovo = /(^|[\s(\[{„“"'])([ksvzouai])[ \t]+(?=\S)/giu;
-const jednopismenneNaKonci = /(^|[\s(\[{„“"'])([ksvzouai])[ \t]+$/iu;
+const jednopismenneSlovo = /(?<![\p{L}\p{N}_])([ksvzouai])[ \t]+(?=\S)/giu;
+const jednopismenneNaKonci = /(?<![\p{L}\p{N}_])([ksvzouai])[ \t]+$/iu;
 
 function upravText(hodnota) {
   return hodnota.replace(
     jednopismenneSlovo,
-    (_shoda, zacatek, slovo) => `${zacatek}${slovo}\u00a0`,
+    (_shoda, slovo) => `${slovo}\u00a0`,
   );
 }
 
@@ -30,7 +30,7 @@ function upravTextoveUzly(node) {
     if (aktualni?.type === 'text' && !jeKod(nasledujici)) {
       aktualni.value = aktualni.value.replace(
         jednopismenneNaKonci,
-        (_shoda, zacatek, slovo) => `${zacatek}${slovo}\u00a0`,
+        (_shoda, slovo) => `${slovo}\u00a0`,
       );
     }
   }

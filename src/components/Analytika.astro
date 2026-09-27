@@ -1,8 +1,7 @@
 ---
 // IDs come from env vars — never hardcoded.
 // Empty string means "not configured" → graceful no-op.
-const gaId      = import.meta.env.PUBLIC_GA_ID      ?? '';
-const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
+const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
 ---
 
 <!--
@@ -18,8 +17,8 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
   hidden
 >
   <p id="cookie-text">
-    Používáme analytické cookies (Google Analytics a&nbsp;Microsoft Clarity),
-    abychom pochopili, jak web používáte, a&nbsp;mohli ho zlepšovat.
+    Používáme analytické cookies Google Analytics, abychom pochopili, jak web
+    používáte, a&nbsp;mohli ho zlepšovat.
     {' '}
     <a href="/cookies">Více informací</a>
   </p>
@@ -34,7 +33,7 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
   Order inside the script is the only ordering guarantee we need: consent defaults
   are set BEFORE the GA4 script element is appended to the DOM.
 -->
-<script define:vars={{ gaId, clarityId }}>
+<script define:vars={{ gaId }}>
   // ── 1. gtag stub + Consent Mode v2 defaults ────────────────────────────
   //    Must run before any tracking script; data collection denied by default.
   window.dataLayer = window.dataLayer || [];
@@ -62,39 +61,28 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
     gtag('config', gaId);
   }
 
-  if (clarityId) {
-    /* global clarity */
-    (function (c, l, a, r, i, t, y) {
-      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
-      t = l.createElement(r); t.async = 1;
-      t.src = 'https://www.clarity.ms/tag/' + i;
-      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-    })(window, document, 'clarity', 'script', clarityId);
-  }
-
   // ── 3. Conversion tracking listener ───────────────────────────────────
   //    Activated only after consent. Listens for any [data-event] click once,
   //    capture phase so we catch it before navigation fires.
   let trackingActive = false;
+
+  function odeslatUdalost(e) {
+    const cil = e.target;
+    if (!(cil instanceof Element)) return;
+
+    const el = cil.closest('[data-event]');
+    if (!(el instanceof HTMLAnchorElement)) return;
+
+    gtag('event', el.dataset.event, {
+      akce_nazev: el.dataset.akce || '',
+      odkaz:      el.href         || '',
+    });
+  }
+
   function aktivovatTracking() {
     if (trackingActive) return;
     trackingActive = true;
-
-    document.addEventListener('click', function (e) {
-      const el = e.target.closest('[data-event]');
-      if (!el) return;
-      gtag('event', el.dataset.event, {
-        akce_nazev: el.dataset.akce || '',
-        odkaz:      el.href         || '',
-      });
-    }, true);
-
-    if (typeof clarity === 'function') {
-      clarity('consentv2', {
-        ad_Storage: 'denied',
-        analytics_Storage: 'granted',
-      });
-    }
+    document.addEventListener('click', odeslatUdalost, true);
   }
 
   function odeprit() {
@@ -105,11 +93,9 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
       ad_personalization: 'denied',
     });
 
-    if (typeof clarity === 'function') {
-      clarity('consentv2', {
-        ad_Storage: 'denied',
-        analytics_Storage: 'denied',
-      });
+    if (trackingActive) {
+      document.removeEventListener('click', odeslatUdalost, true);
+      trackingActive = false;
     }
   }
 
@@ -121,21 +107,41 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
       ad_user_data:       'denied',
       ad_personalization: 'denied',
     });
-    aktivovatTracking();
+    if (gaId) aktivovatTracking();
   }
 
   // ── 5. Cookie bar logic ────────────────────────────────────────────────
-  const KLIC  = 'zahalka_cookie_consent';
+  // Verze v klíči znovu zobrazí lištu po změně používané analytiky.
+  const KLIC  = 'zahalka_cookie_consent_v2';
   const lista = document.getElementById('cookie-lista');
-  const volba = localStorage.getItem(KLIC);
+
+  function nactiVolbu() {
+    try {
+      return localStorage.getItem(KLIC);
+    } catch {
+      // Privátní režim může úložiště blokovat. Lišta musí fungovat i bez něj.
+      return null;
+    }
+  }
+
+  function ulozVolbu(volba) {
+    try {
+      localStorage.setItem(KLIC, volba);
+    } catch {
+      // Volba platí pro aktuální stránku; při další návštěvě se nabídne znovu.
+    }
+  }
+
+  const volba = nactiVolbu();
 
   if (volba === 'granted') {
     // Returning visitor who already accepted — restore consent immediately.
     udelit();
   } else if (volba === 'denied') {
     odeprit();
-  } else if (gaId || clarityId) {
-    // No prior choice and tracking is configured — show the bar.
+  } else {
+    // Lištu zobrazujeme i v preview buildu bez GA ID. Samotné měření se bez ID
+    // nenačte, ale souhlas i mobilní podobu lze spolehlivě otestovat.
     // requestAnimationFrame delays by one frame to avoid layout shift on load.
     requestAnimationFrame(function () {
       if (lista) {
@@ -147,13 +153,13 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
   }
 
   document.getElementById('cookie-prijmout')?.addEventListener('click', function () {
-    localStorage.setItem(KLIC, 'granted');
+    ulozVolbu('granted');
     udelit();
     if (lista) lista.hidden = true;
   });
 
   document.getElementById('cookie-odmitnout')?.addEventListener('click', function () {
-    localStorage.setItem(KLIC, 'denied');
+    ulozVolbu('denied');
     odeprit();
     if (lista) lista.hidden = true;
   });
@@ -261,6 +267,10 @@ const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
       align-items: flex-start;
       gap: 0.75rem;
       padding: 1.25rem 1.25rem 1.5rem;
+    }
+
+    #cookie-lista p {
+      flex: none;
     }
   }
 </style>

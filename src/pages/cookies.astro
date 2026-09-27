@@ -5,7 +5,7 @@ import Blob from '../components/Blob.astro';
 
 <Zaklad
   title="Cookies a ochrana soukromí – Zahálka"
-  description="Informace o používání cookies, Google Analytics a Microsoft Clarity na webu kulturního prostoru Zahálka."
+  description="Informace o používání cookies a Google Analytics na webu kulturního prostoru Zahálka."
   canonicalPath="/cookies"
 >
   <main>
@@ -18,7 +18,7 @@ import Blob from '../components/Blob.astro';
         <h1>Cookies</h1>
         <p class="perex">
           Tento web používá nezbytné uložení vaší volby a po vašem souhlasu také
-          analytické služby. Analytické cookies nám pomáhají zjistit, které stránky
+          analytické měření. Analytické cookies nám pomáhají zjistit, které stránky
           jsou užitečné a kde můžeme web zlepšit.
         </p>
       </header>
@@ -26,7 +26,7 @@ import Blob from '../components/Blob.astro';
       <section aria-labelledby="nezbytne">
         <h2 id="nezbytne">Nezbytné uložení volby</h2>
         <p>
-          V prohlížeči ukládáme položku <code>zahalka_cookie_consent</code>, která si
+          V prohlížeči ukládáme položku <code>zahalka_cookie_consent_v2</code>, která si
           pamatuje, zda jste analytiku přijali, nebo odmítli. Nejde o sledovací cookie
           a neposílá se na žádný server. Zůstává uložená, dokud svou volbu nezměníte
           nebo nevymažete data webu v prohlížeči.
@@ -54,19 +54,6 @@ import Blob from '../components/Blob.astro';
               >Informace společnosti Google o cookies</a>.
             </dd>
           </div>
-          <div>
-            <dt>Microsoft Clarity</dt>
-            <dd>
-              Ukazuje nám souhrnně, jak návštěvníci používají jednotlivé části webu.
-              Po souhlasu může používat například cookies <code>_clck</code> a
-              {' '}<code>_clsk</code> a související cookies společnosti Microsoft.{' '}
-              <a
-                href="https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-cookies"
-                target="_blank"
-                rel="noopener"
-              >Přehled cookies Microsoft Clarity</a>.
-            </dd>
-          </div>
         </dl>
       </section>
 
@@ -74,16 +61,21 @@ import Blob from '../components/Blob.astro';
         <h2 id="volba">Jak změnit svou volbu</h2>
         <p>
           Souhlas můžete kdykoli změnit nebo odvolat. Po stisknutí tlačítka se znovu
-          otevře lišta s volbou. Při odmítnutí se analytické ukládání vypne a Clarity
-          odstraní své cookies pro tento web.
+          otevře lišta s volbou. Při odmítnutí zůstane analytické ukládání vypnuté.
         </p>
         <button type="button" class="tlacitko" id="zmenit-cookies">
           Změnit nastavení cookies
         </button>
       </section>
 
-      <section aria-labelledby="kontakt">
-        <h2 id="kontakt">Kontakt</h2>
+      <section aria-labelledby="spravce">
+        <h2 id="spravce">Správce údajů a kontakt</h2>
+        <address>
+          <strong>Zahálka Teplice, z. s.</strong><br />
+          28. října 420/4<br />
+          415 01 Teplice<br />
+          IČO: 10762434
+        </address>
         <p>
           Máte-li otázku k používání cookies na tomto webu, napište nám na
           {' '}
@@ -91,7 +83,7 @@ import Blob from '../components/Blob.astro';
         </p>
       </section>
 
-      <p class="aktualizace">Poslední aktualizace: 26. srpna 2026</p>
+      <p class="aktualizace">Poslední aktualizace: 27. září 2026</p>
     </article>
   </main>
 </Zaklad>
@@ -153,6 +145,12 @@ import Blob from '../components/Blob.astro';
 
   p,
   dd {
+    line-height: 1.75;
+  }
+
+  address {
+    margin-bottom: 1rem;
+    font-style: normal;
     line-height: 1.75;
   }
 

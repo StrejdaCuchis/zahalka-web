@@ -88,12 +88,12 @@ Minulé akce nezobrazuj nikde v přehledech.
   `eventStatus: EventScheduled`, `eventAttendanceMode: OfflineEventAttendanceMode`.
 - Kontakt/homepage: JSON-LD `Organization` s názvem, adresou, `sameAs` (odkazy na sítě).
 
-## Analytika (GA4 + Microsoft Clarity)
+## Analytika (GA4)
 
-Obojí řeš centrálně přes komponentu v `<head>` v `layouts/Zaklad.astro`, ne napevno na jednotlivých stránkách.
+Analytiku řeš centrálně přes komponentu v `layouts/Zaklad.astro`, ne napevno na jednotlivých stránkách.
 
-- ID nikdy natvrdo v kódu — přes proměnné prostředí (`PUBLIC_GA_ID`, `PUBLIC_CLARITY_ID`).
-- GA4 i Clarity se smí spustit AŽ PO cookie souhlasu (viz níže). Bez souhlasu se skripty nenačtou.
+- ID nikdy natvrdo v kódu — přes proměnnou prostředí `PUBLIC_GA_ID`.
+- GA4 se smí spustit AŽ PO cookie souhlasu (viz níže). Bez souhlasu se nic nesbírá.
 
 ### Sledování konverze (outbound clicky)
 
@@ -117,7 +117,7 @@ Vzor odkazu:
 Postav řízení souhlasu na Google Consent Mode v2, ne na prostém vložení/nevložení skriptu.
 Důvod: bezbolestný pozdější přechod na Cookiebot a připravenost na reklamy.
 
-- GA4 i Clarity se v kódu odkazují vždy, ale čekají na signál souhlasu.
+- GA4 se v kódu odkazuje vždy, ale čeká na signál souhlasu.
 - Výchozí stav před volbou: `gtag('consent', 'default', { ... 'denied' })` — nic se neměří.
 - Po odsouhlasení: `gtag('consent', 'update', { ... 'granted' })` — teprve pak měření a tracking listener běží.
 - Při odmítnutí zůstává `denied`, nic se nesbírá.
