@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import KartaClanku from '../../components/KartaClanku.astro';
 import Newsletter from '../../components/Newsletter.astro';
-import Blob from '../../components/Blob.astro';
+import GrafickePozadi from '../../components/GrafickePozadi.astro';
 
 const clanky = (await getCollection('blog'))
   .filter((clanek) => clanek.data.publikovano)
@@ -16,8 +16,7 @@ const clanky = (await getCollection('blog'))
   canonicalPath="/blog"
 >
   <main>
-    <Blob color="fialova" position="top-right" size={430} opacity={0.56} />
-    <Blob color="salvej" position="bottom-left" size={380} opacity={0.42} />
+    <GrafickePozadi varianta={4} />
 
     <header class="uvod">
       <p class="znacka">Čtení ze Zahálky</p>
@@ -70,7 +69,6 @@ const clanky = (await getCollection('blog'))
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    opacity: 0.55;
   }
 
   h1 {
@@ -82,7 +80,6 @@ const clanky = (await getCollection('blog'))
     max-width: 62ch;
     font-size: 1.08rem;
     line-height: 1.7;
-    opacity: 0.84;
   }
 
   .clanky {
@@ -96,7 +93,6 @@ const clanky = (await getCollection('blog'))
   }
 
   .prazdny-blog {
-    opacity: 0.7;
   }
 
   @media (max-width: 520px) {
