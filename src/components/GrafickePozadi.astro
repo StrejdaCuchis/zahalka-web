@@ -11,7 +11,11 @@ const { varianta, samostatne = false, lazy = false, presah = false } = Astro.pro
 const cesta = `/obrazky/pozadi/varianta-${varianta}`;
 ---
 
-<picture class:list={['graficke-pozadi', { samostatne, presah }]} aria-hidden="true">
+<picture
+  class:list={['graficke-pozadi', { samostatne, presah }]}
+  style={`--intenzita-pozadi: ${varianta === 2 || varianta === 5 ? 0.2 : 0.24}`}
+  aria-hidden="true"
+>
   <source media="(max-width: 700px)" srcset={`${cesta}-mobil.webp`} width="720" height="1280" />
   <img
     src={`${cesta}-desktop.webp`}
@@ -34,7 +38,7 @@ const cesta = `/obrazky/pozadi/varianta-${varianta}`;
     pointer-events: none;
     user-select: none;
     /* Krémový podklad zůstává dominantní; syté originály jsou v dokumentaci. */
-    opacity: 0.24;
+    opacity: var(--intenzita-pozadi);
   }
 
   img {
