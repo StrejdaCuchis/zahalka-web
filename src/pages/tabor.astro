@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
-import Blob from '../components/Blob.astro';
+import GrafickePozadi from '../components/GrafickePozadi.astro';
 import { kontakty } from '../data/kontakty';
 import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
 import { ceskaTypografie } from '../utils/typografie';
@@ -134,8 +134,7 @@ const campSchema = maKompletniTermin ? {
 
   <main>
     <section class="hero" aria-label="O táboře">
-      <Blob color="limetka" position="top-right" size={500} opacity={0.65} />
-      <Blob color="oranzova" position="bottom-left" size={400} opacity={0.55} />
+      <GrafickePozadi varianta={2} />
 
       <header class="hero-obsah">
         <p class="znacka">{ceskaTypografie(znacka)}</p>
@@ -261,7 +260,6 @@ const campSchema = maKompletniTermin ? {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    opacity: 0.5;
     margin-bottom: 0.75rem;
   }
 
@@ -275,7 +273,6 @@ const campSchema = maKompletniTermin ? {
     font-size: 1.15rem;
     line-height: 1.65;
     max-width: 52ch;
-    opacity: 0.85;
     margin-bottom: 2rem;
   }
 
@@ -303,7 +300,6 @@ const campSchema = maKompletniTermin ? {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    opacity: 0.45;
     margin-bottom: 0.2rem;
   }
 
