@@ -36,6 +36,16 @@ const pouzivaVychoziOg = !ogImage;
 const typografickyTitle = ceskaTypografie(title);
 const typografickyDescription = ceskaTypografie(description);
 const typografickyOgAlt = ceskaTypografie(ogImageAlt);
+// Největší šířka obsahu určuje bezpečný okraj pro dekorace, nikoli layout.
+const jeDetailAkce = canonicalPath.startsWith('/akce/');
+const sirkaObsahu = jeDetailAkce || canonicalPath === '/cookies' ? '72ch'
+  : canonicalPath === '/kontakt' ? '900px'
+  : canonicalPath === '/tabor' ? '820px'
+  : canonicalPath === '/404' ? '42rem'
+  : '1100px';
+const minSirkaBlobu = jeDetailAkce ? '6px'
+  : canonicalPath === '/cookies' || canonicalPath === '/blog' ? '12px'
+  : '20px';
 ---
 
 <!doctype html>
@@ -107,7 +117,7 @@ const typografickyOgAlt = ceskaTypografie(ogImageAlt);
     </header>
 
     {pozadi ? (
-      <div class="plocha-stranky">
+      <div class="plocha-stranky" style={`--sirka-obsahu:${sirkaObsahu};--min-sirka-blobu:${minSirkaBlobu}`}>
         <PozadiStranky varianta={pozadi} />
         <slot />
       </div>

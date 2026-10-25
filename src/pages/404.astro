@@ -1,18 +1,15 @@
 ---
 import Zaklad from '../layouts/Zaklad.astro';
-import Blob from '../components/Blob.astro';
 ---
 
 <Zaklad
+  pozadi={3}
   title="Stránka nenalezena – Zahálka"
   description="Požadovanou stránku se nepodařilo najít. Pokračujte na program kulturního prostoru Zahálka."
   canonicalPath="/404"
   noindex={true}
 >
   <main>
-    <Blob color="levandule" position="top-left" size={420} opacity={0.55} />
-    <Blob color="oranzova" position="bottom-right" size={340} opacity={0.45} />
-
     <section aria-labelledby="nenalezeno">
       <p class="kod">404</p>
       <h1 id="nenalezeno">Tady Zahálka není</h1>

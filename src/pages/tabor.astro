@@ -455,6 +455,7 @@ const campSchema = maKompletniTermin ? {
   }
 
   .sekce-cta h2 {
+    color: inherit;
     font-size: clamp(1.25rem, 3vw, 2rem);
     margin-bottom: 0.75rem;
   }
@@ -469,6 +470,17 @@ const campSchema = maKompletniTermin ? {
   .btn-prihlasit-cta {
     background-color: var(--barva-pozadi);
     color: var(--barva-text);
+  }
+
+  .btn-prihlasit-cta:hover,
+  .btn-prihlasit-cta:focus-visible {
+    background-color: #fff;
+    color: var(--barva-text-d);
+  }
+
+  .btn-prihlasit-cta:focus-visible {
+    outline-color: var(--barva-pozadi);
+    outline-offset: 4px;
   }
 
   .cta-kontakt {

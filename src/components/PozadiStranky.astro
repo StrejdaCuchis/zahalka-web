@@ -4,20 +4,20 @@ import kompozice from '../data/pozadi.json';
 interface Props {
   varianta: 1 | 2 | 3 | 4 | 5 | 6;
   lazy?: boolean;
+  rezim?: 'okraje' | 'ilustrace';
 }
 
-const { varianta, lazy = false } = Astro.props;
+const { varianta, lazy = false, rezim = 'okraje' } = Astro.props;
 const vrstvy = kompozice[String(varianta) as keyof typeof kompozice];
-const tmavaVrstva = varianta === 2 ? 1 : varianta === 5 ? 0 : -1;
 const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
 ---
 
-<div class="pozadi-stranky" aria-hidden="true" data-pozadi={varianta}>
+<div class:list={['pozadi-stranky', { okraje: rezim === 'okraje' }]} aria-hidden="true" data-pozadi={varianta}>
   {(['desktop', 'mobil'] as const).map((zarizeni) => (
     <div class:list={['kompozice', zarizeni]}>
-      {vrstvy[zarizeni].map((blob, index) => (
+      {vrstvy[zarizeni].map((blob) => (
         <picture
-          class:list={['blob', { tmavy: index === tmavaVrstva }]}
+          class:list={['blob', { vlevo: blob.x < 0.5, vpravo: blob.x >= 0.5 }]}
           style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}`}
         >
           <source
@@ -78,22 +78,53 @@ const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/
     object-fit: contain;
   }
 
-  /* Tmavá zelená patří do okraje, aby se nemusela zesvětlovat pod textem. */
-  .tmavy {
-    width: min(14%, 12rem);
+  /* Šířka dekorace vychází z volného místa vedle nejširšího obsahu stránky.
+     Celé tvary zůstávají mimo text, ovládání a média, včetně ilustrací. */
+  .okraje .kompozice {
+    inset: clamp(0.125rem, 0.5vw, 0.75rem);
+  }
+
+  .okraje .blob {
+    width: clamp(
+      var(--min-sirka-blobu, 1.25rem),
+      calc((100% - var(--sirka-obsahu, 1100px)) / 2 - 1rem),
+      14rem
+    );
+  }
+
+  .okraje .vlevo {
+    left: 0;
+    transform: translate(0, calc(var(--y) * -100%));
+  }
+
+  .okraje .vpravo {
     left: 100%;
-    top: 85%;
-    transform: translate(-100%, -85%);
+    transform: translate(-100%, calc(var(--y) * -100%));
+  }
+
+  @media (max-width: 1100px) {
+    /* V dolním odsazení zbývá místo i pro výraznější celý tvar.
+       Nejmenší dolní padding stránek je 4rem; motiv zabírá nejvýše 3rem. */
+    .okraje .blob:last-child {
+      width: 5rem;
+      max-height: 3rem;
+      left: 100%;
+      top: 100%;
+      transform: translate(-100%, -100%);
+    }
   }
 
   @media (max-width: 700px) {
     .desktop { display: none; }
     .mobil { display: block; }
+  }
 
-    .tmavy {
-      width: 16%;
-      top: 100%;
-      transform: translate(-100%, -100%);
+  @media (max-width: 340px) {
+    /* Karty mohou zasahovat blíž k pravému okraji než jejich text.
+       Malé motivy proto přesouváme do volného levého odsazení. */
+    .okraje .vpravo:not(:last-child) {
+      left: 0;
+      transform: translate(0, calc(var(--y) * -100%));
     }
   }
 </style>

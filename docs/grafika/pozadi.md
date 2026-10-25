@@ -15,14 +15,18 @@ zůstávají ve svých proporcích; neroztahují se do výšky spolu s dlouhou s
 | --- | --- | --- |
 | 1 | Celá obsahová část homepage | Modrá, korálová a fialová rámují jednotlivé části stránky. |
 | 2 | Celá obsahová část Příměšťáku | Pestřejší hravá paleta pro dětský program. |
-| 3 | Celá obsahová část Programu a detailů akcí | Oranžový a fialový motiv; mobil obsahuje i původní žlutou. |
+| 3 | Celá obsahová část Programu, detailů akcí, Cookies a 404 | Oranžový a fialový motiv; mobil obsahuje i původní žlutou. |
 | 4 | Celá obsahová část přehledu Blogu | Chladnější fialová a modrá se žlutým akcentem. |
 | 5 | Celá obsahová část O nás a Kontaktu | Společná modrá, korálová a zelená pro stránky o prostoru. |
 | 6 | Samostatná ilustrace newsletteru | Úplná dodaná kompozice vedle informací na desktopu, za nimi na mobilu. Její rozložení se při opravě nemění. |
 
-Tmavě zelené tvary variant 2 a 5 jsou menším akcentem na pravém okraji. Na mobilu
-jsou dole v okrajovém prostoru, aby neležely pod zeleným textem. Jejich barvy se
-kvůli čitelnosti neupravují.
+Po následné kontrole překryvů jsou všechny dekorace stránek umístěné do volných
+bočních okrajů. Jejich šířka vychází z nejširšího obsahu konkrétní stránky, takže
+nezasahují pod text, tlačítka, fotografie ani postavičku na homepage. Na užších
+obrazovkách se zmenšují; poslední celý tvar má větší akcent v existujícím spodním
+odsazení. Do 340 px se drobné pravé motivy přesouvají vlevo kvůli kartám programu.
+Samostatná ilustrace newsletteru zachovává původní kompozici. Barvy a bitmapy
+se při této opravě nemění.
 
 ## Proč bylo potřeba použít SVG zdroje
 
@@ -32,8 +36,9 @@ Dodaný SVG export ale obsahuje celé bitmapy tvarů a jejich původní masky.
 
 Skript odstraní pouze vnější obdélníkový klip kreslicí plochy. Původní masky,
 barvy, zrnitost, vnitřní klipy a natočení jednotlivých tvarů zachovává. Každý
-celý tvar se optimalizuje do WebP. Polohy vycházejí z dodané kompozice, pouze
-svislé rozestupy se přizpůsobují délce stránky. Okolo všech tvarů je odstup od
+celý tvar se optimalizuje do WebP. Svislé polohy vycházejí z dodané kompozice
+a přizpůsobují se délce stránky; vodorovně tvary rámují obsah v okrajích.
+Okolo všech tvarů je odstup od
 okraje, takže se nedotýkají hrany hero sekce ani patičky.
 
 ## Soubory a obnovení podkladů
@@ -62,13 +67,12 @@ pro polohování.
 
 ## Ověření opravy
 
-- Produkční build: 16 stránek, úspěšný.
-- Osm cest: `/`, `/tabor/`, `/program/`, `/akce/voda-ve-meste/`, `/blog/`, `/o-nas/`, `/kontakt/`, `/newsletter/`.
-- Šířky 1280, 390 a 320 px, dohromady 24 kombinací.
-- Před úpravou byly uložené rozměry a absolutní polohy hlavních nadpisů, podnadpisů, odkazů, obrázků, main, hlavičky a patičky; následné porovnání potvrzuje stejné hodnoty i stejnou celkovou výšku dokumentu.
-- Ověření celých obrysů a původní sytosti na desktopu i mobilu; nový podklad už nekončí v pevné výšce hero sekce.
-- Z homepage bylo odstraněné tónované pozadí sekce Blog, které by při překrytí opět měnilo barvu procházejícího tvaru. Rozměry sekce se nemění.
-- Čitelnost tmavě zelených tvarů řeší jejich umístění. Dřívější tabulka kontrastu počítaná se zeslabenými obrázky už pro tento návrh neplatí a není tvrzením o shodě celého webu s WCAG.
+Aktuální kontrola je popsaná v [protokolu kontroly překryvů](kontrola-prekryvu-2026-10-25.md).
+Zahrnuje všech 16 generovaných stránek, deset šířek, dočasně naplněný program,
+aktivní přihlášky i formulář newsletteru. Dekorace se nepřekrývají s textem,
+obrázky ani ovládacími prvky v ověřených stavech. Rozměry a tok obsahu nejsou
+předmětem úprav; mění se umístění dekorací a barvy špatně čitelných prvků.
 
-Obsah a logika přihlášek nejsou součástí opravy. Aktuální obsah nemá budoucí
-akce ani aktivní přihlášky na tábor; newsletter zobrazuje kontaktní e-mail.
+Aktuální skutečný obsah nemá budoucí akce ani aktivní přihlášky na tábor;
+newsletter bez nastaveného formuláře zobrazuje kontaktní e-mail. Testovací
+obsah vznikl pouze v dočasné kopii a nepatří do publikovaného webu.
