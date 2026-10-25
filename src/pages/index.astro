@@ -5,6 +5,7 @@ import KartaAkce from '../components/KartaAkce.astro';
 import KartaClanku from '../components/KartaClanku.astro';
 import Newsletter from '../components/Newsletter.astro';
 import Blob from '../components/Blob.astro';
+import GrafickePozadi from '../components/GrafickePozadi.astro';
 import { schemaOrganizace } from '../data/kontakty';
 const vsechnyAkce = await getCollection('akce');
 const vsechnyClanky = await getCollection('blog');
@@ -38,18 +39,9 @@ const nejnovejsiClanky = vsechnyClanky
 
   <main>
     <section class="hero" aria-label="Úvod">
-      <!-- Blobs: decorative, aria-hidden, behind content via z-index -->
-      <Blob color="levandule" position="top-left"  size={580} opacity={0.84} />
-      <Blob color="oranzova"  position="top-right" size={400} opacity={0.78} bleed={0.5} />
+      <GrafickePozadi varianta={1} />
 
       <div class="hero-obsah">
-        <!-- Anchored to the illustration's corner, not the full section, so it stays
-             a companion to the figure at every viewport width instead of drifting
-             into the top-right blob. Hidden together with the illustration on mobile. -->
-        <div class="hero-blob-ilustrace">
-          <Blob color="fialova" position="bottom-right" size={320} opacity={0.76} bleed={0} />
-        </div>
-
         <div class="hero-text-blok">
           <h1>
             <span class="znacka-prvni">ZAHÁLKA</span>{' '}
@@ -168,13 +160,6 @@ const nejnovejsiClanky = vsechnyClanky
     pointer-events: none;
   }
 
-  .hero-blob-ilustrace {
-    position: absolute;
-    inset: 0;
-    transform: translateX(clamp(220px, 23vw, 330px));
-    pointer-events: none;
-  }
-
   @media (max-width: 700px) {
     .hero-obsah {
       grid-template-columns: 1fr;
@@ -184,8 +169,7 @@ const nejnovejsiClanky = vsechnyClanky
       padding-bottom: 2rem;
     }
 
-    .hero-ilustrace,
-    .hero-blob-ilustrace {
+    .hero-ilustrace {
       display: none;
     }
   }
@@ -209,7 +193,6 @@ const nejnovejsiClanky = vsechnyClanky
     font-size: clamp(0.65rem, 1.2vw, 0.75rem);
     font-weight: 600;
     letter-spacing: 0.035em;
-    opacity: 0.65;
     margin-bottom: 1.5rem;
   }
 
@@ -221,7 +204,6 @@ const nejnovejsiClanky = vsechnyClanky
     font-size: 1.05rem;
     line-height: 1.7;
     max-width: 52ch;
-    opacity: 0.85;
     margin-bottom: 2rem;
   }
 
