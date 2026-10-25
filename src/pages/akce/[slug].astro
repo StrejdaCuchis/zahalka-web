@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import SchemaEvent from '../../components/SchemaEvent.astro';
 import KartaAkce from '../../components/KartaAkce.astro';
+import GrafickePozadi from '../../components/GrafickePozadi.astro';
 import { rozmeryVerejnehoObrazku } from '../../utils/obrazky';
 import { ceskaTypografie } from '../../utils/typografie';
 
@@ -104,6 +105,7 @@ const breadcrumbSchema = {
   </Fragment>
 
   <main>
+    <GrafickePozadi varianta={3} presah />
     <nav aria-label="Drobečková navigace" class="drobeky">
       <ol>
         <li><a href="/">Domů</a></li>
@@ -191,6 +193,8 @@ const breadcrumbSchema = {
 
 <style>
   main {
+    position: relative;
+    isolation: isolate;
     max-width: 72ch;
     margin-inline: auto;
     padding: 1.5rem 1rem 4rem;
@@ -206,7 +210,6 @@ const breadcrumbSchema = {
     flex-wrap: wrap;
     gap: 0.25rem;
     font-size: 0.8rem;
-    opacity: 0.65;
   }
 
   .drobeky li + li::before {
@@ -277,7 +280,6 @@ const breadcrumbSchema = {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    opacity: 0.65;
   }
 
   .tlacitko-prihlasit:hover {

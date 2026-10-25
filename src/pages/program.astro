@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
-import Blob from '../components/Blob.astro';
+import GrafickePozadi from '../components/GrafickePozadi.astro';
 const vsechnyAkce = await getCollection('akce');
 
 const dnes = new Date();
@@ -20,8 +20,7 @@ const nadchazejici = vsechnyAkce
   canonicalPath="/program"
 >
   <main>
-    <Blob color="levandule" position="top-right"    size={440} opacity={0.60} />
-    <Blob color="limetka"   position="bottom-left"  size={370} opacity={0.52} />
+    <GrafickePozadi varianta={3} />
 
     <div class="obal">
       <h1>Program</h1>
@@ -93,7 +92,6 @@ const nadchazejici = vsechnyAkce
   h2 {
     font-size: 1rem;
     margin-bottom: 1.25rem;
-    opacity: 0.6;
   }
 
   section {
@@ -120,7 +118,6 @@ const nadchazejici = vsechnyAkce
     color: var(--barva-text);
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
-    opacity: 0.6;
   }
 
   .filtr:hover,
@@ -137,7 +134,6 @@ const nadchazejici = vsechnyAkce
   }
 
   .zadne-akce {
-    opacity: 0.7;
     font-style: italic;
   }
 
