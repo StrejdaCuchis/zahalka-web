@@ -46,6 +46,11 @@ const sirkaObsahu = jeDetailAkce || canonicalPath === '/cookies' ? '72ch'
 const minSirkaBlobu = jeDetailAkce ? '6px'
   : canonicalPath === '/cookies' || canonicalPath === '/blog' ? '12px'
   : '20px';
+// Na desktopu počítáme s vnitřním odsazením sloupce; mobilní kompozice se nemění.
+const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
+  : canonicalPath === '/kontakt' ? '836px'
+  : ['/', '/program', '/o-nas'].includes(canonicalPath) ? '1036px'
+  : sirkaObsahu;
 ---
 
 <!doctype html>
@@ -117,7 +122,7 @@ const minSirkaBlobu = jeDetailAkce ? '6px'
     </header>
 
     {pozadi ? (
-      <div class="plocha-stranky" style={`--sirka-obsahu:${sirkaObsahu};--min-sirka-blobu:${minSirkaBlobu}`}>
+      <div class="plocha-stranky" style={`--sirka-obsahu:${sirkaObsahu};--sirka-obsahu-desktop:${sirkaObsahuDesktop};--min-sirka-blobu:${minSirkaBlobu}`}>
         <PozadiStranky varianta={pozadi} />
         <slot />
       </div>

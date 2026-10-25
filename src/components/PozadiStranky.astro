@@ -102,6 +102,30 @@ const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/
     transform: translate(-100%, calc(var(--y) * -100%));
   }
 
+  @media (min-width: 1101px) {
+    .okraje .blob {
+      width: clamp(
+        var(--min-sirka-blobu, 1.25rem),
+        calc((100% - var(--sirka-obsahu-desktop, 1100px)) / 2 - 0.5rem),
+        26rem
+      );
+    }
+
+    /* Úvod homepage je užší než následující sekce. Jeho volné boky unesou
+       velké celé tvary, aniž by zasáhly text nebo posunutou postavičku. */
+    .okraje[data-pozadi="1"] .desktop .blob:nth-child(2) {
+      width: min(calc((100% - 760px) / 2 - 1.5rem), 26rem);
+      top: 12rem;
+      transform: none;
+    }
+
+    .okraje[data-pozadi="1"] .desktop .blob:nth-child(3) {
+      width: min(calc((100% - 600px) / 2 - 1rem), 32rem);
+      top: 2rem;
+      transform: translateX(-100%);
+    }
+  }
+
   @media (max-width: 1100px) {
     /* V dolním odsazení zbývá místo i pro výraznější celý tvar.
        Nejmenší dolní padding stránek je 4rem; motiv zabírá nejvýše 3rem. */

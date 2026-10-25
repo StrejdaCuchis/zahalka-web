@@ -28,6 +28,20 @@ odsazení. Do 340 px se drobné pravé motivy přesouvají vlevo kvůli kartám 
 Samostatná ilustrace newsletteru zachovává původní kompozici. Barvy a bitmapy
 se při této opravě nemění.
 
+### Větší motivy na desktopu
+
+Od 1101 px mají stránkové motivy limit šířky 26rem místo 14rem. Výpočet využívá
+i volné vnitřní odsazení obsahových sloupců. Na homepage dostaly modrý a korálový
+tvar samostatné umístění vedle užšího úvodu; korálový motiv má limit 32rem.
+Při šířce 1470 px měří modrý motiv přibližně 324 px a korálový 412 px
+(oba dříve 162 px). Mobilní a tabletové kompozice do 1100 px se nemění.
+
+Po zvětšení prošlo všech 16 stránek v šířkách 390, 1024, 1101, 1280, 1470,
+1600, 1920 a 2560 px kontrolou průniků dekorací s textem, obrázky a ovládáním:
+128 kombinací skutečného obsahu a dalších 128 kombinací v izolované kopii
+s budoucími akcemi, aktivními přihláškami na tábor a formulářem newsletteru.
+V těchto stavech nebyly nalezené kolize. Produkční build znovu prošel.
+
 ## Proč bylo potřeba použít SVG zdroje
 
 PNG exporty už některé tvary ořezávají hranicí původní kreslicí plochy. Samotné
