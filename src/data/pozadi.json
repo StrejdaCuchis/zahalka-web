@@ -1,0 +1,334 @@
+{
+  "1": {
+    "desktop": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-1-desktop-1.webp",
+        "width": 960,
+        "height": 1094,
+        "sirka": 0.31797,
+        "x": 0.68477,
+        "y": 0.88889
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-1-desktop-2.webp",
+        "width": 960,
+        "height": 738,
+        "sirka": 0.37552,
+        "x": 0.11068,
+        "y": 0.34329
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-1-desktop-3.webp",
+        "width": 960,
+        "height": 872,
+        "sirka": 0.48359,
+        "x": 0.96029,
+        "y": 0.08472
+      }
+    ],
+    "mobil": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-1-mobil-1.webp",
+        "width": 960,
+        "height": 1095,
+        "sirka": 0.69259,
+        "x": 0.06235,
+        "y": 0.72604
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-1-mobil-2.webp",
+        "width": 960,
+        "height": 738,
+        "sirka": 0.64444,
+        "x": 0.79321,
+        "y": 0.09809
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-1-mobil-3.webp",
+        "width": 708,
+        "height": 642,
+        "sirka": 0.43704,
+        "x": 0.74691,
+        "y": 0.51354
+      }
+    ]
+  },
+  "2": {
+    "desktop": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-desktop-1.webp",
+        "width": 960,
+        "height": 820,
+        "sirka": 0.29479,
+        "x": 0.76641,
+        "y": 0.34421
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-desktop-2.webp",
+        "width": 960,
+        "height": 1034,
+        "sirka": 0.55703,
+        "x": 0.11862,
+        "y": 1
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-desktop-3.webp",
+        "width": 960,
+        "height": 1231,
+        "sirka": 0.45286,
+        "x": 0.19206,
+        "y": 0.25255
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-desktop-4.webp",
+        "width": 960,
+        "height": 1326,
+        "sirka": 0.26979,
+        "x": 0.93854,
+        "y": 0.86968
+      }
+    ],
+    "mobil": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-mobil-1.webp",
+        "width": 654,
+        "height": 559,
+        "sirka": 0.4037,
+        "x": 0.6463,
+        "y": 0.5151
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-mobil-2.webp",
+        "width": 960,
+        "height": 1034,
+        "sirka": 0.76173,
+        "x": 0.14938,
+        "y": 1
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-mobil-3.webp",
+        "width": 960,
+        "height": 1244,
+        "sirka": 0.59691,
+        "x": 0.14167,
+        "y": 0.13142
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-2-mobil-4.webp",
+        "width": 599,
+        "height": 827,
+        "sirka": 0.36975,
+        "x": 0.90957,
+        "y": 0.75712
+      }
+    ]
+  },
+  "3": {
+    "desktop": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-3-desktop-1.webp",
+        "width": 960,
+        "height": 717,
+        "sirka": 0.69688,
+        "x": 0.91927,
+        "y": 0.68333
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-3-desktop-2.webp",
+        "width": 960,
+        "height": 975,
+        "sirka": 0.40651,
+        "x": 0.21133,
+        "y": 1
+      }
+    ],
+    "mobil": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-3-mobil-1.webp",
+        "width": 960,
+        "height": 1056,
+        "sirka": 0.64198,
+        "x": 0.90309,
+        "y": 0.65069
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-3-mobil-2.webp",
+        "width": 919,
+        "height": 933,
+        "sirka": 0.56728,
+        "x": 0.29475,
+        "y": 0.99497
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-3-mobil-3.webp",
+        "width": 960,
+        "height": 795,
+        "sirka": 0.87963,
+        "x": 0.17747,
+        "y": 0.06632
+      }
+    ]
+  },
+  "4": {
+    "desktop": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-4-desktop-1.webp",
+        "width": 960,
+        "height": 819,
+        "sirka": 0.29479,
+        "x": 0.16276,
+        "y": 0.33333
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-4-desktop-2.webp",
+        "width": 960,
+        "height": 1431,
+        "sirka": 0.25964,
+        "x": 0.84987,
+        "y": 0.62315
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-4-desktop-3.webp",
+        "width": 960,
+        "height": 1325,
+        "sirka": 0.27005,
+        "x": 0.61758,
+        "y": 0.85255
+      }
+    ],
+    "mobil": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-4-mobil-1.webp",
+        "width": 819,
+        "height": 700,
+        "sirka": 0.50556,
+        "x": 0.28735,
+        "y": 0.32292
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-4-mobil-2.webp",
+        "width": 722,
+        "height": 1074,
+        "sirka": 0.44568,
+        "x": 0.76543,
+        "y": 0.65625
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-4-mobil-3.webp",
+        "width": 750,
+        "height": 1036,
+        "sirka": 0.46296,
+        "x": 0.27778,
+        "y": 0.78368
+      }
+    ]
+  },
+  "5": {
+    "desktop": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-5-desktop-1.webp",
+        "width": 960,
+        "height": 1075,
+        "sirka": 0.4513,
+        "x": 0.90143,
+        "y": 0.93102
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-5-desktop-2.webp",
+        "width": 960,
+        "height": 1328,
+        "sirka": 0.26953,
+        "x": 0.15195,
+        "y": 0.37917
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-5-desktop-3.webp",
+        "width": 960,
+        "height": 1039,
+        "sirka": 0.34193,
+        "x": 0.76628,
+        "y": 0
+      }
+    ],
+    "mobil": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-5-mobil-1.webp",
+        "width": 960,
+        "height": 1075,
+        "sirka": 0.9,
+        "x": 1,
+        "y": 0.68108
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-5-mobil-2.webp",
+        "width": 755,
+        "height": 1043,
+        "sirka": 0.46605,
+        "x": 0.26451,
+        "y": 0.24184
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-5-mobil-3.webp",
+        "width": 955,
+        "height": 1035,
+        "sirka": 0.58951,
+        "x": 0.61265,
+        "y": 0
+      }
+    ]
+  },
+  "6": {
+    "desktop": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-6-desktop-1.webp",
+        "width": 960,
+        "height": 820,
+        "sirka": 0.25781,
+        "x": 0.15573,
+        "y": 0.25926
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-6-desktop-2.webp",
+        "width": 960,
+        "height": 1055,
+        "sirka": 0.43828,
+        "x": 0.90247,
+        "y": 0.20069
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-6-desktop-3.webp",
+        "width": 960,
+        "height": 1203,
+        "sirka": 0.50599,
+        "x": 0.18841,
+        "y": 1
+      }
+    ],
+    "mobil": [
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-6-mobil-1.webp",
+        "width": 544,
+        "height": 465,
+        "sirka": 0.3358,
+        "x": 0.6784,
+        "y": 0.24427
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-6-mobil-2.webp",
+        "width": 925,
+        "height": 1016,
+        "sirka": 0.57099,
+        "x": 0.31636,
+        "y": 0.77674
+      },
+      {
+        "src": "/obrazky/pozadi/vrstvy/varianta-6-mobil-3.webp",
+        "width": 937,
+        "height": 1173,
+        "sirka": 0.5784,
+        "x": 0.67315,
+        "y": 0.55851
+      }
+    ]
+  }
+}

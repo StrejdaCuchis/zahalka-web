@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
-import GrafickePozadi from '../components/GrafickePozadi.astro';
 import { kontakty } from '../data/kontakty';
 import { ceskaTypografie } from '../utils/typografie';
 
@@ -18,6 +17,7 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
 ---
 
 <Zaklad
+  pozadi={5}
   title="O nás – Zahálka • kulturní prostor"
   description={metaPopis}
   ogImage={ogImage}
@@ -25,7 +25,6 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
   canonicalPath="/o-nas"
 >
   <main>
-    <GrafickePozadi varianta={5} />
 
     <article>
       <header class="uvod">

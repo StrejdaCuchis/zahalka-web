@@ -4,8 +4,6 @@ import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
 import KartaClanku from '../components/KartaClanku.astro';
 import Newsletter from '../components/Newsletter.astro';
-import Blob from '../components/Blob.astro';
-import GrafickePozadi from '../components/GrafickePozadi.astro';
 import { schemaOrganizace } from '../data/kontakty';
 const vsechnyAkce = await getCollection('akce');
 const vsechnyClanky = await getCollection('blog');
@@ -29,6 +27,7 @@ const nejnovejsiClanky = vsechnyClanky
 ---
 
 <Zaklad
+  pozadi={1}
   title="Zahálka – kulturní prostor Teplice"
   description="Zahálka je kulturní prostor v Teplicích pro besedy, workshopy a festivaly. Přijďte na akci — dveře otevíráme pro každého."
   canonicalPath="/"
@@ -39,7 +38,6 @@ const nejnovejsiClanky = vsechnyClanky
 
   <main>
     <section class="hero" aria-label="Úvod">
-      <GrafickePozadi varianta={1} />
 
       <div class="hero-obsah">
         <div class="hero-text-blok">
@@ -77,7 +75,6 @@ const nejnovejsiClanky = vsechnyClanky
 
     {nejblizsiAkce.length > 0 && (
       <section class="nejblizsi" aria-label="Nejbližší akce">
-        <Blob color="salvej" position="bottom-left" size={380} opacity={0.48} />
         <div class="obal">
           <h2>Nejbližší akce</h2>
           <div class="mrizka">
@@ -268,7 +265,6 @@ const nejnovejsiClanky = vsechnyClanky
   .blog-vyber {
     position: relative;
     padding-block: 4rem;
-    background: color-mix(in srgb, var(--levandule) 10%, transparent);
   }
 
   h2 {

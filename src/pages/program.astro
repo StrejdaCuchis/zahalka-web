@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
-import GrafickePozadi from '../components/GrafickePozadi.astro';
 const vsechnyAkce = await getCollection('akce');
 
 const dnes = new Date();
@@ -15,12 +14,12 @@ const nadchazejici = vsechnyAkce
 ---
 
 <Zaklad
+  pozadi={3}
   title="Program akcí – Zahálka"
   description="Přehled všech nadcházejících akcí kulturního prostoru Zahálka v Teplicích — besedy, workshopy, festivaly a dílny pro děti."
   canonicalPath="/program"
 >
   <main>
-    <GrafickePozadi varianta={3} />
 
     <div class="obal">
       <h1>Program</h1>

@@ -1,70 +1,74 @@
 # Autorská pozadí Zahálky
 
-## Rozhodnutí, 25. 10. 2026
+## Výsledné řešení po vizuální připomínce, 25. 10. 2026
 
-Cílem je rozpoznatelná Zahálka a dobře čitelné informace vedoucí k přihlášení.
-Každá varianta má vlastní úlohu, nikoli náhodné střídání při načtení stránky.
-Podklady obsahují šest variant (potvrzeno zadavatelem), vždy desktop a mobil.
+Zadání: původní barvy, celé tvary bez rovných spodních řezů, rozprostření po celé
+obsahové části stránky a zachování dosavadního rozložení obsahu.
 
-![Přehled všech dodaných kompozic na současné krémové barvě](prehled.webp)
+Původní pokus o zeslabené pozadí v hero sekcích je nahrazený. Grafika se nyní
+nezesvětluje, nemá sníženou opacity, barevný filtr ani přidaný gradient. Tvary
+zůstávají ve svých proporcích; neroztahují se do výšky spolu s dlouhou stránkou.
 
-| Číslo | Kompozice a riziko | Rozhodnutí |
+![Přehled původních dodaných kompozic](prehled.webp)
+
+| Varianta | Použití | Kompoziční role |
 | --- | --- | --- |
-| 1 | Modrá vlevo, korálová vpravo nahoře, fialová dole. Vyvážené rámování, blízké původní homepage. Mobil přesouvá barvy k okrajům. | Úvod homepage. Nahradit tři generované bloby jednou autorskou kompozicí, zachovat ilustraci a hlavní odkazy. |
-| 2 | Nejvyšší barevná hustota, žlutá a zelená vlevo, fialová a modrá vpravo. Na mobilu je fialová blízko textové osy. | Úvod Příměšťáku. Pod souhrnem a CTA udržet klidnou krémovou plochu; nenechat dekoraci odsouvat přihlášení. |
-| 3 | Desktop má největší volnou plochu vlevo nahoře; oranžová zprava a fialová zdola vytvářejí směrové rámování. Mobil přidává žlutou vlevo nahoře. | Program a detail akce. Dekorace jen v úvodním pásu, obsah a přihlášení zůstávají na krémové ploše. |
-| 4 | Chladnější fialová a modrá, drobný žlutý kontrapunkt. Mobilní tvary se soustředí do spodní poloviny. | Blog, pouze úvod přehledu. Texty článků a plakáty nejsou překryty další dekorací. |
-| 5 | Modrá, korálová a zelená. Mobil má překryv barev nahoře a zelený tvar na pravém okraji. | O nás a Kontakt jako společná rodina stránek o prostoru. Dlouhé texty, fotky a mapa mají vlastní klidnou plochu. |
-| 6 | Desktop je výrazný vlevo, mobil soustředí všechny tři tvary doprostřed. Mobilní varianta nemá použitelný souvislý sloupec pro delší text. | Newsletter: samostatná dekorativní plocha vedle sekce Co můžete čekat na desktopu, za textem na mobilu. Není pozadím formuláře a neposouvá přihlášení. |
+| 1 | Celá obsahová část homepage | Modrá, korálová a fialová rámují jednotlivé části stránky. |
+| 2 | Celá obsahová část Příměšťáku | Pestřejší hravá paleta pro dětský program. |
+| 3 | Celá obsahová část Programu a detailů akcí | Oranžový a fialový motiv; mobil obsahuje i původní žlutou. |
+| 4 | Celá obsahová část přehledu Blogu | Chladnější fialová a modrá se žlutým akcentem. |
+| 5 | Celá obsahová část O nás a Kontaktu | Společná modrá, korálová a zelená pro stránky o prostoru. |
+| 6 | Samostatná ilustrace newsletteru | Úplná dodaná kompozice vedle informací na desktopu, za nimi na mobilu. Její rozložení se při opravě nemění. |
 
-## Pracovní postup
+Tmavě zelené tvary variant 2 a 5 jsou menším akcentem na pravém okraji. Na mobilu
+jsou dole v okrajovém prostoru, aby neležely pod zeleným textem. Jejich barvy se
+kvůli čitelnosti neupravují.
 
-1. Inventura originálů a srovnání obou formátů na skutečné barvě webu.
-2. Přiřazení podle volného prostoru a úkolu návštěvníka, nikoli jen podle barev.
-3. Optimalizace a integrace vždy jedné varianty; vlastní commit 1 až 6.
-4. Produkční build a vizuální kontrola každého kroku na desktopu a mobilu.
-5. Závěrečná kontrola všech šesti variant a nejdůležitější stránky: detailu akce.
+## Proč bylo potřeba použít SVG zdroje
 
-## Technická pravidla
+PNG exporty už některé tvary ořezávají hranicí původní kreslicí plochy. Samotné
+odstranění CSS ořezu nebo přepnutí na `contain` by tuto rovnou hranu neopravilo.
+Dodaný SVG export ale obsahuje celé bitmapy tvarů a jejich původní masky.
 
-- Originály: `/Users/tomaskucera/Downloads/grafika`, soubory `1` až `6`.
-- PNG mají průhlednost, desktop 2560 × 1440, mobil 1080 × 1920.
-- Dodaná SVG jsou rastrové kompozice s vloženými bitmapami, přibližně 21–46 MB za soubor. Nejsou vhodná pro přímé nasazení.
-- Produkční soubory: průhledné WebP, desktop 1920 × 1080, mobil 720 × 1280, kvalita 80. Barevnost a zrnitost zůstávají součástí dodaného motivu.
-- Obnovení jedné varianty: `python3 scripts/pripravit-pozadi.py /cesta/ke/grafika 1` (vyžaduje Pillow).
-- Komponenta `GrafickePozadi.astro` volí vlastní mobilní kompozici přes `<picture>` při šířce do 700 px, bez JavaScriptu. Otevřený obsah a navigace zůstávají nezávislé na dekoraci.
-- Dekorace mají prázdný alt, `aria-hidden`, rozměry a neodchytávají kliknutí. Pozadí se neopakuje pod dlouhým obsahem a nepoužívá se jako významový obrázek pro sdílení.
-- Pod textem mají kompozice intenzitu 24 % nad stávající krémovou; varianty 2 a 5 mají kvůli tmavé zelené 20 %. Syté části jinak s běžným zeleným textem AA nesplňují. Samostatná varianta 6 zůstává na 100 %. Drobné texty nad dekorací nesmějí mít sníženou opacity.
-- Původní komponenta Blob zůstává pro drobné dekorace na pomocných stránkách.
+Skript odstraní pouze vnější obdélníkový klip kreslicí plochy. Původní masky,
+barvy, zrnitost, vnitřní klipy a natočení jednotlivých tvarů zachovává. Každý
+celý tvar se optimalizuje do WebP. Polohy vycházejí z dodané kompozice, pouze
+svislé rozestupy se přizpůsobují délce stránky. Okolo všech tvarů je odstup od
+okraje, takže se nedotýkají hrany hero sekce ani patičky.
 
-## Kontrola přijetí
+## Soubory a obnovení podkladů
 
-- Desktop 1280 × 900; mobil 390 × 844, krajní mobilní šířka 320 px.
-- Žádný vodorovný posun, deformace motivu ani překrytí odkazu dekorací.
-- Nadpis, datum, místo a CTA mají čitelnou plochu. Podklady nesmějí zvýšit výšku úvodu detailu akce.
-- Přepnutí zdrojů mobil/desktop, načtení obrázků, zachování jednoho h1 a sémantiky.
-- Program a odkazy fungují i bez závislosti na skriptu pozadí; pozadí žádný skript nepřidává.
-- Build musí projít před každým commitem. Vizuální kontrola se týká skutečného produkčního výstupu.
+- Originály: `/Users/tomaskucera/Downloads/grafika`, varianty 1–6, desktop a mobil.
+- `scripts/pripravit-vrstvy-pozadi.py`: příprava celých vrstev z SVG pro varianty 1–6.
+- `scripts/vykreslit-vrstvu.mjs`: SVG renderer přes lokální sharp ze závislostí Astro.
+- `src/data/pozadi.json`: rozměry a relativní polohy pro obě kompozice.
+- `public/obrazky/pozadi/vrstvy/`: 37 optimalizovaných úplných tvarů. Zdrojová SVG o desítkách MB se neposílají do prohlížeče.
+- `src/components/PozadiStranky.astro`: jednotlivé vrstvy přes celou obsahovou část, bez JS.
+- `src/layouts/Zaklad.astro`: prop `pozadi`, společná vrstva za obsahem. Hlavička a patička zachovávají dosavadní tok.
+- `src/components/GrafickePozadi.astro`: samostatná kompozice newsletteru z úplných tvarů, v původních rozměrech a barevnosti.
+- Starší WebP celých kreslicích ploch jsou zachované jako podklady předchozí verze. Původní skript pro převod PNG zůstává pro jejich obnovení.
 
-## Výsledek ověření
+Obnovení celých vrstev (Pillow + nainstalované závislosti projektu):
 
-- Produkční build proběhl úspěšně v každém ze šesti kroků (16 stránek).
-- V prohlížeči ověřeno osm cest: `/`, `/tabor/`, `/program/`, `/akce/voda-ve-meste/`, `/blog/`, `/o-nas/`, `/kontakt/`, `/newsletter/`.
-- Každá cesta při 1280, 390 a 320 px: jeden h1, bez horizontálního přetečení, načtený správný desktopový nebo mobilní WebP (24 kombinací).
-- Kliknutí na filtr programu zachovává aktivní stav; pozadí nezasahuje do ovládání. Všechna dodaná pozadí fungují nativním HTML/CSS bez dodatečného JS.
-- Varianta 6 na mobilu: `position: relative`, intenzita 100 %, vlastní mobilní export, za informacemi a mimo text i přihlášení.
-- Kontrola kontrastu: všechny barvy plného optimalizovaného podkladu složeny nad `#EDEBE5` při výsledné intenzitě, s textem `#2E5E4E`. Nejnižší vypočtené poměry níže (zaokrouhlení alfa na 8 bitů). Jde o kontrolu nové dekorace, nikoli audit přístupnosti celého stávajícího webu.
+```sh
+python3 scripts/pripravit-vrstvy-pozadi.py /cesta/ke/grafika
+```
 
-| Varianta | Desktop, minimum | Mobil, minimum |
-| --- | --- | --- |
-| 1 | 4.73:1 | 4.57:1 |
-| 2 | 4.70:1 | 4.74:1 |
-| 3 | 4.81:1 | 4.84:1 |
-| 4 | 5.15:1 | 5.00:1 |
-| 5 | 4.59:1 | 4.74:1 |
+Kompozice se přepínají při 700 px. Skrytá kompozice má v `picture` průhledný
+fallback a nenačítá bitmapy pro druhé zařízení. Dekorace mají prázdný alt,
+`aria-hidden`, rozměry a neodchytávají kliknutí. Vrstvy ve spodní části stránky
+se načítají lazy. Nepoužívá se `cover`, opakování pozadí, barevné úpravy ani JS
+pro polohování.
 
-Aktuální obsah nemá budoucí akce ani aktivní přihlášky na tábor. Newsletter zatím
-zobrazuje kontaktní e-mail místo připojeného formuláře. Odeslání přihlášky tedy
-nebylo možné ověřit na skutečném aktivním termínu; podmínky zobrazení, cíle odkazů
-a logika formulářů nebyly měněny. Detail akce zachovává rozměry a pořadí obsahu,
-dekorace je absolutní a nezabírá místo v toku stránky.
+## Ověření opravy
+
+- Produkční build: 16 stránek, úspěšný.
+- Osm cest: `/`, `/tabor/`, `/program/`, `/akce/voda-ve-meste/`, `/blog/`, `/o-nas/`, `/kontakt/`, `/newsletter/`.
+- Šířky 1280, 390 a 320 px, dohromady 24 kombinací.
+- Před úpravou byly uložené rozměry a absolutní polohy hlavních nadpisů, podnadpisů, odkazů, obrázků, main, hlavičky a patičky; následné porovnání potvrzuje stejné hodnoty i stejnou celkovou výšku dokumentu.
+- Ověření celých obrysů a původní sytosti na desktopu i mobilu; nový podklad už nekončí v pevné výšce hero sekce.
+- Z homepage bylo odstraněné tónované pozadí sekce Blog, které by při překrytí opět měnilo barvu procházejícího tvaru. Rozměry sekce se nemění.
+- Čitelnost tmavě zelených tvarů řeší jejich umístění. Dřívější tabulka kontrastu počítaná se zeslabenými obrázky už pro tento návrh neplatí a není tvrzením o shodě celého webu s WCAG.
+
+Obsah a logika přihlášek nejsou součástí opravy. Aktuální obsah nemá budoucí
+akce ani aktivní přihlášky na tábor; newsletter zobrazuje kontaktní e-mail.

@@ -1,6 +1,5 @@
 ---
 import Zaklad from '../layouts/Zaklad.astro';
-import GrafickePozadi from '../components/GrafickePozadi.astro';
 import { kontakty, schemaOrganizace } from '../data/kontakty';
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
@@ -17,6 +16,7 @@ const organizationSchema = {
 ---
 
 <Zaklad
+  pozadi={5}
   title="Kontakt – Zahálka"
   description={`Kde nás najdete: Zahálka je na Benešově náměstí 3282 v Teplicích. Pište na ${kontakty.email} nebo sledujte @zahalkateplice.`}
   canonicalPath="/kontakt"
@@ -26,7 +26,6 @@ const organizationSchema = {
   </Fragment>
 
   <main>
-    <GrafickePozadi varianta={5} />
 
     <div class="obal">
       <h1>Kontakt</h1>

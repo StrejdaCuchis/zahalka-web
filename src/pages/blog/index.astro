@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import KartaClanku from '../../components/KartaClanku.astro';
 import Newsletter from '../../components/Newsletter.astro';
-import GrafickePozadi from '../../components/GrafickePozadi.astro';
 
 const clanky = (await getCollection('blog'))
   .filter((clanek) => clanek.data.publikovano)
@@ -11,12 +10,12 @@ const clanky = (await getCollection('blog'))
 ---
 
 <Zaklad
+  pozadi={4}
   title="Blog – Zahálka"
   description="Příběhy, inspirace a témata ze Zahálky — kultura, tvoření, děti a život v Teplicích."
   canonicalPath="/blog"
 >
   <main>
-    <GrafickePozadi varianta={4} />
 
     <header class="uvod">
       <p class="znacka">Čtení ze Zahálky</p>

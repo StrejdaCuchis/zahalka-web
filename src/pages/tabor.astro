@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
-import GrafickePozadi from '../components/GrafickePozadi.astro';
 import { kontakty } from '../data/kontakty';
 import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
 import { ceskaTypografie } from '../utils/typografie';
@@ -121,6 +120,7 @@ const campSchema = maKompletniTermin ? {
 ---
 
 <Zaklad
+  pozadi={2}
   title="Příměšťák – Zahálka Teplice"
   description={metaPopis}
   ogImage={hlavniObrazek}
@@ -134,7 +134,6 @@ const campSchema = maKompletniTermin ? {
 
   <main>
     <section class="hero" aria-label="O táboře">
-      <GrafickePozadi varianta={2} />
 
       <header class="hero-obsah">
         <p class="znacka">{ceskaTypografie(znacka)}</p>

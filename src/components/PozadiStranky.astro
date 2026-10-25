@@ -1,0 +1,99 @@
+---
+import kompozice from '../data/pozadi.json';
+
+interface Props {
+  varianta: 1 | 2 | 3 | 4 | 5 | 6;
+  lazy?: boolean;
+}
+
+const { varianta, lazy = false } = Astro.props;
+const vrstvy = kompozice[String(varianta) as keyof typeof kompozice];
+const tmavaVrstva = varianta === 2 ? 1 : varianta === 5 ? 0 : -1;
+const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
+---
+
+<div class="pozadi-stranky" aria-hidden="true" data-pozadi={varianta}>
+  {(['desktop', 'mobil'] as const).map((zarizeni) => (
+    <div class:list={['kompozice', zarizeni]}>
+      {vrstvy[zarizeni].map((blob, index) => (
+        <picture
+          class:list={['blob', { tmavy: index === tmavaVrstva }]}
+          style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}`}
+        >
+          <source
+            media={zarizeni === 'desktop' ? '(min-width: 701px)' : '(max-width: 700px)'}
+            srcset={blob.src}
+          />
+          <img
+            src={prazdnyObrazek}
+            alt=""
+            width={blob.width}
+            height={blob.height}
+            loading={lazy || blob.y >= 0.65 ? 'lazy' : 'eager'}
+            decoding="async"
+          />
+        </picture>
+      ))}
+    </div>
+  ))}
+</div>
+
+<style>
+  .pozadi-stranky,
+  .kompozice {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .pozadi-stranky {
+    z-index: -1;
+  }
+
+  .kompozice {
+    /* Celý obrys má odstup od okrajů obsahu včetně patičky. */
+    inset: clamp(1rem, 2vw, 2rem);
+  }
+
+  .mobil {
+    display: none;
+  }
+
+  .blob {
+    position: absolute;
+    display: block;
+    width: calc(var(--sirka) * 100%);
+    max-height: 100%;
+    aspect-ratio: var(--pomer);
+    left: calc(var(--x) * 100%);
+    top: calc(var(--y) * 100%);
+    transform: translate(calc(var(--x) * -100%), calc(var(--y) * -100%));
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Tmavá zelená patří do okraje, aby se nemusela zesvětlovat pod textem. */
+  .tmavy {
+    width: min(14%, 12rem);
+    left: 100%;
+    top: 85%;
+    transform: translate(-100%, -85%);
+  }
+
+  @media (max-width: 700px) {
+    .desktop { display: none; }
+    .mobil { display: block; }
+
+    .tmavy {
+      width: 16%;
+      top: 100%;
+      transform: translate(-100%, -100%);
+    }
+  }
+</style>

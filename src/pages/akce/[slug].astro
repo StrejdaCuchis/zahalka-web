@@ -3,7 +3,6 @@ import { getCollection, render } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import SchemaEvent from '../../components/SchemaEvent.astro';
 import KartaAkce from '../../components/KartaAkce.astro';
-import GrafickePozadi from '../../components/GrafickePozadi.astro';
 import { rozmeryVerejnehoObrazku } from '../../utils/obrazky';
 import { ceskaTypografie } from '../../utils/typografie';
 
@@ -81,6 +80,7 @@ const breadcrumbSchema = {
 ---
 
 <Zaklad
+  pozadi={3}
   title={`${nazev} – Zahálka`}
   description={kratkyPopis}
   ogImage={obrazek}
@@ -105,7 +105,6 @@ const breadcrumbSchema = {
   </Fragment>
 
   <main>
-    <GrafickePozadi varianta={3} presah />
     <nav aria-label="Drobečková navigace" class="drobeky">
       <ol>
         <li><a href="/">Domů</a></li>
