@@ -1,7 +1,7 @@
 ---
 import Zaklad from '../layouts/Zaklad.astro';
 import Newsletter from '../components/Newsletter.astro';
-import Blob from '../components/Blob.astro';
+import GrafickePozadi from '../components/GrafickePozadi.astro';
 ---
 
 <Zaklad
@@ -10,8 +10,6 @@ import Blob from '../components/Blob.astro';
   canonicalPath="/newsletter"
 >
   <main>
-    <Blob color="oranzova" position="top-left" size={430} opacity={0.5} />
-    <Blob color="levandule" position="bottom-right" size={390} opacity={0.5} />
     <article>
       <header>
         <p class="znacka">Pár dobrých zpráv</p>
@@ -27,14 +25,17 @@ import Blob from '../components/Blob.astro';
         text="Píšeme jen ve chvíli, kdy máme nový program nebo téma, které stojí za váš čas."
       />
 
-      <section aria-labelledby="co-cekat">
-        <h2 id="co-cekat">Co můžete čekat</h2>
-        <ul>
-          <li>pozvánky na besedy, workshopy a akce pro děti,</li>
-          <li>nové články ze Zahálky a z Teplic,</li>
-          <li>včasné informace o přihláškách na příměstské tábory.</li>
-        </ul>
-        <p>Odběr lze kdykoli zrušit odkazem v patičce každého e-mailu.</p>
+      <section class="co-cekat" aria-labelledby="co-cekat">
+        <div class="co-cekat-text">
+          <h2 id="co-cekat">Co můžete čekat</h2>
+          <ul>
+            <li>pozvánky na besedy, workshopy a akce pro děti,</li>
+            <li>nové články ze Zahálky a z Teplic,</li>
+            <li>včasné informace o přihláškách na příměstské tábory.</li>
+          </ul>
+          <p>Odběr lze kdykoli zrušit odkazem v patičce každého e-mailu.</p>
+        </div>
+        <GrafickePozadi varianta={6} samostatne lazy />
       </section>
     </article>
   </main>
@@ -80,9 +81,28 @@ import Blob from '../components/Blob.astro';
     opacity: 0.85;
   }
 
-  article > section {
-    max-width: 62ch;
+  .co-cekat {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 2rem;
     margin-top: 3rem;
+  }
+
+  .co-cekat-text {
+    max-width: 62ch;
+  }
+
+  @media (max-width: 700px) {
+    .co-cekat {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
+    .co-cekat :global(.graficke-pozadi) {
+      width: min(10rem, 100%);
+      margin-inline: auto;
+    }
   }
 
   h2 {

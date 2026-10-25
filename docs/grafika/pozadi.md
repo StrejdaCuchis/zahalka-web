@@ -15,7 +15,7 @@ Podklady obsahují šest variant (potvrzeno zadavatelem), vždy desktop a mobil.
 | 3 | Desktop má největší volnou plochu vlevo nahoře; oranžová zprava a fialová zdola vytvářejí směrové rámování. Mobil přidává žlutou vlevo nahoře. | Program a detail akce. Dekorace jen v úvodním pásu, obsah a přihlášení zůstávají na krémové ploše. |
 | 4 | Chladnější fialová a modrá, drobný žlutý kontrapunkt. Mobilní tvary se soustředí do spodní poloviny. | Blog, pouze úvod přehledu. Texty článků a plakáty nejsou překryty další dekorací. |
 | 5 | Modrá, korálová a zelená. Mobil má překryv barev nahoře a zelený tvar na pravém okraji. | O nás a Kontakt jako společná rodina stránek o prostoru. Dlouhé texty, fotky a mapa mají vlastní klidnou plochu. |
-| 6 | Desktop je výrazný vlevo, mobil soustředí všechny tři tvary doprostřed. Mobilní varianta nemá použitelný souvislý sloupec pro delší text. | Newsletter: samostatná dekorativní plocha vedle obsahu na desktopu, nad obsahem na mobilu. Nikdy pod formulářem. |
+| 6 | Desktop je výrazný vlevo, mobil soustředí všechny tři tvary doprostřed. Mobilní varianta nemá použitelný souvislý sloupec pro delší text. | Newsletter: samostatná dekorativní plocha vedle sekce Co můžete čekat na desktopu, za textem na mobilu. Není pozadím formuláře a neposouvá přihlášení. |
 
 ## Pracovní postup
 
@@ -34,7 +34,7 @@ Podklady obsahují šest variant (potvrzeno zadavatelem), vždy desktop a mobil.
 - Obnovení jedné varianty: `python3 scripts/pripravit-pozadi.py /cesta/ke/grafika 1` (vyžaduje Pillow).
 - Komponenta `GrafickePozadi.astro` volí vlastní mobilní kompozici přes `<picture>` při šířce do 700 px, bez JavaScriptu. Otevřený obsah a navigace zůstávají nezávislé na dekoraci.
 - Dekorace mají prázdný alt, `aria-hidden`, rozměry a neodchytávají kliknutí. Pozadí se neopakuje pod dlouhým obsahem a nepoužívá se jako významový obrázek pro sdílení.
-- Pod textem mají kompozice intenzitu 24 % nad stávající krémovou. Syté části (hlavně zelená a korálová) jinak s běžným zeleným textem AA nesplňují. Samostatná varianta 6 zůstává na 100 %. Drobné texty nad dekorací nesmějí mít sníženou opacity.
+- Pod textem mají kompozice intenzitu 24 % nad stávající krémovou; varianty 2 a 5 mají kvůli tmavé zelené 20 %. Syté části jinak s běžným zeleným textem AA nesplňují. Samostatná varianta 6 zůstává na 100 %. Drobné texty nad dekorací nesmějí mít sníženou opacity.
 - Původní komponenta Blob zůstává pro drobné dekorace na pomocných stránkách.
 
 ## Kontrola přijetí
@@ -45,3 +45,26 @@ Podklady obsahují šest variant (potvrzeno zadavatelem), vždy desktop a mobil.
 - Přepnutí zdrojů mobil/desktop, načtení obrázků, zachování jednoho h1 a sémantiky.
 - Program a odkazy fungují i bez závislosti na skriptu pozadí; pozadí žádný skript nepřidává.
 - Build musí projít před každým commitem. Vizuální kontrola se týká skutečného produkčního výstupu.
+
+## Výsledek ověření
+
+- Produkční build proběhl úspěšně v každém ze šesti kroků (16 stránek).
+- V prohlížeči ověřeno osm cest: `/`, `/tabor/`, `/program/`, `/akce/voda-ve-meste/`, `/blog/`, `/o-nas/`, `/kontakt/`, `/newsletter/`.
+- Každá cesta při 1280, 390 a 320 px: jeden h1, bez horizontálního přetečení, načtený správný desktopový nebo mobilní WebP (24 kombinací).
+- Kliknutí na filtr programu zachovává aktivní stav; pozadí nezasahuje do ovládání. Všechna dodaná pozadí fungují nativním HTML/CSS bez dodatečného JS.
+- Varianta 6 na mobilu: `position: relative`, intenzita 100 %, vlastní mobilní export, za informacemi a mimo text i přihlášení.
+- Kontrola kontrastu: všechny barvy plného optimalizovaného podkladu složeny nad `#EDEBE5` při výsledné intenzitě, s textem `#2E5E4E`. Nejnižší vypočtené poměry níže (zaokrouhlení alfa na 8 bitů). Jde o kontrolu nové dekorace, nikoli audit přístupnosti celého stávajícího webu.
+
+| Varianta | Desktop, minimum | Mobil, minimum |
+| --- | --- | --- |
+| 1 | 4.73:1 | 4.57:1 |
+| 2 | 4.70:1 | 4.74:1 |
+| 3 | 4.81:1 | 4.84:1 |
+| 4 | 5.15:1 | 5.00:1 |
+| 5 | 4.59:1 | 4.74:1 |
+
+Aktuální obsah nemá budoucí akce ani aktivní přihlášky na tábor. Newsletter zatím
+zobrazuje kontaktní e-mail místo připojeného formuláře. Odeslání přihlášky tedy
+nebylo možné ověřit na skutečném aktivním termínu; podmínky zobrazení, cíle odkazů
+a logika formulářů nebyly měněny. Detail akce zachovává rozměry a pořadí obsahu,
+dekorace je absolutní a nezabírá místo v toku stránky.
