@@ -94,3 +94,48 @@ button:focus-visible {
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* Mobilní kompozice leží za obsahem a nemění jeho tok. Na světlých
+   barvách může text zůstat přímo; syté části překrývají čtecí plochy. */
+@media (max-width: 700px) {
+  :is(.plocha-stranky main, .cteni-na-grafice) {
+    --inkoust-na-grafice: #123428;
+    color: var(--inkoust-na-grafice);
+  }
+
+  :is(.plocha-stranky main, .cteni-na-grafice) :is(h1, h2, h3) {
+    color: var(--inkoust-na-grafice);
+  }
+
+  :is(.plocha-stranky main, .cteni-na-grafice) :where(h1, h2, h3, p, time, figcaption) {
+    opacity: 1 !important;
+  }
+
+  .plocha-stranky main a:not(:is(.btn-cta, .btn-prihlasit, .tlacitko-prihlasit, .hlavni-odkaz, .sekce-cta a)),
+  .cteni-na-grafice a {
+    color: var(--inkoust-na-grafice);
+    opacity: 1 !important;
+  }
+
+  .plocha-stranky main .karta-typ {
+    color: var(--inkoust-na-grafice);
+  }
+
+  /* Podklady tvoří celé čtecí bloky, nikoli pruh pod každým řádkem.
+     Původní barvy bitmap zůstávají bez filtrů a bez snížené opacity. */
+  .plocha-stranky[data-stranka='/kontakt'] :is(.adresa-sekce, .spojeni-sekce, .doprava),
+  .plocha-stranky[data-stranka='/o-nas'] :is(.perex, .obsah > h2:first-child, .obsah > h2:first-child + p, .obsah > h2:last-of-type, .obsah > h2:last-of-type ~ p, .souvisejici),
+  .plocha-stranky[data-stranka='/tabor'] .obsah,
+  .plocha-stranky[data-stranka^='/akce/'] :is(.obsah-akce, figcaption),
+  .plocha-stranky[data-stranka='/cookies'] article > section,
+  .plocha-stranky[data-stranka='/404'] main > section {
+    --cteci-plocha: color-mix(in srgb, var(--barva-pozadi) 60%, white);
+    background: var(--cteci-plocha);
+    box-shadow: 0 0 0 0.5rem var(--cteci-plocha);
+    border-radius: 0.5rem;
+  }
+
+  .plocha-stranky .filtr:not(.aktivni):not(:hover) {
+    background-color: var(--barva-pozadi);
+  }
+}

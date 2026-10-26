@@ -25,7 +25,7 @@ import GrafickePozadi from '../components/GrafickePozadi.astro';
         text="Píšeme jen ve chvíli, kdy máme nový program nebo téma, které stojí za váš čas."
       />
 
-      <section class="co-cekat" aria-labelledby="co-cekat">
+      <section class="co-cekat cteni-na-grafice" aria-labelledby="co-cekat">
         <div class="co-cekat-text">
           <h2 id="co-cekat">Co můžete čekat</h2>
           <ul>
@@ -94,14 +94,24 @@ import GrafickePozadi from '../components/GrafickePozadi.astro';
   }
 
   @media (max-width: 700px) {
+    .znacka,
+    article > header > p:last-child {
+      opacity: 1;
+    }
+
     .co-cekat {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 1.5rem;
+      display: block;
+      position: relative;
+      isolation: isolate;
     }
 
     .co-cekat :global(.graficke-pozadi) {
+      position: absolute;
+      inset: 0;
       width: 100%;
-      margin-inline: auto;
+      height: 100%;
+      aspect-ratio: auto;
+      z-index: -1;
     }
   }
 

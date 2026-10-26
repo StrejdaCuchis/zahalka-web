@@ -122,7 +122,7 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
     </header>
 
     {pozadi ? (
-      <div class="plocha-stranky" style={`--sirka-obsahu:${sirkaObsahu};--sirka-obsahu-desktop:${sirkaObsahuDesktop};--min-sirka-blobu:${minSirkaBlobu}`}>
+      <div class="plocha-stranky" data-pozadi={pozadi} data-stranka={canonicalPath} style={`--sirka-obsahu:${sirkaObsahu};--sirka-obsahu-desktop:${sirkaObsahuDesktop};--min-sirka-blobu:${minSirkaBlobu}`}>
         <PozadiStranky varianta={pozadi} />
         <slot />
       </div>
