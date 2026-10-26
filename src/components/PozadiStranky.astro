@@ -9,12 +9,11 @@ interface Props {
 
 const { varianta, lazy = false, rezim = 'okraje' } = Astro.props;
 const vrstvy = kompozice[String(varianta) as keyof typeof kompozice];
-const zarizeniKompozice = rezim === 'okraje' ? ['desktop'] as const : ['desktop', 'mobil'] as const;
 const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
 ---
 
 <div class:list={['pozadi-stranky', { okraje: rezim === 'okraje' }]} aria-hidden="true" data-pozadi={varianta}>
-  {zarizeniKompozice.map((zarizeni) => (
+  {(['desktop', 'mobil'] as const).map((zarizeni) => (
     <div class:list={['kompozice', zarizeni]}>
       {vrstvy[zarizeni].map((blob) => (
         <picture
@@ -142,8 +141,45 @@ const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/
   @media (max-width: 700px) {
     .desktop { display: none; }
     .mobil { display: block; }
-    /* Mobil nemá volné boční okraje. Velké kompozice dostávají vlastní
-       prostor mezi obsahovými bloky přes MobilniKompozice.astro. */
-    .okraje { display: none; }
+    /* Na telefonu je původní mobilní kompozice vrstvou za obsahem.
+       Fotky a čtecí plochy ji mohou překrývat; neprodlužuje stránku. */
+    .okraje .mobil {
+      inset: 1rem;
+    }
+
+    .okraje .mobil .blob {
+      width: calc(var(--sirka) * 100%);
+      max-height: 100%;
+      left: calc(var(--x) * 100%);
+      top: calc(var(--y) * 100%);
+      transform: translate(calc(var(--x) * -100%), calc(var(--y) * -100%));
+    }
+
+    /* Sytá zelená má oporu u spodních fotek a kontaktních bloků.
+       V krátkém Programu zůstává oranžová pod zprávou, ne pod jejím textem. */
+    .okraje[data-pozadi="5"] .mobil .blob:first-child,
+    :global(.plocha-stranky[data-stranka="/program"]) .okraje .mobil .blob:first-child {
+      top: 100%;
+      transform: translate(calc(var(--x) * -100%), -100%);
+    }
+
+    /* Horní motiv Blogu patří k úvodu, aby nezmizel celý pod první fotkou. */
+    .okraje[data-pozadi="4"] .mobil .blob:first-child,
+    .pozadi-stranky:not(.okraje)[data-pozadi="6"] .mobil .blob:first-child {
+      top: 0;
+      transform: translateX(calc(var(--x) * -100%));
+    }
+
+    /* V newsletteru využívají spodní tvary stávající 5rem padding main.
+       Kompozice tak drží pořadí fialová–modrá–žlutá bez vlastní výšky. */
+    .pozadi-stranky:not(.okraje)[data-pozadi="6"] .mobil .blob:nth-child(2) {
+      top: calc(100% + 4rem);
+      transform: translate(calc(var(--x) * -100%), -100%);
+    }
+
+    .pozadi-stranky:not(.okraje)[data-pozadi="6"] .mobil .blob:last-child {
+      top: calc(100% + 3rem);
+      transform: translate(calc(var(--x) * -100%), -100%);
+    }
   }
 </style>

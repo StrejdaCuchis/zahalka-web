@@ -1,8 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
-import MobilniKompozice from '../components/MobilniKompozice.astro';
-import ObsahSKompozici from '../components/ObsahSKompozici.astro';
 import { kontakty } from '../data/kontakty';
 import { ceskaTypografie } from '../utils/typografie';
 
@@ -34,10 +32,8 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
         {perex && <p class="perex">{ceskaTypografie(perex)}</p>}
       </header>
 
-      <MobilniKompozice varianta={5} cast="horni" />
-
       <section class="obsah" aria-label="Příběh Zahálky">
-        <ObsahSKompozici varianta={5}><Content /></ObsahSKompozici>
+        <Content />
       </section>
 
       <nav class="souvisejici" aria-label="Související odkazy">
@@ -45,7 +41,6 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
         <a href="/kontakt">Kontakt</a>
         <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>
       </nav>
-      <MobilniKompozice varianta={5} cast="dolni" />
     </article>
   </main>
 </Zaklad>

@@ -3,7 +3,6 @@ import { getCollection, render } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import SchemaEvent from '../../components/SchemaEvent.astro';
 import KartaAkce from '../../components/KartaAkce.astro';
-import MobilniKompozice from '../../components/MobilniKompozice.astro';
 import { rozmeryVerejnehoObrazku } from '../../utils/obrazky';
 import { ceskaTypografie } from '../../utils/typografie';
 
@@ -158,8 +157,6 @@ const breadcrumbSchema = {
         {jeMinula && <p class="stav-akce">Akce již proběhla.</p>}
       </header>
 
-      <MobilniKompozice varianta={3} cast="horni" />
-
       <figure>
         <img
           src={obrazek}
@@ -171,13 +168,9 @@ const breadcrumbSchema = {
         <figcaption>{altText}</figcaption>
       </figure>
 
-      <MobilniKompozice varianta={3} cast="stredni" />
-
       <div class="obsah-akce">
         <Content />
       </div>
-
-      <MobilniKompozice varianta={3} cast="dolni" />
 
       <footer class="akce-paticka">
         <a href="/program" class="zpet-na-program">← Zpět na program</a>

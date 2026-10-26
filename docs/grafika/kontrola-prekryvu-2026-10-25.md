@@ -1,5 +1,9 @@
 # Kontrola barevných překryvů — 25. 10. 2026
 
+> Historický protokol. Podle upřesnění zadání z 26. 10. může obsah grafiku
+> překrývat. Aktuálním kritériem je [čitelnost a kontrast](kontrola-mobilu-2026-10-26.md),
+> nikoli nulový geometrický průnik.
+
 ## Nálezy a opravy
 
 - Sytá korálová dekorace zasahovala pod text a oranžové vlasy postavičky na homepage. Volné polohování také dovolovalo překryvy na dalších stránkách. Všechny stránkové dekorace nyní rámují obsah ve volných bočních okrajích. Celé obrysy, proporce, původní barvy i zdrojové bitmapy zůstávají zachované.
