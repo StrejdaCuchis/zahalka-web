@@ -19,12 +19,13 @@ const barvy: Record<string, string[]> = {
   6: ['fialova', 'zluta', 'modra'],
 };
 
-// Naměřený kontrast textu #123428 v nejtmavším místě tvaru: modrá 7,4,
-// žlutá 8,1 a fialová 5,3 : 1 unesou běžný text, proto se vznáší za obsahem.
-// Korálová 3,5, oranžová 4,4 a zelená 1,9 : 1 neunesou odstavce, proto jsou
-// ukotvené k začátku nebo konci stránky a odjíždějí s ní.
-// Tvary z horních tří pětin kreslicí plochy patří k úvodu, spodní k závěru.
-const syte = new Set(['koralova', 'oranzova', 'zelena']);
+// Kontrast inkoustu #0C281E v nejtmavším místě tvaru (0,1. percentil pixelů,
+// plné rozlišení): žlutá 8,4, modrá 7,7, fialová 5,5 a oranžová 4,6 : 1 unesou
+// běžný text, proto se vznáší za obsahem. Korálová 3,6 : 1 unese jen velké
+// nadpisy a zelená 1,9 : 1 žádný text, proto jsou ukotvené k začátku nebo konci
+// stránky a odjíždějí s ní. Tvary z horních tří pětin kreslicí plochy patří
+// k úvodu, spodní k závěru.
+const syte = new Set(['koralova', 'zelena']);
 
 const media = {
   desktop: '(min-width: 501px)',
@@ -113,9 +114,10 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
   }
 
   /* Spodní syté tvary uzavírají stránku nad patičkou ve stejné poloze,
-     jakou mají na spodním okraji kreslicí plochy. */
+     jakou mají na spodním okraji kreslicí plochy. Stránka je může zarovnat
+     na střed prvku s anchor-name: --kotva-zaveru (např. mapy). */
   .kotvy .dole {
-    top: calc(100% - (1 - var(--y)) * 100lvh);
+    top: anchor(--kotva-zaveru center, calc(100% - (1 - var(--y)) * 100lvh));
   }
 
   /* O nás má široký úvodní sloupec: korálová se posouvá do pravého rohu,
@@ -161,6 +163,7 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
       .blob-modra { --posun: -14lvh; --natoceni: -4deg; }
       .blob-fialova { --posun: -26lvh; --natoceni: 5deg; }
       .blob-zluta { --posun: -20lvh; --natoceni: -3deg; }
+      .blob-oranzova { --posun: -10lvh; --natoceni: 3deg; }
     }
   }
 

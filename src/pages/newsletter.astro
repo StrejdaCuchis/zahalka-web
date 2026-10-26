@@ -1,10 +1,10 @@
 ---
 import Zaklad from '../layouts/Zaklad.astro';
 import Newsletter from '../components/Newsletter.astro';
-import GrafickePozadi from '../components/GrafickePozadi.astro';
 ---
 
 <Zaklad
+  pozadi={6}
   title="Newsletter – Zahálka"
   description="Přihlaste se k newsletteru Zahálky a dostávejte nový program, články a zprávy z kulturního prostoru v Teplicích."
   canonicalPath="/newsletter"
@@ -25,17 +25,14 @@ import GrafickePozadi from '../components/GrafickePozadi.astro';
         text="Píšeme jen ve chvíli, kdy máme nový program nebo téma, které stojí za váš čas."
       />
 
-      <section class="co-cekat cteni-na-grafice" aria-labelledby="co-cekat">
-        <div class="co-cekat-text">
-          <h2 id="co-cekat">Co můžete čekat</h2>
-          <ul>
-            <li>pozvánky na besedy, workshopy a akce pro děti,</li>
-            <li>nové články ze Zahálky a z Teplic,</li>
-            <li>včasné informace o přihláškách na příměstské tábory.</li>
-          </ul>
-          <p>Odběr lze kdykoli zrušit odkazem v patičce každého e-mailu.</p>
-        </div>
-        <GrafickePozadi varianta={6} samostatne lazy />
+      <section class="co-cekat" aria-labelledby="co-cekat">
+        <h2 id="co-cekat">Co můžete čekat</h2>
+        <ul>
+          <li>pozvánky na besedy, workshopy a akce pro děti,</li>
+          <li>nové články ze Zahálky a z Teplic,</li>
+          <li>včasné informace o přihláškách na příměstské tábory.</li>
+        </ul>
+        <p>Odběr lze kdykoli zrušit odkazem v patičce každého e-mailu.</p>
       </section>
     </article>
   </main>
@@ -67,7 +64,6 @@ import GrafickePozadi from '../components/GrafickePozadi.astro';
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    opacity: 0.55;
   }
 
   h1 {
@@ -78,41 +74,11 @@ import GrafickePozadi from '../components/GrafickePozadi.astro';
   article > header > p:last-child {
     font-size: 1.08rem;
     line-height: 1.7;
-    opacity: 0.85;
   }
 
   .co-cekat {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    align-items: center;
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-
-  .co-cekat-text {
     max-width: 62ch;
-  }
-
-  @media (max-width: 700px) {
-    .znacka,
-    article > header > p:last-child {
-      opacity: 1;
-    }
-
-    .co-cekat {
-      display: block;
-      position: relative;
-      isolation: isolate;
-    }
-
-    .co-cekat :global(.graficke-pozadi) {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      aspect-ratio: auto;
-      z-index: -1;
-    }
+    margin-top: 3rem;
   }
 
   h2 {
