@@ -15,6 +15,9 @@ interface Props {
   noindex?: boolean;
   /** Varianta autorské kompozice v plovoucí scéně za obsahem. */
   pozadi?: 1 | 2 | 3 | 4 | 5 | 6;
+  /** Polovina šířky textového sloupce v px. Od 1024 px pak syté tvary plují
+      vedle textu místo ukotvení. Jen pro stránky s úzkým středovým sloupcem. */
+  syteVedleTextu?: number;
 }
 
 const {
@@ -26,6 +29,7 @@ const {
   canonicalPath,
   noindex = false,
   pozadi,
+  syteVedleTextu,
 } = Astro.props;
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
@@ -109,7 +113,7 @@ const typografickyOgAlt = ceskaTypografie(ogImageAlt);
 
     {pozadi ? (
       <div class="plocha-stranky" data-pozadi={pozadi} data-stranka={canonicalPath}>
-        <PlovouciScena varianta={pozadi} />
+        <PlovouciScena varianta={pozadi} syteVedleTextu={syteVedleTextu} />
         <slot />
       </div>
     ) : <slot />}
