@@ -124,15 +124,81 @@ button:focus-visible {
   background-color: var(--barva-pozadi);
 }
 
-/* Přechod mezi stránkami bez JavaScriptu; prohlížeče bez podpory načtou
-   stránku obvyklým způsobem. */
+/* Přechod mezi stránkami bez JavaScriptu: jeden tvar odcházející stránky se
+   nafoukne přes celou obrazovku a praskne, pod ním se objeví nová stránka.
+   Prohlížeče bez podpory načtou stránku obvyklým způsobem. */
 @view-transition {
   navigation: auto;
 }
 
-::view-transition-group(.blob) {
-  animation-duration: 0.7s;
-  animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: stranka-objevit 0.9s both;
+}
+
+::view-transition-group(.bublina) {
+  animation-duration: 0.9s;
+}
+
+::view-transition-old(.bublina) {
+  animation: bublina-nafouknout 0.9s both;
+}
+
+::view-transition-new(.bublina) {
+  animation: bublina-objevit 0.9s both;
+}
+
+@keyframes bublina-nafouknout {
+  0% {
+    transform: scale(1);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.55);
+  }
+
+  70% {
+    transform: scale(8);
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+
+  /* Krátké napětí blány těsně před prasknutím. */
+  75% {
+    transform: scale(7.7, 8.4);
+    opacity: 1;
+  }
+
+  86%,
+  100% {
+    transform: scale(12);
+    opacity: 0;
+  }
+}
+
+@keyframes stranka-objevit {
+  0%,
+  74% {
+    opacity: 0;
+  }
+
+  82%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes bublina-objevit {
+  0%,
+  84% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

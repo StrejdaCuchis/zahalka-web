@@ -51,22 +51,32 @@ ignoruje a platí poloha z kreslicí plochy.
 - `--kotva-zaveru`: spodní sytý tvar na střed prvku. Kontakt: mapa, do 500 px
   kontaktní údaje.
 
-Na O nás a Kontaktu je korálová na desktopu posunutá do pravého rohu (92 %
-šířky), aby zůstala jen pod velkým nadpisem. Velikost se nemění.
+Na O nás a Kontaktu je korálová na desktopu posunutá do pravého horního rohu
+(92 % šířky, 1,5 rem nad okraj), aby i při levitaci zůstala jen pod velkým
+nadpisem. Velikost se nemění.
 
 ### Pohyb
 
-Plovoucí tvary se při scrollování posouvají různou rychlostí a mírně natáčejí
-(CSS scroll-driven animace). Při přechodu mezi stránkami se tvar stejné barvy
-přelije do nové kompozice (CSS View Transitions). Prohlížeče bez podpory
-a uživatelé s omezením pohybu vidí statickou scénu. Klientský JavaScript se
-nepoužívá.
+- **Levitace:** každý tvar se v čase jemně pohupuje a natáčí vlastním tempem
+  (8–13 s). Plovoucí tvary o ±12–16 px a ±2–3°, ukotvená korálová a zelená jen
+  o ±5 px bez natáčení, aby nezajely pod text. Scéna tak žije i uprostřed
+  dlouhých stránek.
+- **Hloubka při scrollování:** plovoucí tvary se posouvají různou rychlostí
+  a mírně natáčejí (CSS scroll-driven animace).
+- **Přechod mezi stránkami:** jeden tvar odcházející stránky se během 0,63 s
+  nafoukne na 8× přes celou obrazovku, krátce se napne, praskne a pod ním se
+  objeví nová stránka (celkem 0,9 s, CSS View Transitions). Bublinou je oblý
+  tvar: fialová na homepage, Programu, akcích, Cookies a 404, modrá na ostatních
+  stránkách. Zahnutá žlutá a oranžová by obrazovku nezakryly.
+
+Prohlížeče bez podpory a uživatelé s omezením pohybu vidí statickou scénu
+a obvyklé načtení stránky. Klientský JavaScript se nepoužívá.
 
 ## Soubory
 
-- `src/components/PlovouciScena.astro`: scéna, rozdělení tvarů a pohyb.
+- `src/components/PlovouciScena.astro`: scéna, rozdělení tvarů, levitace, scroll a výběr bubliny.
 - `src/layouts/Zaklad.astro`: vložení scény podle `pozadi`, ořez plochy, patička nad scénou.
-- `src/styly/global.css`: inkoust a plná opacity textu nad scénou, přechody stránek.
+- `src/styly/global.css`: inkoust a plná opacity textu nad scénou, přechod s prasknutím bubliny.
 - `src/data/pozadi.json`: původní rozměry a středy tvarů.
 - `public/obrazky/pozadi/vrstvy/`: 37 úplných optimalizovaných tvarů.
 - `scripts/pripravit-vrstvy-pozadi.py`, `scripts/vykreslit-vrstvu.mjs`: příprava
