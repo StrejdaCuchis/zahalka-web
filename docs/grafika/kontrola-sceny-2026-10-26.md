@@ -9,10 +9,22 @@
 | Nejnižší kontrast běžného volného textu | 4,59 : 1 |
 | Nejnižší kontrast textu na vlastním podkladu (karty, tlačítka) | 6,23 : 1 |
 | Běžný text nad korálovou nebo zelenou | 0 |
-| Velký nadpis nad korálovou (limit 3 : 1, nejméně 3,56 : 1) | 15 řádků |
+| Velký nadpis nad korálovou (limit 3 : 1, nejméně 3,56 : 1) | 16 řádků |
 | Vodorovné přetečení stránky | 0 |
 
 Produkční build: 16 stránek bez chyby.
+
+### Levitace a přechod (doplněno)
+
+- Ukotvené tvary se měřily s rezervou 6 px kolem každého řádku, která pokrývá
+  jejich levitaci ±5 px. Výsledek beze změny: 0 nálezů ve 176 kombinacích.
+- Každá stránka má v každé šířce právě jeden vykreslený tvar s názvem přechodu,
+  takže prohlížeč přechod nepřeskočí.
+- Pokrytí obrazovky bublinou při 8×, ještě před vrcholným napětím: nejméně
+  97,3 % (Příměšťák 768×1024), v 79 z 88 kombinací stránka × velikost 100 %.
+- Průběh přechodu ověřený výpočtem v zastaveném přechodu: nafouknutí 1× → 8×
+  do 630 ms, napětí 7,7 × 8,4 v 675 ms, prasknutí do 780 ms, nová stránka
+  plně viditelná v 780 ms, bublina nové stránky v 900 ms.
 
 ## Rozsah
 
@@ -43,7 +55,10 @@ kryté výpočtem proti nejtmavšímu místu.
 
 - Stav s budoucími akcemi, aktivními přihláškami na tábor a nastaveným
   formulářem newsletteru (aktuální obsah má všechny akce v minulosti).
-- Plynulost pohybu při scrollování a přechody mezi stránkami. Nebyly vizuálně
-  ověřené, a to ani na skutečném telefonu.
+- Vizuální dojem a plynulost přechodu a levitace. Průběh je ověřený výpočtem,
+  ne okem; snímky obrazovky vrstvu přechodu nezachytí. Neověřeno ani na
+  skutečném telefonu.
+- Pokrytí bublinou po odscrollování: posun při scrollu může tvar částečně
+  vysunout z obrazovky.
 - Navigaci a patičku mimo `main`; mají vlastní neprůhledný podklad a jejich
   kontrast řeší [technický dluh](../technicky-dluh.md).

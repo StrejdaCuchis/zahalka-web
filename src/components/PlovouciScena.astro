@@ -27,6 +27,19 @@ const barvy: Record<string, string[]> = {
 // k úvodu, spodní k závěru.
 const syte = new Set(['koralova', 'zelena']);
 
+// Při odchodu ze stránky se tento tvar nafoukne přes obrazovku a praskne.
+// Vždy plovoucí, takže je na obrazovce v jakékoli poloze scrollu. Jen oblé
+// fialové a modré tvary při 8× zakryjí celou obrazovku; zahnutá žlutá
+// a oranžová by nechaly průhledná místa.
+const bublina: Record<string, string> = {
+  1: 'fialova',
+  2: 'modra',
+  3: 'fialova',
+  4: 'modra',
+  5: 'modra',
+  6: 'modra',
+};
+
 const media = {
   desktop: '(min-width: 501px)',
   mobil: '(max-width: 500px)',
@@ -44,8 +57,8 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
         <div class:list={['plovouci', zarizeni]}>
           {bloby.filter((b) => !syte.has(b.barva)).map((blob) => (
             <picture
-              class:list={['blob', `blob-${blob.barva}`]}
-              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}`}
+              class:list={['blob', `blob-${blob.barva}`, { bublina: blob.barva === bublina[varianta] }]}
+              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}${blob.barva === bublina[varianta] ? `;view-transition-name:bublina-${varianta}` : ''}`}
             >
               <source media={media[zarizeni]} srcset={blob.src} />
               <img src={prazdnyObrazek} alt="" width={blob.width} height={blob.height} decoding="async" />
@@ -120,10 +133,11 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
     top: anchor(--kotva-zaveru center, calc(100% - (1 - var(--y)) * 100lvh));
   }
 
-  /* O nás má široký úvodní sloupec: korálová se posouvá do pravého rohu,
-     aby zůstala jen pod velkým nadpisem. Velikost se nemění. */
+  /* O nás má široký úvodní sloupec: korálová se posouvá do pravého horního
+     rohu, aby i při levitaci zůstala jen pod velkým nadpisem. Velikost se nemění. */
   .scena[data-pozadi='5'] .kotvy.desktop .blob-koralova {
     left: 92%;
+    top: -1.5rem;
   }
 
   img {
@@ -174,13 +188,32 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
     }
   }
 
-  /* Při přechodu mezi stránkami se tvar stejné barvy přelije do nové kompozice. */
-  .blob-modra { view-transition-name: blob-modra; }
-  .blob-fialova { view-transition-name: blob-fialova; }
-  .blob-zluta { view-transition-name: blob-zluta; }
-  .blob-koralova { view-transition-name: blob-koralova; }
-  .blob-oranzova { view-transition-name: blob-oranzova; }
-  .blob-zelena { view-transition-name: blob-zelena; }
+  /* Levitace: každý tvar se v čase jemně pohupuje a natáčí vlastním tempem,
+     takže scéna žije i uprostřed dlouhé stránky. Pohyb nese obrázek uvnitř,
+     proto se skládá s posunem při scrollování. Ukotvené syté tvary se jen
+     pohupují o 5 px bez natáčení, aby nezajely pod text. */
+  @media (prefers-reduced-motion: no-preference) {
+    .blob img {
+      animation: levitace var(--perioda, 11s) ease-in-out var(--zpozdeni, 0s) infinite alternate;
+    }
 
-  .blob { view-transition-class: blob; }
+    .blob-modra { --perioda: 9s; --zpozdeni: -3s; --vznos: 14px; --naklon: 3deg; }
+    .blob-fialova { --perioda: 12s; --zpozdeni: -7s; --vznos: 16px; --naklon: -3deg; }
+    .blob-zluta { --perioda: 10s; --zpozdeni: -1s; --vznos: 12px; --naklon: 2.5deg; }
+    .blob-oranzova { --perioda: 13s; --zpozdeni: -5s; --vznos: 12px; --naklon: -2deg; }
+    .blob-koralova { --perioda: 8s; --zpozdeni: -2s; --vznos: 5px; --naklon: 0deg; }
+    .blob-zelena { --perioda: 11s; --zpozdeni: -6s; --vznos: 5px; --naklon: 0deg; }
+  }
+
+  @keyframes levitace {
+    from {
+      transform: translateY(calc(var(--vznos, 12px) * -1)) rotate(calc(var(--naklon, 2deg) * -1));
+    }
+
+    to {
+      transform: translateY(var(--vznos, 12px)) rotate(var(--naklon, 2deg));
+    }
+  }
+
+  .bublina { view-transition-class: bublina; }
 </style>
