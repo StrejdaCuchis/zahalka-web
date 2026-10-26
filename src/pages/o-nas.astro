@@ -18,6 +18,7 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
 
 <Zaklad
   pozadi={5}
+  scena
   title="O nás – Zahálka • kulturní prostor"
   description={metaPopis}
   ogImage={ogImage}
@@ -144,12 +145,32 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
     border-top: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
   }
 
+  /* Závěrečné odkazy jsou tlačítka s vlastním podkladem: vedou dál na program
+     a zůstávají čitelné i nad sytým tvarem na konci stránky. */
   .souvisejici a {
     font-family: var(--pismo-nadpisy);
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.7rem 1.4rem;
+    border: 1.5px solid var(--barva-text);
+    border-radius: 999px;
+    background-color: var(--barva-pozadi);
+  }
+
+  .souvisejici a:first-child {
+    background-color: var(--barva-text);
+    color: var(--barva-pozadi);
+  }
+
+  .souvisejici a:hover {
+    background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
+  }
+
+  .souvisejici a:first-child:hover {
+    background-color: var(--barva-text-d);
   }
 
   @media (max-width: 700px) {

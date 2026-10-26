@@ -2,6 +2,7 @@
 import '../styly/global.css';
 import Analytika from '../components/Analytika.astro';
 import PozadiStranky from '../components/PozadiStranky.astro';
+import PlovouciScena from '../components/PlovouciScena.astro';
 import { kontakty } from '../data/kontakty';
 import { ceskaTypografie } from '../utils/typografie';
 
@@ -14,6 +15,8 @@ interface Props {
   canonicalPath: string;
   noindex?: boolean;
   pozadi?: 1 | 2 | 3 | 4 | 5;
+  /** Prototyp: bloby jako pevná scéna za obsahem místo dekorací v okrajích. */
+  scena?: boolean;
 }
 
 const {
@@ -25,6 +28,7 @@ const {
   canonicalPath,
   noindex = false,
   pozadi,
+  scena = false,
 } = Astro.props;
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
@@ -122,8 +126,8 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
     </header>
 
     {pozadi ? (
-      <div class="plocha-stranky" data-pozadi={pozadi} data-stranka={canonicalPath} style={`--sirka-obsahu:${sirkaObsahu};--sirka-obsahu-desktop:${sirkaObsahuDesktop};--min-sirka-blobu:${minSirkaBlobu}`}>
-        <PozadiStranky varianta={pozadi} />
+      <div class:list={['plocha-stranky', { 'se-scenou': scena }]} data-pozadi={pozadi} data-stranka={canonicalPath} style={`--sirka-obsahu:${sirkaObsahu};--sirka-obsahu-desktop:${sirkaObsahuDesktop};--min-sirka-blobu:${minSirkaBlobu}`}>
+        {scena ? <PlovouciScena varianta={pozadi} /> : <PozadiStranky varianta={pozadi} />}
         <slot />
       </div>
     ) : <slot />}
@@ -171,7 +175,7 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
       })();
     </script>
 
-    <footer>
+    <footer class:list={[{ 'nad-scenou': scena && pozadi }]}>
       <div class="paticka-obsah">
         <p class="paticka-nazev">ZAHÁLKA • KULTURNÍ PROSTOR</p>
         <address>Benešovo nám. 3282, 415 01 Teplice</address>
@@ -196,6 +200,11 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
     flex: 1;
     display: flex;
     flex-direction: column;
+  }
+
+  /* Přesahy tvarů scény se ořezávají okrajem plochy, ne celou stránkou. */
+  .plocha-stranky.se-scenou {
+    overflow: clip;
   }
 
   /* ── Header bar ───────────────────────────────────────────────────────── */
@@ -270,6 +279,13 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
     margin-top: auto;
     border-top: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
     padding: 2rem;
+  }
+
+  /* Patička uzavírá plovoucí scénu pevným podkladem stránky. */
+  footer.nad-scenou {
+    position: relative;
+    z-index: 1;
+    background: var(--barva-pozadi);
   }
 
   .paticka-obsah {

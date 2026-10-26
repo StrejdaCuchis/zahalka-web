@@ -1,0 +1,183 @@
+---
+import kompozice from '../data/pozadi.json';
+
+interface Props {
+  varianta: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+const { varianta } = Astro.props;
+const vrstvy = kompozice[String(varianta) as keyof typeof kompozice];
+const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
+
+// Barva každé vrstvy podle pořadí v dodaných SVG (desktop i mobil mají stejné pořadí).
+const barvy: Record<string, string[]> = {
+  1: ['fialova', 'modra', 'koralova'],
+  2: ['fialova', 'zelena', 'zluta', 'modra'],
+  3: ['oranzova', 'fialova', 'zluta'],
+  4: ['fialova', 'zluta', 'modra'],
+  5: ['zelena', 'modra', 'koralova'],
+  6: ['fialova', 'zluta', 'modra'],
+};
+
+// Naměřený kontrast textu #123428 v nejtmavším místě tvaru: modrá 7,4,
+// žlutá 8,1 a fialová 5,3 : 1 unesou běžný text, proto se vznáší za obsahem.
+// Korálová 3,5, oranžová 4,4 a zelená 1,9 : 1 neunesou odstavce, proto jsou
+// ukotvené k začátku nebo konci stránky a odjíždějí s ní.
+// Tvary z horních tří pětin kreslicí plochy patří k úvodu, spodní k závěru.
+const syte = new Set(['koralova', 'oranzova', 'zelena']);
+
+const media = {
+  desktop: '(min-width: 501px)',
+  mobil: '(max-width: 500px)',
+};
+
+const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
+  vrstvy[zarizeni].map((blob, i) => ({ ...blob, barva: barvy[varianta][i] }));
+---
+
+<div class="scena" aria-hidden="true" data-pozadi={varianta}>
+  {(['desktop', 'mobil'] as const).map((zarizeni) => {
+    const bloby = rozdelit(zarizeni);
+    return (
+      <>
+        <div class:list={['plovouci', zarizeni]}>
+          {bloby.filter((b) => !syte.has(b.barva)).map((blob) => (
+            <picture
+              class:list={['blob', `blob-${blob.barva}`]}
+              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}`}
+            >
+              <source media={media[zarizeni]} srcset={blob.src} />
+              <img src={prazdnyObrazek} alt="" width={blob.width} height={blob.height} decoding="async" />
+            </picture>
+          ))}
+        </div>
+        <div class:list={['kotvy', zarizeni]}>
+          {bloby.filter((b) => syte.has(b.barva)).map((blob) => (
+            <picture
+              class:list={['blob', `blob-${blob.barva}`, blob.y < 0.6 ? 'nahore' : 'dole']}
+              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}`}
+            >
+              <source media={media[zarizeni]} srcset={blob.src} />
+              <img
+                src={prazdnyObrazek}
+                alt=""
+                width={blob.width}
+                height={blob.height}
+                loading={blob.y < 0.6 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </picture>
+          ))}
+        </div>
+      </>
+    );
+  })}
+</div>
+
+<style>
+  /* Obal nevytváří vlastní box: ukotvené tvary se tak polohují v ploše stránky
+     a mohou se zarovnat k jejímu obsahu. */
+  .scena,
+  .kotvy {
+    display: contents;
+  }
+
+  .blob,
+  .plovouci {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Plocha obrazovky odpovídá kreslicí ploše grafika (16 : 9, na mobilu 9 : 16).
+     Střed tvaru leží na původní souřadnici, takže tvary přetékají přes okraj
+     stejně jako v dodané kompozici. */
+  .plovouci {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100lvh;
+    overflow: clip;
+  }
+
+  .blob {
+    position: absolute;
+    z-index: -1;
+    display: block;
+    width: calc(var(--sirka) * 100%);
+    aspect-ratio: var(--pomer);
+    left: calc(var(--x) * 100%);
+    top: calc(var(--y) * 100lvh);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Spodní syté tvary uzavírají stránku nad patičkou ve stejné poloze,
+     jakou mají na spodním okraji kreslicí plochy. */
+  .kotvy .dole {
+    top: calc(100% - (1 - var(--y)) * 100lvh);
+  }
+
+  /* O nás má široký úvodní sloupec: korálová se posouvá do pravého rohu,
+     aby zůstala jen pod velkým nadpisem. Velikost se nemění. */
+  .scena[data-pozadi='5'] .kotvy.desktop .blob-koralova {
+    left: 92%;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobil {
+    display: none;
+  }
+
+  /* Mobilní kompozice je kreslená pro telefony; širší obrazovky používají
+     kompozici na šířku. */
+  @media (max-width: 500px) {
+    .desktop { display: none; }
+    .plovouci.mobil { display: block; }
+    .kotvy.mobil { display: contents; }
+
+    /* Na telefonu se horní sytý tvar zarovná na střed prvku, který stránka
+       označí jako --kotva-sceny (např. tlačítka úvodu). Poloha tak nezávisí
+       na výšce displeje. Bez podpory zůstává původní poloha. */
+    .kotvy .nahore {
+      top: anchor(--kotva-sceny center, calc(var(--y) * 100lvh));
+    }
+  }
+
+  /* Hloubka: každý tvar plave při posouvání jinou rychlostí. Bez podpory
+     scroll-driven animací nebo při omezení pohybu zůstává scéna klidná. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .plovouci .blob {
+        animation: vznaseni linear both;
+        animation-timeline: scroll(root);
+      }
+
+      .blob-modra { --posun: -14lvh; --natoceni: -4deg; }
+      .blob-fialova { --posun: -26lvh; --natoceni: 5deg; }
+      .blob-zluta { --posun: -20lvh; --natoceni: -3deg; }
+    }
+  }
+
+  @keyframes vznaseni {
+    to {
+      translate: 0 var(--posun, -16lvh);
+      rotate: var(--natoceni, 0deg);
+    }
+  }
+
+  /* Při přechodu mezi stránkami se tvar stejné barvy přelije do nové kompozice. */
+  .blob-modra { view-transition-name: blob-modra; }
+  .blob-fialova { view-transition-name: blob-fialova; }
+  .blob-zluta { view-transition-name: blob-zluta; }
+  .blob-koralova { view-transition-name: blob-koralova; }
+  .blob-oranzova { view-transition-name: blob-oranzova; }
+  .blob-zelena { view-transition-name: blob-zelena; }
+
+  .blob { view-transition-class: blob; }
+</style>
