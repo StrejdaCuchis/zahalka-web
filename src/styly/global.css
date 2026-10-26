@@ -55,9 +55,13 @@ html {
   color: var(--barva-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* Bez odpružení na začátku a konci stránky: jinak by se hlavička nebo
+     patička odtrhla od okraje a v mezeře prosvitly pevné tvary scény. */
+  overscroll-behavior-y: none;
 }
 
 body {
+  overscroll-behavior-y: none;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;

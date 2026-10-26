@@ -51,13 +51,14 @@ ignoruje a platí poloha z kreslicí plochy.
 - `--kotva-zaveru`: spodní sytý tvar na střed prvku. Kontakt: mapa, do 500 px
   kontaktní údaje.
 
-Na stránce s úzkým středovým sloupcem mohou od 1024 px plout i syté tvary,
-pokud stránka nastaví `syteVedleTextu` (polovina šířky textového sloupce v px)
-v `Zaklad.astro`. Tvary se pak drží v pravém okraji: jejich střed se podle
-potřeby posune ke kraji, aby začínaly 16 px za koncem textu, a text jede vedle
-nich. Velikost se nemění, jen víc přesahují přes okraj. Používá to O nás
-(346 px); při 1024 px je z korálové i zelené vidět 149 px, při 1440 px 357 px.
-Pod 1024 px zůstávají ukotvené.
+Na stránce s úzkým středovým sloupcem mohou plout i syté tvary, pokud stránka
+nastaví `syteVedleTextu` (polovina šířky textového sloupce v px) v `Zaklad.astro`.
+Tvary se pak drží v pravém okraji: jejich střed se podle potřeby posune ke kraji,
+aby začínaly za koncem textu (16 px od 1024 px, jinak 8 px), a text jede vedle
+nich. Konec textu se počítá jako polovina sloupce od středu, nejvýš boční
+odsazení stránky 2rem od kraje. Velikost se nemění, jen víc přesahují přes okraj.
+Používá to O nás (346 px). Viditelná šířka korálové i zelené: 23 px na telefonu,
+29 px při 768 px, 149 px při 1024 px a 357 px při 1440 px.
 
 Na O nás a Kontaktu je korálová na desktopu posunutá do pravého horního rohu
 (92 % šířky, 1,5 rem nad okraj), aby i při levitaci zůstala jen pod velkým
@@ -76,6 +77,10 @@ nadpisem. Velikost se nemění.
   objeví nová stránka (celkem 0,9 s, CSS View Transitions). Bublinou je oblý
   tvar: fialová na homepage, Programu, akcích, Cookies a 404, modrá na ostatních
   stránkách. Zahnutá žlutá a oranžová by obrazovku nezakryly.
+
+Stránka na začátku a konci neodpružuje (`overscroll-behavior-y: none` na `html`
+a `body`). Jinak by se při přetažení na iPhonu hlavička nebo patička odtrhla
+od okraje a v mezeře by prosvitly pevné tvary scény.
 
 Prohlížeče bez podpory a uživatelé s omezením pohybu vidí statickou scénu
 a obvyklé načtení stránky. Klientský JavaScript se nepoužívá.

@@ -15,8 +15,9 @@ interface Props {
   noindex?: boolean;
   /** Varianta autorské kompozice v plovoucí scéně za obsahem. */
   pozadi?: 1 | 2 | 3 | 4 | 5 | 6;
-  /** Polovina šířky textového sloupce v px. Od 1024 px pak syté tvary plují
-      vedle textu místo ukotvení. Jen pro stránky s úzkým středovým sloupcem. */
+  /** Polovina šířky textového sloupce v px. Syté tvary pak plují v pravém
+      okraji vedle textu místo ukotvení (na telefonu jako proužek u kraje).
+      Jen pro stránky s úzkým středovým sloupcem a bočním odsazením 2rem. */
   syteVedleTextu?: number;
 }
 
