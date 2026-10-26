@@ -66,17 +66,26 @@ nadpisem. Velikost se nemění.
 
 ### Pohyb
 
-- **Levitace:** každý tvar se v čase jemně pohupuje a natáčí vlastním tempem
-  (8–13 s). Plovoucí tvary o ±12–16 px a ±2–3°, ukotvená korálová a zelená jen
-  o ±5 px bez natáčení, aby nezajely pod text. Scéna tak žije i uprostřed
-  dlouhých stránek.
-- **Vlnění při scrollování:** plovoucí tvary při scrollování stoupají a klesají
-  o 8–14 % výšky obrazovky a mírně se natáčejí, jako by se houpaly na vlnách.
-  Délka vlny je 1,2–1,8 výšky obrazovky scrollu, u každého tvaru jiná. Je daná
-  v pixelech scrollu, ne podílem stránky, takže pohyb je stejný na krátké
-  i dlouhé stránce (CSS scroll-driven animace se 16 navazujícími úseky).
-  Bez odscrollování platí přesně původní kompozice. Syté tvary v okraji O nás
-  se nenatáčí.
+- **Klidná paralaxa při scrollování:** tvary při scrollování dolů pomalu
+  stoupají a jemně se natáčejí. Pohyb je lineární bez opakovaných vln;
+  směr obrátí až scrollování zpět. Na jednu výšku obrazovky scrollu se
+  posunou o 2,4–3,6 % její výšky a natočí nejvýše o 0,6°. Díky rozsahu v pixelech
+  scrollu je odezva stejná na krátké i dlouhé stránce.
+- **Rozsah:** po osmi výškách obrazovky dosáhnou světlé tvary posunu
+  19,2–28,8 % výšky obrazovky a natočení 2,4–4,8°, pak drží koncovou polohu.
+  Korálová a zelená na O nás se posunou nejvýše o 14,4–16,8 % výšky obrazovky
+  bez natáčení, aby zůstaly vedle textu. Na začátku platí původní kompozice.
+- **Levitace i v klidu:** obrázek uvnitř každého tvaru se pomalu pohupuje
+  o ±42,12–56,16 px a natáčí o ±1,4625–2,0475°. Cesta jedním směrem trvá 28–38 s,
+  celý cyklus 56–76 s. Každý tvar má vlastní tempo a počáteční fázi;
+  `ease-in-out` zajišťuje pozvolné obracení směru. Korálová a zelená drží
+  rozsah ±14,625 px bez natočení. Levitace na obrázku se skládá
+  s paralaxou na `picture`, takže oba pohyby fungují současně.
+- **Výraznější hloubka na blogu:** ve variantě 4 (Blog i články) při scrollu
+  modrá stoupá a žlutá klesá, každá jinou rychlostí a s opačným natočením.
+  Rozsah scrollového posunu i natočení se proti předchozí úpravě zvýšil
+  o 20 %. Posun i natočení levitace se po navýšení o 30 % zvýšily ještě dvakrát o 50 %;
+  její tempo a odezva na scroll zůstaly stejné.
 - **Přechod mezi stránkami:** jeden tvar odcházející stránky se během 0,63 s
   nafoukne na 8× přes celou obrazovku, krátce se napne, praskne a pod ním se
   objeví nová stránka (celkem 0,9 s, CSS View Transitions). Bublinou je oblý
@@ -87,12 +96,12 @@ Stránka na začátku a konci neodpružuje (`overscroll-behavior-y: none` na `ht
 a `body`). Jinak by se při přetažení na iPhonu hlavička nebo patička odtrhla
 od okraje a v mezeře by prosvitly pevné tvary scény.
 
-Prohlížeče bez podpory a uživatelé s omezením pohybu vidí statickou scénu
-a obvyklé načtení stránky. Klientský JavaScript se nepoužívá.
+Bez podpory scrollových animací zůstává levitace. Uživatelé s omezením
+pohybu vidí statickou scénu a obvyklé načtení stránky. Klientský JavaScript se nepoužívá.
 
 ## Soubory
 
-- `src/components/PlovouciScena.astro`: scéna, rozdělení tvarů, levitace, scroll a výběr bubliny.
+- `src/components/PlovouciScena.astro`: scéna, rozdělení tvarů, paralaxa, pomalá levitace a výběr bubliny.
 - `src/layouts/Zaklad.astro`: vložení scény podle `pozadi`, ořez plochy, patička nad scénou.
 - `src/styly/global.css`: inkoust a plná opacity textu nad scénou, přechod s prasknutím bubliny.
 - `src/data/pozadi.json`: původní rozměry a středy tvarů.
