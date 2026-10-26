@@ -1,7 +1,6 @@
 ---
 import '../styly/global.css';
 import Analytika from '../components/Analytika.astro';
-import PozadiStranky from '../components/PozadiStranky.astro';
 import PlovouciScena from '../components/PlovouciScena.astro';
 import { kontakty } from '../data/kontakty';
 import { ceskaTypografie } from '../utils/typografie';
@@ -14,9 +13,8 @@ interface Props {
   ogType?: string;
   canonicalPath: string;
   noindex?: boolean;
-  pozadi?: 1 | 2 | 3 | 4 | 5;
-  /** Prototyp: bloby jako pevná scéna za obsahem místo dekorací v okrajích. */
-  scena?: boolean;
+  /** Varianta autorské kompozice v plovoucí scéně za obsahem. */
+  pozadi?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 const {
@@ -28,7 +26,6 @@ const {
   canonicalPath,
   noindex = false,
   pozadi,
-  scena = false,
 } = Astro.props;
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
@@ -40,21 +37,6 @@ const pouzivaVychoziOg = !ogImage;
 const typografickyTitle = ceskaTypografie(title);
 const typografickyDescription = ceskaTypografie(description);
 const typografickyOgAlt = ceskaTypografie(ogImageAlt);
-// Největší šířka obsahu určuje bezpečný okraj pro dekorace, nikoli layout.
-const jeDetailAkce = canonicalPath.startsWith('/akce/');
-const sirkaObsahu = jeDetailAkce || canonicalPath === '/cookies' ? '72ch'
-  : canonicalPath === '/kontakt' ? '900px'
-  : canonicalPath === '/tabor' ? '820px'
-  : canonicalPath === '/404' ? '42rem'
-  : '1100px';
-const minSirkaBlobu = jeDetailAkce ? '6px'
-  : canonicalPath === '/cookies' || canonicalPath === '/blog' ? '12px'
-  : '20px';
-// Na desktopu počítáme s vnitřním odsazením sloupce; mobilní kompozice se nemění.
-const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
-  : canonicalPath === '/kontakt' ? '836px'
-  : ['/', '/program', '/o-nas'].includes(canonicalPath) ? '1036px'
-  : sirkaObsahu;
 ---
 
 <!doctype html>
@@ -126,8 +108,8 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
     </header>
 
     {pozadi ? (
-      <div class:list={['plocha-stranky', { 'se-scenou': scena }]} data-pozadi={pozadi} data-stranka={canonicalPath} style={`--sirka-obsahu:${sirkaObsahu};--sirka-obsahu-desktop:${sirkaObsahuDesktop};--min-sirka-blobu:${minSirkaBlobu}`}>
-        {scena ? <PlovouciScena varianta={pozadi} /> : <PozadiStranky varianta={pozadi} />}
+      <div class="plocha-stranky" data-pozadi={pozadi} data-stranka={canonicalPath}>
+        <PlovouciScena varianta={pozadi} />
         <slot />
       </div>
     ) : <slot />}
@@ -175,7 +157,7 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
       })();
     </script>
 
-    <footer class:list={[{ 'nad-scenou': scena && pozadi }]}>
+    <footer class:list={[{ 'nad-scenou': pozadi }]}>
       <div class="paticka-obsah">
         <p class="paticka-nazev">ZAHÁLKA • KULTURNÍ PROSTOR</p>
         <address>Benešovo nám. 3282, 415 01 Teplice</address>
@@ -193,18 +175,15 @@ const sirkaObsahuDesktop = jeDetailAkce ? 'calc(72ch - 2rem)'
 </html>
 
 <style>
-  /* Vizuální vrstva zachovává původní rozměry main i tok hlavičky a patičky. */
+  /* Plocha nese plovoucí scénu; přesahy tvarů ořezává její okraj,
+     ne celá stránka. Tok hlavičky, obsahu a patičky se nemění. */
   .plocha-stranky {
     position: relative;
     isolation: isolate;
+    overflow: clip;
     flex: 1;
     display: flex;
     flex-direction: column;
-  }
-
-  /* Přesahy tvarů scény se ořezávají okrajem plochy, ne celou stránkou. */
-  .plocha-stranky.se-scenou {
-    overflow: clip;
   }
 
   /* ── Header bar ───────────────────────────────────────────────────────── */

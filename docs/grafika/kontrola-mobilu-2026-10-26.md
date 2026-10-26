@@ -1,5 +1,8 @@
 # Mobilní vrstvení a kontrast — 26. 10. 2026
 
+> Historický protokol. Čtecí plochy i toto vrstvení nahradila
+> [plovoucí scéna](kontrola-sceny-2026-10-26.md).
+
 ## Zadání a výsledek
 
 Velké původní bloby tvoří pozadí. Mohou je překrývat fotografie, karty i text,

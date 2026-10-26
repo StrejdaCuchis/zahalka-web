@@ -160,6 +160,8 @@ const organizationSchema = {
   }
 
   .grid {
+    /* Pozicovaná mřížka zpřístupní kontakty jako kotvu tvaru na telefonu. */
+    position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
@@ -240,11 +242,16 @@ const organizationSchema = {
   }
 
   .mapa-sekce {
+    /* Pozicovaná sekce zpřístupní mapu jako kotvu tvaru scény. */
+    position: relative;
     border-top: 1px solid color-mix(in srgb, var(--barva-text) 12%, transparent);
     padding-top: 3rem;
   }
 
   .mapa-figura {
+    /* Zelený tvar scény se zarovná na mapu, ne pod text o dopravě.
+       Na telefonu je mapa nižší než tvar, proto kotví kontakty s krátkými řádky. */
+    anchor-name: --kotva-zaveru;
     margin-bottom: 2rem;
     border-radius: 0.75rem;
     overflow: hidden;
@@ -272,6 +279,7 @@ const organizationSchema = {
   }
 
   .doprava ul {
+    max-width: 52ch;
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -283,5 +291,15 @@ const organizationSchema = {
     line-height: 1.55;
     padding-left: 1rem;
     border-left: 2px solid color-mix(in srgb, var(--barva-text) 25%, transparent);
+  }
+
+  @media (max-width: 500px) {
+    .mapa-figura {
+      anchor-name: none;
+    }
+
+    .spojeni-sekce {
+      anchor-name: --kotva-zaveru;
+    }
   }
 </style>

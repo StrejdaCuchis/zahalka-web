@@ -95,69 +95,33 @@ button:focus-visible {
   border-radius: 2px;
 }
 
-/* Mobilní kompozice leží za obsahem a nemění jeho tok. Na světlých
-   barvách může text zůstat přímo; syté části překrývají čtecí plochy. */
-@media (max-width: 700px) {
-  :is(.plocha-stranky main, .cteni-na-grafice) {
-    --inkoust-na-grafice: #123428;
-    color: var(--inkoust-na-grafice);
-  }
-
-  :is(.plocha-stranky main, .cteni-na-grafice) :is(h1, h2, h3) {
-    color: var(--inkoust-na-grafice);
-  }
-
-  :is(.plocha-stranky main, .cteni-na-grafice) :where(h1, h2, h3, p, time, figcaption) {
-    opacity: 1 !important;
-  }
-
-  .plocha-stranky main a:not(:is(.btn-cta, .btn-prihlasit, .tlacitko-prihlasit, .hlavni-odkaz, .sekce-cta a, .souvisejici a)),
-  .cteni-na-grafice a {
-    color: var(--inkoust-na-grafice);
-    opacity: 1 !important;
-  }
-
-  .plocha-stranky main .karta-typ {
-    color: var(--inkoust-na-grafice);
-  }
-
-  /* Podklady tvoří celé čtecí bloky, nikoli pruh pod každým řádkem.
-     Původní barvy bitmap zůstávají bez filtrů a bez snížené opacity. */
-  .plocha-stranky[data-stranka='/kontakt'] :is(.adresa-sekce, .spojeni-sekce, .doprava),
-  .plocha-stranky:not(.se-scenou)[data-stranka='/o-nas'] :is(.perex, .obsah > h2:first-child, .obsah > h2:first-child + p, .obsah > h2:last-of-type, .obsah > h2:last-of-type ~ p, .souvisejici),
-  .plocha-stranky:not(.se-scenou)[data-stranka='/tabor'] .obsah,
-  .plocha-stranky[data-stranka^='/akce/'] :is(.obsah-akce, figcaption),
-  .plocha-stranky[data-stranka='/cookies'] article > section,
-  .plocha-stranky[data-stranka='/404'] main > section {
-    --cteci-plocha: color-mix(in srgb, var(--barva-pozadi) 60%, white);
-    background: var(--cteci-plocha);
-    box-shadow: 0 0 0 0.5rem var(--cteci-plocha);
-    border-radius: 0.5rem;
-  }
-
-  .plocha-stranky .filtr:not(.aktivni):not(:hover) {
-    background-color: var(--barva-pozadi);
-  }
-}
-
-/* Plovoucí scéna: světlé bloby se vznáší za obsahem a text přes ně jezdí
-   bez podkladových ploch. Platí na všech šířkách, ne jen na mobilu. */
-.se-scenou main {
-  --inkoust-na-grafice: #123428;
+/* Plovoucí scéna: plovoucí tvary jsou za obsahem a text přes ně jezdí
+   bez podkladových ploch. Tmavý inkoust drží kontrast nejméně 4,6 : 1
+   i na nejsytějším místě oranžové; vlastní podklad mají jen karty a tlačítka. */
+.plocha-stranky main {
+  --inkoust-na-grafice: #0C281E;
   color: var(--inkoust-na-grafice);
 }
 
-.se-scenou main :is(h1, h2, h3) {
+.plocha-stranky main :is(h1, h2, h3) {
   color: var(--inkoust-na-grafice);
 }
 
-.se-scenou main :where(h1, h2, h3, p, time, figcaption) {
+.plocha-stranky main :where(h1, h2, h3, p, time, figcaption) {
   opacity: 1 !important;
 }
 
-.se-scenou main a:not(:is(.btn-cta, .btn-prihlasit, .tlacitko-prihlasit, .hlavni-odkaz, .sekce-cta a, .souvisejici a)) {
+.plocha-stranky main a:not(:is(.btn-cta, .btn-prihlasit, .tlacitko-prihlasit, .hlavni-odkaz, .sekce-cta a, .souvisejici a)) {
   color: var(--inkoust-na-grafice);
   opacity: 1 !important;
+}
+
+.plocha-stranky main .karta-typ {
+  color: var(--inkoust-na-grafice);
+}
+
+.plocha-stranky .filtr:not(.aktivni):not(:hover) {
+  background-color: var(--barva-pozadi);
 }
 
 /* Přechod mezi stránkami bez JavaScriptu; prohlížeče bez podpory načtou

@@ -46,6 +46,7 @@ const breadcrumbSchema = {
 ---
 
 <Zaklad
+  pozadi={4}
   title={`${nazev} – Zahálka`}
   description={kratkyPopis}
   ogImage={obrazek}
@@ -130,7 +131,6 @@ const breadcrumbSchema = {
     gap: 0.25rem;
     list-style: none;
     font-size: 0.8rem;
-    opacity: 0.65;
   }
 
   .drobeky li + li::before {
@@ -229,15 +229,6 @@ const breadcrumbSchema = {
     text-decoration: none;
     text-transform: uppercase;
     opacity: 0.68;
-  }
-
-  @media (max-width: 700px) {
-    .drobeky ol,
-    .perex,
-    .metadata,
-    .paticka-clanku a {
-      opacity: 1;
-    }
   }
 
 </style>
