@@ -195,36 +195,67 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
     }
   }
 
-  /* Hloubka: každý tvar plave při posouvání jinou rychlostí. Bez podpory
-     scroll-driven animací nebo při omezení pohybu zůstává scéna klidná. */
+  /* Vlnění při scrollování: plovoucí tvary stoupají a klesají, jako by se
+     houpaly na vlnách. Délka vlny je daná v pixelech scrollu (násobek výšky
+     obrazovky), ne podílem stránky, takže se tvary hýbou stejně na krátké
+     i dlouhé stránce. Vlna se skládá z 16 navazujících úseků, které pokryjí
+     i nejdelší stránky; za nimi tvar zůstane v klidové poloze. Bez odscrollování
+     platí přesně původní kompozice. Bez podpory scroll-driven animací nebo při
+     omezení pohybu zůstává scéna klidná. */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: scroll()) {
-      .plovouci .blob {
-        animation: vznaseni linear both;
-        animation-timeline: scroll(root);
-      }
-
-      /* Plovoucí syté tvary jen klesají a stoupají, bez natočení, aby
-         zůstaly v okraji vedle textu. */
+      .plovouci .blob,
       .scena[data-syte-vedle-textu] :is(.kotvy.desktop, .kotvy.mobil) .blob {
-        animation: vznaseni linear both;
+        animation-name: vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: none;
         animation-timeline: scroll(root);
+        animation-range:
+          calc(var(--vlna) * 0) calc(var(--vlna) * 1),
+          calc(var(--vlna) * 1) calc(var(--vlna) * 2),
+          calc(var(--vlna) * 2) calc(var(--vlna) * 3),
+          calc(var(--vlna) * 3) calc(var(--vlna) * 4),
+          calc(var(--vlna) * 4) calc(var(--vlna) * 5),
+          calc(var(--vlna) * 5) calc(var(--vlna) * 6),
+          calc(var(--vlna) * 6) calc(var(--vlna) * 7),
+          calc(var(--vlna) * 7) calc(var(--vlna) * 8),
+          calc(var(--vlna) * 8) calc(var(--vlna) * 9),
+          calc(var(--vlna) * 9) calc(var(--vlna) * 10),
+          calc(var(--vlna) * 10) calc(var(--vlna) * 11),
+          calc(var(--vlna) * 11) calc(var(--vlna) * 12),
+          calc(var(--vlna) * 12) calc(var(--vlna) * 13),
+          calc(var(--vlna) * 13) calc(var(--vlna) * 14),
+          calc(var(--vlna) * 14) calc(var(--vlna) * 15),
+          calc(var(--vlna) * 15) calc(var(--vlna) * 16);
       }
 
-      .blob-koralova { --posun: -12lvh; }
-      .blob-zelena { --posun: -18lvh; }
+      .blob-modra { --vlna: 120lvh; --zdvih: 10lvh; --natoceni: -4deg; }
+      .blob-fialova { --vlna: 160lvh; --zdvih: 14lvh; --natoceni: 5deg; }
+      .blob-zluta { --vlna: 140lvh; --zdvih: 12lvh; --natoceni: -3deg; }
+      .blob-oranzova { --vlna: 180lvh; --zdvih: 8lvh; --natoceni: 3deg; }
 
-      .blob-modra { --posun: -14lvh; --natoceni: -4deg; }
-      .blob-fialova { --posun: -26lvh; --natoceni: 5deg; }
-      .blob-zluta { --posun: -20lvh; --natoceni: -3deg; }
-      .blob-oranzova { --posun: -10lvh; --natoceni: 3deg; }
+      /* Syté tvary plovoucí v okraji vedle textu se nenatáčí, aby zůstaly
+         mimo textový sloupec. */
+      .blob-koralova { --vlna: 150lvh; --zdvih: 8lvh; --natoceni: 0deg; }
+      .blob-zelena { --vlna: 170lvh; --zdvih: 10lvh; --natoceni: 0deg; }
     }
   }
 
-  @keyframes vznaseni {
-    to {
-      translate: 0 var(--posun, -16lvh);
+  @keyframes vlna {
+    0%,
+    100% {
+      translate: 0 0;
+      rotate: 0deg;
+    }
+
+    25% {
+      translate: 0 calc(var(--zdvih, 10lvh) * -1);
       rotate: var(--natoceni, 0deg);
+    }
+
+    75% {
+      translate: 0 var(--zdvih, 10lvh);
+      rotate: calc(var(--natoceni, 0deg) * -1);
     }
   }
 

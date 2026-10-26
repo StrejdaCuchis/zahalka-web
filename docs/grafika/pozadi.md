@@ -70,8 +70,13 @@ nadpisem. Velikost se nemění.
   (8–13 s). Plovoucí tvary o ±12–16 px a ±2–3°, ukotvená korálová a zelená jen
   o ±5 px bez natáčení, aby nezajely pod text. Scéna tak žije i uprostřed
   dlouhých stránek.
-- **Hloubka při scrollování:** plovoucí tvary se posouvají různou rychlostí
-  a mírně natáčejí (CSS scroll-driven animace).
+- **Vlnění při scrollování:** plovoucí tvary při scrollování stoupají a klesají
+  o 8–14 % výšky obrazovky a mírně se natáčejí, jako by se houpaly na vlnách.
+  Délka vlny je 1,2–1,8 výšky obrazovky scrollu, u každého tvaru jiná. Je daná
+  v pixelech scrollu, ne podílem stránky, takže pohyb je stejný na krátké
+  i dlouhé stránce (CSS scroll-driven animace se 16 navazujícími úseky).
+  Bez odscrollování platí přesně původní kompozice. Syté tvary v okraji O nás
+  se nenatáčí.
 - **Přechod mezi stránkami:** jeden tvar odcházející stránky se během 0,63 s
   nafoukne na 8× přes celou obrazovku, krátce se napne, praskne a pod ním se
   objeví nová stránka (celkem 0,9 s, CSS View Transitions). Bublinou je oblý
