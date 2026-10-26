@@ -195,94 +195,78 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
     }
   }
 
-  /* Vlnění při scrollování: plovoucí tvary stoupají a klesají, jako by se
-     houpaly na vlnách. Délka vlny je daná v pixelech scrollu (násobek výšky
-     obrazovky), ne podílem stránky, takže se tvary hýbou stejně na krátké
-     i dlouhé stránce. Vlna se skládá z 16 navazujících úseků, které pokryjí
-     i nejdelší stránky; za nimi tvar zůstane v klidové poloze. Bez odscrollování
-     platí přesně původní kompozice. Bez podpory scroll-driven animací nebo při
-     omezení pohybu zůstává scéna klidná. */
+  /* Klidná paralaxa: při scrollování se tvary pomalu posouvají a jemně
+     natáčejí. Průběh je lineární a bez opakování, takže se směr této vrstvy
+     mění pouze se směrem scrollu. Za jednu výšku obrazovky ujedou 2,4–3,6 % její
+     výšky; celý rozsah pokrývá osm obrazovek a pak drží koncovou polohu.
+     Bez podpory zůstává jemná levitace obrázku; při omezení pohybu je
+     celá scéna statická. */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: scroll()) {
       .plovouci .blob,
       .scena[data-syte-vedle-textu] :is(.kotvy.desktop, .kotvy.mobil) .blob {
-        animation-name: vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna, vlna;
-        animation-timing-function: ease-in-out;
-        animation-fill-mode: none;
+        animation-name: klidna-paralaxa;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: scroll(root);
-        animation-range:
-          calc(var(--vlna) * 0) calc(var(--vlna) * 1),
-          calc(var(--vlna) * 1) calc(var(--vlna) * 2),
-          calc(var(--vlna) * 2) calc(var(--vlna) * 3),
-          calc(var(--vlna) * 3) calc(var(--vlna) * 4),
-          calc(var(--vlna) * 4) calc(var(--vlna) * 5),
-          calc(var(--vlna) * 5) calc(var(--vlna) * 6),
-          calc(var(--vlna) * 6) calc(var(--vlna) * 7),
-          calc(var(--vlna) * 7) calc(var(--vlna) * 8),
-          calc(var(--vlna) * 8) calc(var(--vlna) * 9),
-          calc(var(--vlna) * 9) calc(var(--vlna) * 10),
-          calc(var(--vlna) * 10) calc(var(--vlna) * 11),
-          calc(var(--vlna) * 11) calc(var(--vlna) * 12),
-          calc(var(--vlna) * 12) calc(var(--vlna) * 13),
-          calc(var(--vlna) * 13) calc(var(--vlna) * 14),
-          calc(var(--vlna) * 14) calc(var(--vlna) * 15),
-          calc(var(--vlna) * 15) calc(var(--vlna) * 16);
+        animation-range: 0px 800lvh;
       }
 
-      .blob-modra { --vlna: 120lvh; --zdvih: 10lvh; --natoceni: -4deg; }
-      .blob-fialova { --vlna: 160lvh; --zdvih: 14lvh; --natoceni: 5deg; }
-      .blob-zluta { --vlna: 140lvh; --zdvih: 12lvh; --natoceni: -3deg; }
-      .blob-oranzova { --vlna: 180lvh; --zdvih: 8lvh; --natoceni: 3deg; }
+      .blob-modra { --posun: -24lvh; --natoceni: -3.6deg; }
+      .blob-fialova { --posun: -28.8lvh; --natoceni: 4.8deg; }
+      .blob-zluta { --posun: -21.6lvh; --natoceni: -2.4deg; }
+      .blob-oranzova { --posun: -19.2lvh; --natoceni: 2.4deg; }
 
-      /* Syté tvary plovoucí v okraji vedle textu se nenatáčí, aby zůstaly
-         mimo textový sloupec. */
-      .blob-koralova { --vlna: 150lvh; --zdvih: 8lvh; --natoceni: 0deg; }
-      .blob-zelena { --vlna: 170lvh; --zdvih: 10lvh; --natoceni: 0deg; }
+      /* Na blogu a v článcích žlutá klesá, zatímco modrá stoupá.
+         Rozdílné rychlosti a opačné natočení zvýrazní hloubku scény. */
+      .scena[data-pozadi='4'] .blob-zluta {
+        --posun: 21.6lvh;
+        --natoceni: 2.4deg;
+      }
+
+      /* Syté tvary na O nás se pohybují svisle, aby se jejich hrana
+         ani na telefonu nenatočila do textového sloupce. */
+      .blob-koralova { --posun: -14.4lvh; --natoceni: 0deg; }
+      .blob-zelena { --posun: -16.8lvh; --natoceni: 0deg; }
     }
   }
 
-  @keyframes vlna {
-    0%,
-    100% {
+  @keyframes klidna-paralaxa {
+    from {
       translate: 0 0;
       rotate: 0deg;
     }
 
-    25% {
-      translate: 0 calc(var(--zdvih, 10lvh) * -1);
+    to {
+      translate: 0 var(--posun, -24lvh);
       rotate: var(--natoceni, 0deg);
-    }
-
-    75% {
-      translate: 0 var(--zdvih, 10lvh);
-      rotate: calc(var(--natoceni, 0deg) * -1);
     }
   }
 
-  /* Levitace: každý tvar se v čase jemně pohupuje a natáčí vlastním tempem,
-     takže scéna žije i uprostřed dlouhé stránky. Pohyb nese obrázek uvnitř,
-     proto se skládá s posunem při scrollování. Ukotvené syté tvary se jen
-     pohupují o 5 px bez natáčení, aby nezajely pod text. */
+  /* Levitace žije na vnitřním obrázku, paralaxa na picture: oba pohyby se
+     skládají bez přepisování. Celý cyklus trvá 56–76 s, s pozvolným obratem
+     v krajních polohách a odlišnými fázemi. Syté tvary drží rezervu ±14,625 px
+     bez natočení, aby se nepřiblížily k textu. */
   @media (prefers-reduced-motion: no-preference) {
     .blob img {
-      animation: levitace var(--perioda, 11s) ease-in-out var(--zpozdeni, 0s) infinite alternate;
+      animation: levitace var(--perioda, 34s) ease-in-out var(--zpozdeni, 0s) infinite alternate;
     }
 
-    .blob-modra { --perioda: 9s; --zpozdeni: -3s; --vznos: 14px; --naklon: 3deg; }
-    .blob-fialova { --perioda: 12s; --zpozdeni: -7s; --vznos: 16px; --naklon: -3deg; }
-    .blob-zluta { --perioda: 10s; --zpozdeni: -1s; --vznos: 12px; --naklon: 2.5deg; }
-    .blob-oranzova { --perioda: 13s; --zpozdeni: -5s; --vznos: 12px; --naklon: -2deg; }
-    .blob-koralova { --perioda: 8s; --zpozdeni: -2s; --vznos: 5px; --naklon: 0deg; }
-    .blob-zelena { --perioda: 11s; --zpozdeni: -6s; --vznos: 5px; --naklon: 0deg; }
+    .blob-modra { --perioda: 28s; --zpozdeni: -12s; --vznos: 49.14px; --naklon: 1.755deg; }
+    .blob-fialova { --perioda: 34s; --zpozdeni: -24s; --vznos: 56.16px; --naklon: -2.0475deg; }
+    .blob-zluta { --perioda: 31s; --zpozdeni: -6s; --vznos: 42.12px; --naklon: 1.4625deg; }
+    .blob-oranzova { --perioda: 38s; --zpozdeni: -19s; --vznos: 42.12px; --naklon: -1.4625deg; }
+    .blob-koralova { --perioda: 33s; --zpozdeni: -10s; --vznos: 14.625px; --naklon: 0deg; }
+    .blob-zelena { --perioda: 36s; --zpozdeni: -26s; --vznos: 14.625px; --naklon: 0deg; }
   }
 
   @keyframes levitace {
     from {
-      transform: translateY(calc(var(--vznos, 12px) * -1)) rotate(calc(var(--naklon, 2deg) * -1));
+      transform: translateY(calc(var(--vznos, 49.14px) * -1)) rotate(calc(var(--naklon, 1.755deg) * -1));
     }
 
     to {
-      transform: translateY(var(--vznos, 12px)) rotate(var(--naklon, 2deg));
+      transform: translateY(var(--vznos, 49.14px)) rotate(var(--naklon, 1.755deg));
     }
   }
 

@@ -1,5 +1,61 @@
 # Kontrola plovoucí scény — 26. 10. 2026
 
+## Druhé zesílení levitace o dalších 50 % (aktuální úprava)
+
+Posun i náklon levitace byly znovu vynásobené 1,5. Světlé tvary mají
+rozsah ±42,12–56,16 px a ±1,4625–2,0475°, syté ±14,625 px bez natočení.
+Celá svislá dráha světlých tvarů nyní měří 84,24–112,32 px.
+Periody, fáze a scrollová paralaxa zůstaly stejné.
+
+Produkční build 16 stránek prošel. V otevřeném náhledu blogu byly před
+obnovením stále předchozí hodnoty (modrá 32,76 px, žlutá 28,08 px,
+fialová 37,44 px). Po obnovení prohlížeč potvrdil nové hodnoty 49,14 px,
+42,12 px a 56,16 px, aktivní levitaci a zachovanou scrollovou paralaxu.
+
+## Zesílení levitace o dalších 50 % (předchozí úprava)
+
+Posun i náklon levitace byly vynásobené 1,5 oproti předchozímu stavu.
+Světlé tvary se pohupují o ±28,08–37,44 px a ±0,975–1,365°, syté
+svisle o ±9,75 px bez natočení. Periody, fáze a scrollová paralaxa
+zůstaly stejné.
+
+## Zesílení levitace o 30 % (předchozí úprava)
+
+Posun i náklon levitace byly vynásobené 1,3. Světlé tvary se pohupují
+o ±18,72–24,96 px a ±0,65–0,91°, syté o ±6,5 px bez natočení. Periody,
+počáteční fáze a scrollová paralaxa zůstaly stejné. Následující měření
+popisuje předchozí amplitudy.
+
+## Kombinace levitace a paralaxy (předchozí úprava)
+
+- Vrácena pomalá levitace na vnitřním obrázku s cykly 56–76 s. Paralaxa
+  zůstává na `picture`; její posun i natočení jsou o 20 % větší.
+- Blog, scroll 413,5 px: modrá −12,405 px, žlutá +11,1645 px, fialová
+  −14,886 px. Modrá a žlutá mají opačné natočení a levitační periody
+  28 a 31 s jedním směrem. Opakovaný odečet při stejném scrollu potvrdil
+  stálou paralaxu a měnící se transformaci levitace.
+- O nás, 390 × 844 px: žádné vodorovné přetečení; korálová a zelená mají
+  levitaci ±5 px a nulové natáčení v obou vrstvách.
+- Produkční build všech 16 stránek prošel. Omezení pohybu vypíná obě
+  vrstvy přes `prefers-reduced-motion` v CSS.
+
+## Zklidnění scrollování (předchozí úprava)
+
+- Opakované vlnění i časovou levitaci nahradila jediná lineární paralaxa
+  řízená scrollem; tvary se jemně natáčejí a směr obracejí pouze se scrollem.
+- V produkčním náhledu na O nás: při scrollu 720 px má modrá posun −18 px
+  a natočení −0,375°; při 1440 px −36 px a −0,75°. Scroll zpět na 720 px
+  vrátil přesně původní hodnoty. Obrázky nemají další časovou animaci.
+- Ověřené mobilní zobrazení při 390 × 844 px: paralaxa funguje, korálová
+  a zelená se nenatáčejí a stránka nemá vodorovné přetečení.
+- Blog při šířce 1280 px: všechny tři tvary používají scrollovou časovou osu,
+  bez vodorovného přetečení. Produkční build: 16 stránek bez chyby.
+- V CSS jsou vlastnosti animace zapsané jednotlivě. Zkrácený zápis při
+  sestavení slučoval časovou osu do syntaxe, kterou náhledový prohlížeč
+  ignoroval; kontrola proto proběhla nad výsledným produkčním CSS.
+
+Následující širší měření kontrastu a přechodů pochází z předchozí verze scény.
+
 ## Výsledek
 
 | Kontrolovaný stav | Hodnota |
