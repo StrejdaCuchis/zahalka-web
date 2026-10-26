@@ -1,5 +1,6 @@
 ---
 import Zaklad from '../layouts/Zaklad.astro';
+import MobilniKompozice from '../components/MobilniKompozice.astro';
 import { kontakty, schemaOrganizace } from '../data/kontakty';
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://zahalka.cz';
@@ -80,6 +81,8 @@ const organizationSchema = {
         </section>
       </section>
 
+      <MobilniKompozice varianta={5} cast="horni" />
+
       <section class="provozovatel" aria-labelledby="provozovatel-nadpis">
         <h2 id="provozovatel-nadpis">Provozovatel</h2>
         <address>
@@ -90,6 +93,8 @@ const organizationSchema = {
           datová schránka {kontakty.datovaSchranka}
         </address>
       </section>
+
+      <MobilniKompozice varianta={5} cast="stredni" />
 
       <section class="mapa-sekce" aria-label="Mapa polohy">
         <h2>Jak se k nám dostat</h2>
@@ -123,6 +128,7 @@ const organizationSchema = {
           </ul>
         </div>
       </section>
+      <MobilniKompozice varianta={5} cast="dolni" />
     </div>
   </main>
 </Zaklad>

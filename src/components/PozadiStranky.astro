@@ -9,11 +9,12 @@ interface Props {
 
 const { varianta, lazy = false, rezim = 'okraje' } = Astro.props;
 const vrstvy = kompozice[String(varianta) as keyof typeof kompozice];
+const zarizeniKompozice = rezim === 'okraje' ? ['desktop'] as const : ['desktop', 'mobil'] as const;
 const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
 ---
 
 <div class:list={['pozadi-stranky', { okraje: rezim === 'okraje' }]} aria-hidden="true" data-pozadi={varianta}>
-  {(['desktop', 'mobil'] as const).map((zarizeni) => (
+  {zarizeniKompozice.map((zarizeni) => (
     <div class:list={['kompozice', zarizeni]}>
       {vrstvy[zarizeni].map((blob) => (
         <picture
@@ -141,14 +142,8 @@ const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/
   @media (max-width: 700px) {
     .desktop { display: none; }
     .mobil { display: block; }
-  }
-
-  @media (max-width: 340px) {
-    /* Karty mohou zasahovat blíž k pravému okraji než jejich text.
-       Malé motivy proto přesouváme do volného levého odsazení. */
-    .okraje .vpravo:not(:last-child) {
-      left: 0;
-      transform: translate(0, calc(var(--y) * -100%));
-    }
+    /* Mobil nemá volné boční okraje. Velké kompozice dostávají vlastní
+       prostor mezi obsahovými bloky přes MobilniKompozice.astro. */
+    .okraje { display: none; }
   }
 </style>

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
+import MobilniKompozice from '../components/MobilniKompozice.astro';
 const vsechnyAkce = await getCollection('akce');
 
 const dnes = new Date();
@@ -36,15 +37,25 @@ const nadchazejici = vsechnyAkce
         <section aria-label="Nadcházející akce">
           <h2>Nadcházející akce</h2>
           <div class="mrizka">
-            {nadchazejici.map((akce) => (
-              <KartaAkce entry={akce} />
+            {nadchazejici.map((akce, index) => (
+              <Fragment>
+                <KartaAkce entry={akce} />
+                {index === 0 && <MobilniKompozice varianta={3} cast="horni" />}
+                {index === Math.ceil(nadchazejici.length / 2) - 1 && (
+                  <MobilniKompozice varianta={3} cast="stredni" />
+                )}
+              </Fragment>
             ))}
           </div>
+          <MobilniKompozice varianta={3} cast="dolni" />
         </section>
       )}
 
       {nadchazejici.length === 0 && (
-        <p class="zadne-akce">Momentálně neplánujeme žádné akce. Sledujte nás na Instagramu.</p>
+        <Fragment>
+          <p class="zadne-akce">Momentálně neplánujeme žádné akce. Sledujte nás na Instagramu.</p>
+          <MobilniKompozice varianta={3} />
+        </Fragment>
       )}
 
     </div>
