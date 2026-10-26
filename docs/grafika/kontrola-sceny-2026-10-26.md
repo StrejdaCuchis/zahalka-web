@@ -28,11 +28,11 @@ Produkční build: 16 stránek bez chyby.
 
 ### Plovoucí korálová a zelená na O nás (doplněno)
 
-Od 1024 px plují pevně v obrazovce, text kolem nich proplouvá ve všech výškách.
-Proto se kontrolovalo vodorovně: žádný řádek volného textu (s rezervou 6 px)
-nesmí zasahovat do sloupců, kde je tvar neprůhledný. Výsledek ve 10 šířkách
-od 1024 do 2560 px: 0 kolizí, tvary začínají 17 px za koncem nejširšího řádku.
-Pod 1024 px (7 velikostí) zůstávají ukotvené a prošly běžným měřením.
+Plují pevně v obrazovce ve všech šířkách a text kolem nich proplouvá ve všech
+výškách. Proto se kontrolovalo vodorovně: žádný řádek volného textu (s rezervou
+4 px) nesmí zasahovat do sloupců, kde je tvar neprůhledný. Výsledek v 16 šířkách
+od 320 do 2560 px: 0 kolizí. Viditelný proužek je 23 px na telefonu a od
+1024 px tvary začínají 17 px za koncem nejširšího řádku.
 
 ## Rozsah
 

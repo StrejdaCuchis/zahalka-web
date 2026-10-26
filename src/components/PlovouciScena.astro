@@ -148,15 +148,25 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
     top: -1.5rem;
   }
 
-  /* Na stránce s úzkým středovým sloupcem plují od 1024 px i syté tvary.
-     Drží se v pravém okraji: střed se podle potřeby posune ke kraji tak, aby
-     tvar začínal 16 px za koncem textu. Velikost se nemění, jen víc přesahuje
-     přes okraj. Text tak jede vedle nich, ne přes ně. */
+  /* Na stránce s úzkým středovým sloupcem plují i syté tvary. Drží se
+     v pravém okraji: střed se podle potřeby posune ke kraji tak, aby tvar
+     začínal za koncem textu (16 px, na užších obrazovkách 8 px). Konec textu
+     je polovina sloupce od středu, nejvýš však boční odsazení stránky (2rem)
+     od kraje. Na telefonu tak tvar vykukuje jako proužek u okraje. Velikost
+     se nemění, jen víc přesahuje přes okraj. Text jede vedle tvarů, ne přes ně. */
+  .scena[data-syte-vedle-textu] :is(.kotvy.desktop, .kotvy.mobil) .blob {
+    --mezera-od-textu: 8px;
+    position: fixed;
+    top: calc(var(--y) * 100lvh);
+    left: max(
+      calc(var(--x) * 100%),
+      calc(min(50% + var(--pulka-sloupce), 100% - 2rem) + var(--mezera-od-textu) + var(--sirka) * 50%)
+    );
+  }
+
   @media (min-width: 1024px) {
     .scena[data-syte-vedle-textu] .kotvy.desktop .blob {
-      position: fixed;
-      top: calc(var(--y) * 100lvh);
-      left: max(calc(var(--x) * 100%), calc(50% + var(--pulka-sloupce) + 16px + var(--sirka) * 50%));
+      --mezera-od-textu: 16px;
     }
   }
 
@@ -196,11 +206,9 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
 
       /* Plovoucí syté tvary jen klesají a stoupají, bez natočení, aby
          zůstaly v okraji vedle textu. */
-      @media (min-width: 1024px) {
-        .scena[data-syte-vedle-textu] .kotvy.desktop .blob {
-          animation: vznaseni linear both;
-          animation-timeline: scroll(root);
-        }
+      .scena[data-syte-vedle-textu] :is(.kotvy.desktop, .kotvy.mobil) .blob {
+        animation: vznaseni linear both;
+        animation-timeline: scroll(root);
       }
 
       .blob-koralova { --posun: -12lvh; }
