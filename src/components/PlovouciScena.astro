@@ -3,9 +3,11 @@ import kompozice from '../data/pozadi.json';
 
 interface Props {
   varianta: 1 | 2 | 3 | 4 | 5 | 6;
+  /** Polovina šířky textového sloupce v px; viz plovoucí syté tvary níže. */
+  syteVedleTextu?: number;
 }
 
-const { varianta } = Astro.props;
+const { varianta, syteVedleTextu } = Astro.props;
 const vrstvy = kompozice[String(varianta) as keyof typeof kompozice];
 const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
 
@@ -49,7 +51,13 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
   vrstvy[zarizeni].map((blob, i) => ({ ...blob, barva: barvy[varianta][i] }));
 ---
 
-<div class="scena" aria-hidden="true" data-pozadi={varianta}>
+<div
+  class="scena"
+  aria-hidden="true"
+  data-pozadi={varianta}
+  data-syte-vedle-textu={syteVedleTextu ? '' : undefined}
+  style={syteVedleTextu ? `--pulka-sloupce:${syteVedleTextu}px` : undefined}
+>
   {(['desktop', 'mobil'] as const).map((zarizeni) => {
     const bloby = rozdelit(zarizeni);
     return (
@@ -140,6 +148,18 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
     top: -1.5rem;
   }
 
+  /* Na stránce s úzkým středovým sloupcem plují od 1024 px i syté tvary.
+     Drží se v pravém okraji: střed se podle potřeby posune ke kraji tak, aby
+     tvar začínal 16 px za koncem textu. Velikost se nemění, jen víc přesahuje
+     přes okraj. Text tak jede vedle nich, ne přes ně. */
+  @media (min-width: 1024px) {
+    .scena[data-syte-vedle-textu] .kotvy.desktop .blob {
+      position: fixed;
+      top: calc(var(--y) * 100lvh);
+      left: max(calc(var(--x) * 100%), calc(50% + var(--pulka-sloupce) + 16px + var(--sirka) * 50%));
+    }
+  }
+
   img {
     display: block;
     width: 100%;
@@ -173,6 +193,18 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
         animation: vznaseni linear both;
         animation-timeline: scroll(root);
       }
+
+      /* Plovoucí syté tvary jen klesají a stoupají, bez natočení, aby
+         zůstaly v okraji vedle textu. */
+      @media (min-width: 1024px) {
+        .scena[data-syte-vedle-textu] .kotvy.desktop .blob {
+          animation: vznaseni linear both;
+          animation-timeline: scroll(root);
+        }
+      }
+
+      .blob-koralova { --posun: -12lvh; }
+      .blob-zelena { --posun: -18lvh; }
 
       .blob-modra { --posun: -14lvh; --natoceni: -4deg; }
       .blob-fialova { --posun: -26lvh; --natoceni: 5deg; }
