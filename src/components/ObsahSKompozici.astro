@@ -1,0 +1,24 @@
+---
+import { parseFragment } from 'parse5';
+import MobilniKompozice from './MobilniKompozice.astro';
+
+interface Props {
+  varianta: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+const { varianta } = Astro.props;
+const html = await Astro.slots.render('default');
+const uzly = parseFragment(html, { sourceCodeLocationInfo: true }).childNodes;
+const nadpisy = uzly.flatMap((uzel) => (
+  'tagName' in uzel && uzel.tagName === 'h2' && uzel.sourceCodeLocation
+    ? [uzel.sourceCodeLocation.startOffset]
+    : []
+));
+// Dekorace patří mezi celé kapitoly, nikdy doprostřed odstavce či fotogalerie.
+// Původní HTML ze slotu i pořadí obsahu ponecháváme beze změny.
+const predel = nadpisy.length > 1 ? nadpisy[Math.floor(nadpisy.length / 2)] : html.length;
+---
+
+<Fragment set:html={html.slice(0, predel)} />
+<MobilniKompozice varianta={varianta} cast="stredni" />
+<Fragment set:html={html.slice(predel)} />

@@ -1,6 +1,6 @@
 # Autorská pozadí Zahálky
 
-## Výsledné řešení po vizuální připomínce, 25. 10. 2026
+## Výsledné řešení po vizuálních připomínkách, 26. 10. 2026
 
 Zadání: původní barvy, celé tvary bez rovných spodních řezů, rozprostření po celé
 obsahové části stránky a zachování dosavadního rozložení obsahu.
@@ -20,13 +20,31 @@ zůstávají ve svých proporcích; neroztahují se do výšky spolu s dlouhou s
 | 5 | Celá obsahová část O nás a Kontaktu | Společná modrá, korálová a zelená pro stránky o prostoru. |
 | 6 | Samostatná ilustrace newsletteru | Úplná dodaná kompozice vedle informací na desktopu, za nimi na mobilu. Její rozložení se při opravě nemění. |
 
-Po následné kontrole překryvů jsou všechny dekorace stránek umístěné do volných
-bočních okrajů. Jejich šířka vychází z nejširšího obsahu konkrétní stránky, takže
-nezasahují pod text, tlačítka, fotografie ani postavičku na homepage. Na užších
-obrazovkách se zmenšují; poslední celý tvar má větší akcent v existujícím spodním
-odsazení. Do 340 px se drobné pravé motivy přesouvají vlevo kvůli kartám programu.
-Samostatná ilustrace newsletteru zachovává původní kompozici. Barvy a bitmapy
-se při této opravě nemění.
+Na desktopu dekorace rámují obsah ve volných bočních okrajích. Na mobilu mají
+velikosti a vodorovné polohy z dodaných mobilních kompozic a vlastní prostor
+mezi obsahovými bloky. Díky tomu zůstávají celé, výrazné a nezasahují pod text,
+tlačítka ani fotografie. Samostatná ilustrace newsletteru zachovává původní
+kompozici. Barvy a bitmapy se při těchto úpravách nemění.
+
+### Mobilní kompozice, 26. 10. 2026
+
+Původní řešení drobnými motivy v bočních okrajích je na telefonu nahrazené.
+`MobilniKompozice.astro` odvozuje velikosti, proporce a vodorovné polohy přímo
+z mobilních dat v `pozadi.json`. Vrstvy řadí podle původní svislé polohy.
+Horní, střední a dolní skupinu lze proložit obsahem; souvislá kompozice slouží
+pro krátký prázdný Program a stránku 404. Neprovádí se ořez ani barevná úprava.
+
+Při 390 px mají motivy homepage přibližně 156–248 px; motivy Programu 203–315 px.
+Svislý rytmus mobilních stránek se přizpůsobuje velkým tvarům. Obsahové sloupce,
+pořadí informací, typografie a desktopové rozložení se nemění. Hlavní odkazy
+homepage a přihlašovací tlačítka zůstávají před první dekorací.
+
+Na O nás vkládá `ObsahSKompozici.astro` střední motiv mezi celé kapitoly příběhu
+podle nadpisů, bez změny Markdown obsahu. V Programu s akcemi je první motiv až
+za první kartou. Ilustrace newsletteru má na telefonu celou dostupnou šířku
+místo dřívějšího limitu 10rem. Kompozice mají rezervované rozměry a nepotřebují JS.
+
+Ověření popisuje [kontrola mobilní verze](kontrola-mobilu-2026-10-26.md).
 
 ### Větší motivy na desktopu
 
@@ -34,7 +52,8 @@ Od 1101 px mají stránkové motivy limit šířky 26rem místo 14rem. Výpočet
 i volné vnitřní odsazení obsahových sloupců. Na homepage dostaly modrý a korálový
 tvar samostatné umístění vedle užšího úvodu; korálový motiv má limit 32rem.
 Při šířce 1470 px měří modrý motiv přibližně 324 px a korálový 412 px
-(oba dříve 162 px). Mobilní a tabletové kompozice do 1100 px se nemění.
+(oba dříve 162 px). Tato desktopová úprava původně neměnila šířky do 1100 px;
+mobilní řešení do 700 px bylo následně přepracované podle popisu výše.
 
 Po zvětšení prošlo všech 16 stránek v šířkách 390, 1024, 1101, 1280, 1470,
 1600, 1920 a 2560 px kontrolou průniků dekorací s textem, obrázky a ovládáním:
@@ -63,6 +82,8 @@ okraje, takže se nedotýkají hrany hero sekce ani patičky.
 - `src/data/pozadi.json`: rozměry a relativní polohy pro obě kompozice.
 - `public/obrazky/pozadi/vrstvy/`: 37 optimalizovaných úplných tvarů. Zdrojová SVG o desítkách MB se neposílají do prohlížeče.
 - `src/components/PozadiStranky.astro`: jednotlivé vrstvy přes celou obsahovou část, bez JS.
+- `src/components/MobilniKompozice.astro`: velké mobilní skupiny vrstev mezi obsahovými bloky.
+- `src/components/ObsahSKompozici.astro`: předěl mezi kapitolami delšího Markdown obsahu, pouze při sestavení webu.
 - `src/layouts/Zaklad.astro`: prop `pozadi`, společná vrstva za obsahem. Hlavička a patička zachovávají dosavadní tok.
 - `src/components/GrafickePozadi.astro`: samostatná kompozice newsletteru z úplných tvarů, v původních rozměrech a barevnosti.
 - Starší WebP celých kreslicích ploch jsou zachované jako podklady předchozí verze. Původní skript pro převod PNG zůstává pro jejich obnovení.
@@ -81,11 +102,10 @@ pro polohování.
 
 ## Ověření opravy
 
-Aktuální kontrola je popsaná v [protokolu kontroly překryvů](kontrola-prekryvu-2026-10-25.md).
-Zahrnuje všech 16 generovaných stránek, deset šířek, dočasně naplněný program,
-aktivní přihlášky i formulář newsletteru. Dekorace se nepřekrývají s textem,
-obrázky ani ovládacími prvky v ověřených stavech. Rozměry a tok obsahu nejsou
-předmětem úprav; mění se umístění dekorací a barvy špatně čitelných prvků.
+Aktuální mobilní kontrolu popisuje [protokol z 26. 10.](kontrola-mobilu-2026-10-26.md).
+Předchozí desktopová kontrola je v [protokolu z 25. 10.](kontrola-prekryvu-2026-10-25.md).
+Dekorace se nepřekrývají s textem, obrázky ani ovládacími prvky v ověřených
+stavech. Mobilní tok nyní zahrnuje prostor pro celé velké motivy.
 
 Aktuální skutečný obsah nemá budoucí akce ani aktivní přihlášky na tábor;
 newsletter bez nastaveného formuláře zobrazuje kontaktní e-mail. Testovací

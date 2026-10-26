@@ -4,6 +4,7 @@ import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
 import KartaClanku from '../components/KartaClanku.astro';
 import Newsletter from '../components/Newsletter.astro';
+import MobilniKompozice from '../components/MobilniKompozice.astro';
 import { schemaOrganizace } from '../data/kontakty';
 const vsechnyAkce = await getCollection('akce');
 const vsechnyClanky = await getCollection('blog');
@@ -73,6 +74,8 @@ const nejnovejsiClanky = vsechnyClanky
       </div>
     </section>
 
+    <MobilniKompozice varianta={1} cast="horni" />
+
     {nejblizsiAkce.length > 0 && (
       <section class="nejblizsi" aria-label="Nejbližší akce">
         <div class="obal">
@@ -98,6 +101,8 @@ const nejnovejsiClanky = vsechnyClanky
       </section>
     )}
 
+    <MobilniKompozice varianta={1} cast="stredni" />
+
     {nejnovejsiClanky.length > 0 && (
       <section class="blog-vyber" aria-labelledby="blog-vyber-nadpis">
         <div class="obal">
@@ -111,6 +116,8 @@ const nejnovejsiClanky = vsechnyClanky
         </div>
       </section>
     )}
+
+    <MobilniKompozice varianta={1} cast="dolni" />
 
     <aside class="newsletter-sekce" aria-label="Odběr newsletteru">
       <Newsletter />

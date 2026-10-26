@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
+import MobilniKompozice from '../components/MobilniKompozice.astro';
 import { kontakty } from '../data/kontakty';
 import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
 import { ceskaTypografie } from '../utils/typografie';
@@ -169,6 +170,8 @@ const campSchema = maKompletniTermin ? {
       </header>
     </section>
 
+    <MobilniKompozice varianta={2} cast="horni" />
+
     {hlavniObrazek && (
       <figure class="hlavni-fotka">
         <img
@@ -184,6 +187,8 @@ const campSchema = maKompletniTermin ? {
     <article class="obsah">
       <Content />
     </article>
+
+    <MobilniKompozice varianta={2} cast="stredni" />
 
     {!lzeSePrihlasit && upozorneni && (
       <aside class="priprava" aria-label="Nové termíny příměstských táborů">
@@ -213,6 +218,8 @@ const campSchema = maKompletniTermin ? {
         </ul>
       </section>
     )}
+
+    <MobilniKompozice varianta={2} cast="dolni" />
 
     {lzeSePrihlasit && (
       <section class="sekce-cta" aria-labelledby="cta-nadpis" id="prihlasit-se">

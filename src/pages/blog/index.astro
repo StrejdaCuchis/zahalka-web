@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import KartaClanku from '../../components/KartaClanku.astro';
 import Newsletter from '../../components/Newsletter.astro';
+import MobilniKompozice from '../../components/MobilniKompozice.astro';
 
 const clanky = (await getCollection('blog'))
   .filter((clanek) => clanek.data.publikovano)
@@ -26,6 +27,8 @@ const clanky = (await getCollection('blog'))
       </p>
     </header>
 
+    <MobilniKompozice varianta={4} cast="horni" />
+
     {clanky.length > 0 ? (
       <section class="clanky" aria-label="Všechny články">
         {clanky.map((clanek) => <KartaClanku entry={clanek} />)}
@@ -34,9 +37,12 @@ const clanky = (await getCollection('blog'))
       <p class="prazdny-blog">První články právě připravujeme.</p>
     )}
 
+    <MobilniKompozice varianta={4} cast="stredni" />
+
     <aside aria-label="Odběr newsletteru">
       <Newsletter />
     </aside>
+    <MobilniKompozice varianta={4} cast="dolni" />
   </main>
 </Zaklad>
 
