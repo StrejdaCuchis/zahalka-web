@@ -1,5 +1,28 @@
 # Autorská pozadí Zahálky
 
+## Prototyp: plovoucí scéna — 26. 10. 2026
+
+Větev `prototyp/plovouci-scena`, zatím jen homepage, O nás a Příměšťák
+(`scena` v `Zaklad.astro`). Ostatní stránky používají řešení popsané níže.
+
+- Kompozice se mapuje na obrazovku jako grafikova kreslicí plocha. Střed tvaru
+  leží na souřadnici z `pozadi.json`, takže tvary přetékají přes okraj jako
+  v dodaných návrzích. Velikost, barva ani bitmapy se nemění.
+- Světlé tvary (modrá 7,4, žlutá 8,1, fialová 5,3 : 1 vůči textu `#123428`)
+  jsou pevné za obsahem a text přes ně jezdí. Syté tvary (korálová 3,5,
+  oranžová 4,4, zelená 1,9 : 1) jsou ukotvené k úvodu nebo konci stránky.
+- Čtecí plochy se na těchto stránkách nepoužívají. Vlastní podklad mají jen
+  karty, boxy a tlačítka.
+- Na telefonu (do 500 px) se horní sytý tvar zarovná na prvek s `anchor-name:
+  --kotva-sceny` (homepage: tlačítka úvodu). Bez podpory anchor positioning
+  zůstává původní poloha.
+- Hloubka při scrollování přes CSS scroll-driven animace, přechody mezi
+  stránkami přes CSS View Transitions. Bez podpory nebo při omezení pohybu
+  je scéna statická. Žádný klientský JavaScript.
+- Ověření: 3 stránky × 20 velikostí (320×568 až 2560×1440), 3013 řádků
+  textu. Žádný běžný text na sytém tvaru (měřeno po pixelech bitmapy),
+  žádné vodorovné přetečení.
+
 ## Aktuální řešení — 26. 10. 2026
 
 Grafika je dekorativní vrstva za obsahem. **Fotografie, karty i text ji mohou

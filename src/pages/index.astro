@@ -28,6 +28,7 @@ const nejnovejsiClanky = vsechnyClanky
 
 <Zaklad
   pozadi={1}
+  scena
   title="Zahálka – kulturní prostor Teplice"
   description="Zahálka je kulturní prostor v Teplicích pro besedy, workshopy a festivaly. Přijďte na akci — dveře otevíráme pro každého."
   canonicalPath="/"
@@ -223,6 +224,8 @@ const nejnovejsiClanky = vsechnyClanky
   }
 
   .hero-akce {
+    /* Na telefonu se k tlačítkům zarovná korálový tvar scény. */
+    anchor-name: --kotva-sceny;
     display: grid;
     width: max-content;
     max-width: 100%;

@@ -111,7 +111,7 @@ button:focus-visible {
     opacity: 1 !important;
   }
 
-  .plocha-stranky main a:not(:is(.btn-cta, .btn-prihlasit, .tlacitko-prihlasit, .hlavni-odkaz, .sekce-cta a)),
+  .plocha-stranky main a:not(:is(.btn-cta, .btn-prihlasit, .tlacitko-prihlasit, .hlavni-odkaz, .sekce-cta a, .souvisejici a)),
   .cteni-na-grafice a {
     color: var(--inkoust-na-grafice);
     opacity: 1 !important;
@@ -124,8 +124,8 @@ button:focus-visible {
   /* Podklady tvoří celé čtecí bloky, nikoli pruh pod každým řádkem.
      Původní barvy bitmap zůstávají bez filtrů a bez snížené opacity. */
   .plocha-stranky[data-stranka='/kontakt'] :is(.adresa-sekce, .spojeni-sekce, .doprava),
-  .plocha-stranky[data-stranka='/o-nas'] :is(.perex, .obsah > h2:first-child, .obsah > h2:first-child + p, .obsah > h2:last-of-type, .obsah > h2:last-of-type ~ p, .souvisejici),
-  .plocha-stranky[data-stranka='/tabor'] .obsah,
+  .plocha-stranky:not(.se-scenou)[data-stranka='/o-nas'] :is(.perex, .obsah > h2:first-child, .obsah > h2:first-child + p, .obsah > h2:last-of-type, .obsah > h2:last-of-type ~ p, .souvisejici),
+  .plocha-stranky:not(.se-scenou)[data-stranka='/tabor'] .obsah,
   .plocha-stranky[data-stranka^='/akce/'] :is(.obsah-akce, figcaption),
   .plocha-stranky[data-stranka='/cookies'] article > section,
   .plocha-stranky[data-stranka='/404'] main > section {
@@ -137,5 +137,42 @@ button:focus-visible {
 
   .plocha-stranky .filtr:not(.aktivni):not(:hover) {
     background-color: var(--barva-pozadi);
+  }
+}
+
+/* Plovoucí scéna: světlé bloby se vznáší za obsahem a text přes ně jezdí
+   bez podkladových ploch. Platí na všech šířkách, ne jen na mobilu. */
+.se-scenou main {
+  --inkoust-na-grafice: #123428;
+  color: var(--inkoust-na-grafice);
+}
+
+.se-scenou main :is(h1, h2, h3) {
+  color: var(--inkoust-na-grafice);
+}
+
+.se-scenou main :where(h1, h2, h3, p, time, figcaption) {
+  opacity: 1 !important;
+}
+
+.se-scenou main a:not(:is(.btn-cta, .btn-prihlasit, .tlacitko-prihlasit, .hlavni-odkaz, .sekce-cta a, .souvisejici a)) {
+  color: var(--inkoust-na-grafice);
+  opacity: 1 !important;
+}
+
+/* Přechod mezi stránkami bez JavaScriptu; prohlížeče bez podpory načtou
+   stránku obvyklým způsobem. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(.blob) {
+  animation-duration: 0.7s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
   }
 }
