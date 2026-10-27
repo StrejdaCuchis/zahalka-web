@@ -42,6 +42,8 @@ const pouzivaVychoziOg = !ogImage;
 const typografickyTitle = ceskaTypografie(title);
 const typografickyDescription = ceskaTypografie(description);
 const typografickyOgAlt = ceskaTypografie(ogImageAlt);
+// Identifikátor stránky pro názvy v přechodu mezi stránkami (custom-ident).
+const strankaPrechodu = canonicalPath.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'domu';
 ---
 
 <!doctype html>
@@ -113,8 +115,13 @@ const typografickyOgAlt = ceskaTypografie(ogImageAlt);
     </header>
 
     {pozadi ? (
-      <div class="plocha-stranky" data-pozadi={pozadi} data-stranka={canonicalPath}>
-        <PlovouciScena varianta={pozadi} syteVedleTextu={syteVedleTextu} />
+      <div
+        class="plocha-stranky"
+        data-pozadi={pozadi}
+        data-stranka={canonicalPath}
+        style={`--prechod-obsah:obsah-${strankaPrechodu}`}
+      >
+        <PlovouciScena varianta={pozadi} syteVedleTextu={syteVedleTextu} stranka={strankaPrechodu} />
         <slot />
       </div>
     ) : <slot />}
@@ -162,7 +169,10 @@ const typografickyOgAlt = ceskaTypografie(ogImageAlt);
       })();
     </script>
 
-    <footer class:list={[{ 'nad-scenou': pozadi }]}>
+    <footer
+      class:list={[{ 'nad-scenou': pozadi }]}
+      style={pozadi ? `view-transition-name:paticka-${strankaPrechodu};view-transition-class:obsah` : undefined}
+    >
       <div class="paticka-obsah">
         <p class="paticka-nazev">ZAHÁLKA • KULTURNÍ PROSTOR</p>
         <address>Benešovo nám. 3282, 415 01 Teplice</address>
@@ -201,6 +211,7 @@ const typografickyOgAlt = ceskaTypografie(ogImageAlt);
     padding: 1.25rem 2rem;
     border-bottom: 1px solid color-mix(in srgb, var(--barva-text) 15%, transparent);
     background: var(--barva-pozadi);
+    view-transition-name: hlavicka;
   }
 
   /* ── Logo ─────────────────────────────────────────────────────────────── */
