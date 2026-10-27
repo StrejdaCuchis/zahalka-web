@@ -5,9 +5,11 @@ interface Props {
   varianta: 1 | 2 | 3 | 4 | 5 | 6;
   /** Polovina šířky textového sloupce v px; viz plovoucí syté tvary níže. */
   syteVedleTextu?: number;
+  /** Identifikátor stránky pro názvy v přechodu mezi stránkami. */
+  stranka: string;
 }
 
-const { varianta, syteVedleTextu } = Astro.props;
+const { varianta, syteVedleTextu, stranka } = Astro.props;
 const vrstvy = kompozice[String(varianta) as keyof typeof kompozice];
 const prazdnyObrazek = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
 
@@ -29,18 +31,13 @@ const barvy: Record<string, string[]> = {
 // k úvodu, spodní k závěru.
 const syte = new Set(['koralova', 'zelena']);
 
-// Při odchodu ze stránky se tento tvar nafoukne přes obrazovku a praskne.
-// Vždy plovoucí, takže je na obrazovce v jakékoli poloze scrollu. Jen oblé
-// fialové a modré tvary při 8× zakryjí celou obrazovku; zahnutá žlutá
-// a oranžová by nechaly průhledná místa.
-const bublina: Record<string, string> = {
-  1: 'fialova',
-  2: 'modra',
-  3: 'fialova',
-  4: 'modra',
-  5: 'modra',
-  6: 'modra',
-};
+// Při přechodu mezi stránkami každý tvar pomalu odpluje k bližšímu okraji
+// a rozplyne se; tvary nové stránky ze stejných okrajů připlují. Názvy nesou
+// identifikátor stránky, takže se tvary dvou stránek nikdy nespárují a nepřelévají
+// do sebe.
+const prechod = (blob: { barva: string; x: number }, zarizeni: string, i: number) =>
+  `view-transition-name:tvar-${stranka}-${zarizeni}-${i};` +
+  `view-transition-class:tvar ${blob.x < 0.5 ? 'vlevo' : 'vpravo'} tvar-${blob.barva}`;
 
 const media = {
   desktop: '(min-width: 501px)',
@@ -48,7 +45,7 @@ const media = {
 };
 
 const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
-  vrstvy[zarizeni].map((blob, i) => ({ ...blob, barva: barvy[varianta][i] }));
+  vrstvy[zarizeni].map((blob, i) => ({ ...blob, barva: barvy[varianta][i], poradi: i }));
 ---
 
 <div
@@ -65,8 +62,8 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
         <div class:list={['plovouci', zarizeni]}>
           {bloby.filter((b) => !syte.has(b.barva)).map((blob) => (
             <picture
-              class:list={['blob', `blob-${blob.barva}`, { bublina: blob.barva === bublina[varianta] }]}
-              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}${blob.barva === bublina[varianta] ? `;view-transition-name:bublina-${varianta}` : ''}`}
+              class:list={['blob', `blob-${blob.barva}`]}
+              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height};${prechod(blob, zarizeni, blob.poradi)}`}
             >
               <source media={media[zarizeni]} srcset={blob.src} />
               <img src={prazdnyObrazek} alt="" width={blob.width} height={blob.height} decoding="async" />
@@ -77,7 +74,7 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
           {bloby.filter((b) => syte.has(b.barva)).map((blob) => (
             <picture
               class:list={['blob', `blob-${blob.barva}`, blob.y < 0.6 ? 'nahore' : 'dole']}
-              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height}`}
+              style={`--sirka:${blob.sirka};--x:${blob.x};--y:${blob.y};--pomer:${blob.width}/${blob.height};${prechod(blob, zarizeni, blob.poradi)}`}
             >
               <source media={media[zarizeni]} srcset={blob.src} />
               <img
@@ -269,6 +266,4 @@ const rozdelit = (zarizeni: 'desktop' | 'mobil') =>
       transform: translateY(var(--vznos, 49.14px)) rotate(var(--naklon, 1.755deg));
     }
   }
-
-  .bublina { view-transition-class: bublina; }
 </style>

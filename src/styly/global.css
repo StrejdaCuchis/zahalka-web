@@ -128,80 +128,154 @@ button:focus-visible {
   background-color: var(--barva-pozadi);
 }
 
-/* Přechod mezi stránkami bez JavaScriptu: jeden tvar odcházející stránky se
-   nafoukne přes celou obrazovku a praskne, pod ním se objeví nová stránka.
+/* Přechod mezi stránkami bez JavaScriptu: obsah odcházející stránky se
+   rozplyne, její tvary pomalu odplují k bližšímu okraji a zmizí. Nová stránka
+   se zvolna objeví a její tvary ze stejných okrajů připlují na svá místa.
+   Hlavička zůstává na místě. Obsah, patička i tvary mají v názvu identifikátor
+   stránky (Zaklad.astro, PlovouciScena.astro), takže se dvě stránky nikdy
+   nespárují a nic se nepřelévá. Na stejné stránce se tvary jen klidně přesunou.
    Prohlížeče bez podpory načtou stránku obvyklým způsobem. */
 @view-transition {
   navigation: auto;
 }
 
-::view-transition-old(root) {
+.plocha-stranky > main {
+  view-transition-name: var(--prechod-obsah, none);
+  view-transition-class: obsah;
+}
+
+::view-transition-group(root) {
+  animation-duration: 0.4s;
+}
+
+/* Hlavička i cookie lišta se nemění, takže se nepřelévají. Nová cookie lišta
+   se ukáže až skriptem po prvním vykreslení, stará proto drží místo do konce. */
+::view-transition-old(hlavicka) {
+  animation: none;
+  opacity: 0;
+}
+
+::view-transition-old(cookie-lista) {
   animation: none;
 }
 
-::view-transition-new(root) {
-  animation: stranka-objevit 0.9s both;
+::view-transition-new(hlavicka),
+::view-transition-new(cookie-lista) {
+  animation: none;
 }
 
-::view-transition-group(.bublina) {
+::view-transition-group(hlavicka),
+::view-transition-group(cookie-lista) {
+  animation: none;
+}
+
+/* Tvary nové stránky by se jinak kreslily přes vše ze staré stránky.
+   Pořadí vrstev proto drží stejné jako na stránce: tvary, obsah,
+   hlavička, cookie lišta. */
+::view-transition-group(.obsah) {
+  z-index: 1;
+}
+
+::view-transition-group(hlavicka) {
+  z-index: 2;
+}
+
+::view-transition-group(cookie-lista) {
+  z-index: 3;
+}
+
+::view-transition-old(.obsah) {
+  animation: obsah-rozplynout 0.35s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(.obsah) {
+  animation: obsah-objevit 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+::view-transition-group(.obsah),
+::view-transition-group(.tvar) {
   animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
 }
 
-::view-transition-old(.bublina) {
-  animation: bublina-nafouknout 0.9s both;
+::view-transition-group(.tvar) {
+  animation-duration: 2s;
 }
 
-::view-transition-new(.bublina) {
-  animation: bublina-objevit 0.9s both;
+/* Tvary se rozjíždějí s mírným odstupem, aby se scéna rozplývala
+   pozvolna, ne jako jeden celek. Odcházející tvar zmizí za 1 s; pohyb
+   odpovídá první polovině dvousekundového odplutí o čtvrtinu šířky
+   obrazovky (cubic-bezier(0.45, 0, 0.55, 1) rozdělená v polovině), takže
+   se hýbe stejně rychle, jen se dřív rozplyne a méně se kryje s novými. */
+::view-transition-old(.tvar) {
+  --odjezd: 25vw;
+  animation:
+    tvar-odplout 1s cubic-bezier(0.45, 0, 0.725, 0.5) var(--odstup, 0s) both,
+    tvar-zmizet 1s linear var(--odstup, 0s) both;
 }
 
-@keyframes bublina-nafouknout {
-  0% {
-    transform: scale(1);
-    animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.55);
-  }
+::view-transition-new(.tvar) {
+  animation: tvar-priplout 2.1s cubic-bezier(0.22, 1, 0.36, 1) calc(0.4s + var(--odstup, 0s)) both;
+}
 
-  70% {
-    transform: scale(8);
-    opacity: 1;
-    animation-timing-function: ease-out;
-  }
+::view-transition-old(.vlevo),
+::view-transition-new(.vlevo) {
+  --odjezd: -25vw;
+}
 
-  /* Krátké napětí blány těsně před prasknutím. */
-  75% {
-    transform: scale(7.7, 8.4);
-    opacity: 1;
-  }
+::view-transition-old(.vpravo),
+::view-transition-new(.vpravo) {
+  --odjezd: 25vw;
+}
 
-  86%,
-  100% {
-    transform: scale(12);
+::view-transition-old(.tvar-fialova),
+::view-transition-new(.tvar-fialova) {
+  --odstup: 0.135s;
+}
+
+::view-transition-old(.tvar-zluta),
+::view-transition-new(.tvar-zluta),
+::view-transition-old(.tvar-koralova),
+::view-transition-new(.tvar-koralova) {
+  --odstup: 0.27s;
+}
+
+::view-transition-old(.tvar-oranzova),
+::view-transition-new(.tvar-oranzova),
+::view-transition-old(.tvar-zelena),
+::view-transition-new(.tvar-zelena) {
+  --odstup: 0.09s;
+}
+
+@keyframes obsah-rozplynout {
+  to {
     opacity: 0;
   }
 }
 
-@keyframes stranka-objevit {
-  0%,
-  74% {
+@keyframes obsah-objevit {
+  from {
     opacity: 0;
-  }
-
-  82%,
-  100% {
-    opacity: 1;
+    transform: translateY(0.75rem);
   }
 }
 
-@keyframes bublina-objevit {
-  0%,
-  84% {
-    opacity: 0;
-    transform: scale(0.85);
+@keyframes tvar-odplout {
+  to {
+    transform: translateX(calc(var(--odjezd) / 2)) scale(0.98);
   }
+}
 
-  100% {
-    opacity: 1;
-    transform: scale(1);
+@keyframes tvar-zmizet {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes tvar-priplout {
+  from {
+    opacity: 0;
+    transform: translateX(var(--odjezd)) scale(0.96);
   }
 }
 

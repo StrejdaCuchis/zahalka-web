@@ -86,11 +86,18 @@ nadpisem. Velikost se nemění.
   Rozsah scrollového posunu i natočení se proti předchozí úpravě zvýšil
   o 20 %. Posun i natočení levitace se po navýšení o 30 % zvýšily ještě dvakrát o 50 %;
   její tempo a odezva na scroll zůstaly stejné.
-- **Přechod mezi stránkami:** jeden tvar odcházející stránky se během 0,63 s
-  nafoukne na 8× přes celou obrazovku, krátce se napne, praskne a pod ním se
-  objeví nová stránka (celkem 0,9 s, CSS View Transitions). Bublinou je oblý
-  tvar: fialová na homepage, Programu, akcích, Cookies a 404, modrá na ostatních
-  stránkách. Zahnutá žlutá a oranžová by obrazovku nezakryly.
+- **Přechod mezi stránkami:** stránka se jemně rozplyne. Obsah a patička
+  odcházející stránky zmizí za 0,35 s, její tvary pomalu odplují k bližšímu
+  okraji (o osminu šířky obrazovky, lehce se zmenší) a během 1 s se rozplynou.
+  Rychlost pohybu odpovídá odplutí o čtvrtinu šířky za 2 s, tvary jen dřív
+  zmizí, aby se méně kryly s novými. Nový obsah se od 0,3 s zvolna objeví
+  s posunem o 0,75 rem zdola a tvary nové stránky od 0,4 s během 2,1 s
+  připlují ze svých okrajů na místo (celkem asi 2,8 s,
+  CSS View Transitions). Tvary se rozjíždějí s odstupem 0–0,27 s podle barvy.
+  Hlavička a cookie lišta stojí. Obsah, patička i tvary mají v názvu přechodu
+  identifikátor stránky, takže se dvě stránky nikdy nespárují a nepřelévají;
+  pořadí vrstev během přechodu drží `z-index` skupin (tvary, obsah, hlavička,
+  cookie lišta).
 
 Stránka na začátku a konci neodpružuje (`overscroll-behavior-y: none` na `html`
 a `body`). Jinak by se při přetažení na iPhonu hlavička nebo patička odtrhla
@@ -101,9 +108,9 @@ pohybu vidí statickou scénu a obvyklé načtení stránky. Klientský JavaScri
 
 ## Soubory
 
-- `src/components/PlovouciScena.astro`: scéna, rozdělení tvarů, paralaxa, pomalá levitace a výběr bubliny.
+- `src/components/PlovouciScena.astro`: scéna, rozdělení tvarů, paralaxa, pomalá levitace a názvy tvarů pro přechod.
 - `src/layouts/Zaklad.astro`: vložení scény podle `pozadi`, ořez plochy, patička nad scénou.
-- `src/styly/global.css`: inkoust a plná opacity textu nad scénou, přechod s prasknutím bubliny.
+- `src/styly/global.css`: inkoust a plná opacity textu nad scénou, rozplynutí při přechodu mezi stránkami.
 - `src/data/pozadi.json`: původní rozměry a středy tvarů.
 - `public/obrazky/pozadi/vrstvy/`: 37 úplných optimalizovaných tvarů.
 - `scripts/pripravit-vrstvy-pozadi.py`, `scripts/vykreslit-vrstvu.mjs`: příprava
