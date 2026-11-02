@@ -67,7 +67,7 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
 <style>
   .karta {
     background-color: color-mix(in srgb, var(--barva-pozadi) 60%, white);
-    border-radius: 1rem;
+    border-radius: var(--polomer-fotek);
     overflow: hidden;
     position: relative;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -96,6 +96,7 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
     margin: 0;
     flex: none;
     overflow: hidden;
+    border-radius: var(--polomer-fotek);
     background-color: var(--barva-pozadi);
   }
 
