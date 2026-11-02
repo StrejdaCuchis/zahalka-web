@@ -47,6 +47,9 @@
   --mezera-m:  1rem;
   --mezera-l:  2rem;
   --mezera-xl: 4rem;
+
+  /* Stejné zakulacení fotografií jako v newsletteru Zahálky. */
+  --polomer-fotek: 15px;
 }
 
 html {
@@ -85,6 +88,10 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+main figure img {
+  border-radius: var(--polomer-fotek);
 }
 
 a {

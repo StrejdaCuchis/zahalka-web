@@ -39,7 +39,7 @@ const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
   .karta-clanku {
     position: relative;
     overflow: hidden;
-    border-radius: 1rem;
+    border-radius: var(--polomer-fotek);
     background: color-mix(in srgb, var(--barva-pozadi) 60%, white);
     transition: transform 0.2s, box-shadow 0.2s;
   }
@@ -67,6 +67,7 @@ const datumFormatovany = datumPublikace.toLocaleDateString('cs-CZ', {
     margin: 0;
     flex: none;
     overflow: hidden;
+    border-radius: var(--polomer-fotek);
     background: var(--barva-pozadi);
   }
 
