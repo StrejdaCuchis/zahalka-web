@@ -133,41 +133,38 @@ const campSchema = maKompletniTermin ? {
   </Fragment>
 
   <main>
-    <section class="hero" aria-label="O táboře">
+    <header class="uvod">
+      <p class="znacka">{ceskaTypografie(znacka)}</p>
+      <h1>{ceskaTypografie(nazev)}</h1>
+      <p class="hero-perex">{ceskaTypografie(perex)}</p>
 
-      <header class="hero-obsah">
-        <p class="znacka">{ceskaTypografie(znacka)}</p>
-        <h1>{ceskaTypografie(nazev)}</h1>
-        <p class="hero-perex">{ceskaTypografie(perex)}</p>
+      {(datumText || vek || cena || kapacita) && (
+        <dl class="klic-fakta">
+          {datumText && datumOdISO && (
+            <div class="fakt">
+              <dt>Kdy</dt>
+              <dd><time datetime={datumOdISO}>{ceskaTypografie(datumText)}</time></dd>
+            </div>
+          )}
+          {vek && <div class="fakt"><dt>Věk</dt><dd>{ceskaTypografie(vek)}</dd></div>}
+          {cena && <div class="fakt"><dt>Cena</dt><dd>{ceskaTypografie(cena)}</dd></div>}
+          {kapacita && <div class="fakt"><dt>Kapacita</dt><dd>{ceskaTypografie(kapacita)}</dd></div>}
+        </dl>
+      )}
 
-        {(datumText || vek || cena || kapacita) && (
-          <dl class="klic-fakta">
-            {datumText && datumOdISO && (
-              <div class="fakt">
-                <dt>Kdy</dt>
-                <dd><time datetime={datumOdISO}>{ceskaTypografie(datumText)}</time></dd>
-              </div>
-            )}
-            {vek && <div class="fakt"><dt>Věk</dt><dd>{ceskaTypografie(vek)}</dd></div>}
-            {cena && <div class="fakt"><dt>Cena</dt><dd>{ceskaTypografie(cena)}</dd></div>}
-            {kapacita && <div class="fakt"><dt>Kapacita</dt><dd>{ceskaTypografie(kapacita)}</dd></div>}
-          </dl>
-        )}
-
-        {lzeSePrihlasit && (
-          <a
-            href={odkazFormular}
-            target="_blank"
-            rel="noopener"
-            class="btn-prihlasit"
-            data-event="prihlaseni"
-            data-akce={nazev}
-          >
-            Přihlásit dítě →
-          </a>
-        )}
-      </header>
-    </section>
+      {lzeSePrihlasit && (
+        <a
+          href={odkazFormular}
+          target="_blank"
+          rel="noopener"
+          class="btn-prihlasit"
+          data-event="prihlaseni"
+          data-akce={nazev}
+        >
+          Přihlásit dítě →
+        </a>
+      )}
+    </header>
 
     {hlavniObrazek && (
       <figure class="hlavni-fotka">
@@ -177,6 +174,7 @@ const campSchema = maKompletniTermin ? {
           width={rozmeryHlavnihoObrazku?.width}
           height={rozmeryHlavnihoObrazku?.height}
           loading="eager"
+          fetchpriority="high"
         />
       </figure>
     )}
@@ -237,20 +235,22 @@ const campSchema = maKompletniTermin ? {
 </Zaklad>
 
 <style>
-  .hero {
+  main {
     position: relative;
     overflow: hidden;
-    min-height: 70vh;
-    display: flex;
-    align-items: center;
-    padding: 5rem 2rem;
+    padding-top: 3rem;
   }
 
-  .hero-obsah {
+  .uvod {
     position: relative;
     z-index: 1;
-    width: min(700px, 100%);
+    width: min(72ch, calc(100% - 4rem));
     margin-inline: auto;
+    margin-bottom: 3rem;
+  }
+
+  .uvod > :last-child {
+    margin-bottom: 0;
   }
 
   .znacka {
@@ -263,15 +263,14 @@ const campSchema = maKompletniTermin ? {
   }
 
   h1 {
-    font-size: clamp(2.5rem, 7vw, 5rem);
-    line-height: 1;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     margin-bottom: 1rem;
   }
 
   .hero-perex {
     font-size: 1.15rem;
     line-height: 1.65;
-    max-width: 52ch;
+    max-width: 58ch;
     margin-bottom: 2rem;
   }
 
@@ -346,14 +345,13 @@ const campSchema = maKompletniTermin ? {
   }
 
   .hlavni-fotka,
-  .obsah,
   .fotogalerie {
     width: min(820px, calc(100% - 4rem));
     margin-inline: auto;
   }
 
   .hlavni-fotka {
-    margin-block: 3rem 0;
+    margin-block: 0 3rem;
     border-radius: var(--polomer-fotek);
     overflow: hidden;
   }
@@ -365,13 +363,10 @@ const campSchema = maKompletniTermin ? {
     display: block;
   }
 
-  .hlavni-fotka img {
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-  }
-
   .obsah {
-    padding-block: 4rem 5rem;
+    width: min(72ch, calc(100% - 4rem));
+    margin-inline: auto;
+    padding-bottom: 3rem;
   }
 
   .obsah :global(h2) {
@@ -496,11 +491,6 @@ const campSchema = maKompletniTermin ? {
   }
 
   @media (max-width: 600px) {
-    .hero {
-      min-height: unset;
-      padding-block: 3.5rem 4rem;
-    }
-
     .klic-fakta {
       flex-direction: column;
     }
