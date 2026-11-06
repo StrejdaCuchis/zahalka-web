@@ -197,13 +197,15 @@ const campSchema = maKompletniTermin ? {
           {fotkySRozmery.map((fotka) => (
             <li>
               <figure>
-                <img
-                  src={fotka.obrazek}
-                  alt={fotka.altText}
-                  width={fotka.rozmery.width}
-                  height={fotka.rozmery.height}
-                  loading="lazy"
-                />
+                <a href={fotka.obrazek} aria-label={`Zobrazit fotografii v plné velikosti: ${fotka.altText}`}>
+                  <img
+                    src={fotka.obrazek}
+                    alt={fotka.altText}
+                    width={fotka.rozmery.width}
+                    height={fotka.rozmery.height}
+                    loading="lazy"
+                  />
+                </a>
                 {fotka.popisek && <figcaption>{fotka.popisek}</figcaption>}
               </figure>
             </li>
@@ -443,6 +445,17 @@ const campSchema = maKompletniTermin ? {
     padding: 0.65rem 0.8rem;
     font-size: 0.85rem;
     opacity: 0.7;
+  }
+
+  .fotogalerie figure a {
+    display: block;
+    border-radius: var(--polomer-fotek);
+    cursor: zoom-in;
+  }
+
+  .fotogalerie figure a:focus-visible {
+    outline: 3px solid var(--barva-text);
+    outline-offset: -5px;
   }
 
   .sekce-cta {
