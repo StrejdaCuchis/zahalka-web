@@ -5,6 +5,8 @@ znacka: Sezóna 2027
 perex: Prázdniny v Zahálce jsou plné tvoření, objevování a společných zážitků.
 prihlaseniAktivni: false
 upozorneni: Termíny letních příměstských táborů na rok 2027 odhalíme v novém roce!
+hlavniObrazek: /obrazky/tabor/tabor-05.webp
+hlavniObrazekAlt: Koláž tvoření venku, kreslených domů a práce dětí s barevnými materiály.
 fotky:
   - obrazek: /obrazky/tabor/tabor-01.webp
     altText: Koláž dětské výtvarné práce a návštěvy kašny v teplickém parku.
@@ -14,8 +16,6 @@ fotky:
     altText: Děti a lektorky u společného stolu během tvořivé dílny v Zahálce.
   - obrazek: /obrazky/tabor/tabor-04.webp
     altText: Výtvarné koláže a plakáty vytvořené dětmi, rozložené na podlaze.
-  - obrazek: /obrazky/tabor/tabor-05.webp
-    altText: Koláž tvoření venku, kreslených domů a práce dětí s barevnými materiály.
   - obrazek: /obrazky/tabor/tabor-06.webp
     altText: Dětské skládané knížky s kresbami a modrobílými motivy vody.
   - obrazek: /obrazky/tabor/tabor-07.webp
