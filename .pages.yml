@@ -325,6 +325,60 @@ content:
         label: Úvodní text
         type: text
         description: Volitelné. Nevyplňujte, pokud by opakoval úvodní odstavec v textu.
+      - name: podpora
+        label: Finanční podpora Zahálky
+        type: object
+        fields:
+          - name: nadpis
+            label: Nadpis sekce
+            type: string
+            required: true
+          - name: text
+            label: Proč Zahálku podpořit
+            type: text
+            required: true
+          - name: pokyny
+            label: Pokyny k darování
+            type: text
+            required: true
+            description: Zobrazí se po doplnění účtu, příjemce a QR kódu.
+          - name: cisloUctu
+            label: Číslo účtu pro dary
+            type: string
+            description: Dokud není vyplněný účet i příjemce, zobrazují se zástupné údaje.
+          - name: prijemce
+            label: Přesný název příjemce platby
+            type: string
+          - name: qrObrazek
+            label: QR kód pro platbu
+            type: image
+            description: Čtvercový QR kód se stejným účtem, jaký je uveden výše. Bez přednastavené částky. Zobrazí se až po doplnění účtu i příjemce.
+            options:
+              media: obrazky
+              path: public/obrazky/podpora
+          - name: podporovatele
+            label: Zahálku už podpořili
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: '{nazev}'
+            fields:
+              - name: nazev
+                label: Název instituce
+                type: string
+                required: true
+              - name: logo
+                label: Logo instituce
+                type: image
+                required: true
+                options:
+                  media: obrazky
+                  path: public/obrazky/podpora
+              - name: popis
+                label: Projekt nebo rok podpory
+                type: string
+                description: Volitelné upřesnění, čeho se podpora týkala.
       - name: body
         label: Příběh Zahálky
         type: rich-text

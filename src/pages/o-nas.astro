@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
+import Podpora from '../components/Podpora.astro';
 import { kontakty } from '../data/kontakty';
 import { ceskaTypografie } from '../utils/typografie';
 
@@ -31,11 +32,14 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
       <header class="uvod">
         <h1>{ceskaTypografie(nazev)}</h1>
         {perex && <p class="perex">{ceskaTypografie(perex)}</p>}
+        <a href="#podpora" class="btn-cta podpora-odkaz" data-event="podpora" data-akce="Zahálka">Podpořit Zahálku</a>
       </header>
 
       <section class="obsah" aria-label="Příběh Zahálky">
         <Content />
       </section>
+
+      <Podpora podpora={oNas.data.podpora} />
 
       <nav class="souvisejici" aria-label="Související odkazy">
         <a href="/program">Prohlédnout program</a>
@@ -76,6 +80,26 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
     font-size: 1.15rem;
     line-height: 1.65;
     max-width: 58ch;
+  }
+
+  .podpora-odkaz {
+    display: inline-block;
+    margin-top: 1.25rem;
+    padding: 0.75rem 1.5rem;
+    border: 1.5px solid var(--barva-text);
+    border-radius: 999px;
+    background-color: var(--barva-text);
+    color: var(--barva-pozadi);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .podpora-odkaz:hover {
+    background-color: var(--barva-text-d);
   }
 
   .obsah :global(h2) {

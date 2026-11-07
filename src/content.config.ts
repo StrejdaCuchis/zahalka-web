@@ -80,6 +80,19 @@ const oNas = defineCollection({
     nazev: z.string(),
     metaPopis: z.string(),
     perex: z.string().optional(),
+    podpora: z.object({
+      nadpis: z.string(),
+      text: z.string(),
+      pokyny: z.string(),
+      cisloUctu: volitelnyText,
+      prijemce: volitelnyText,
+      qrObrazek: volitelnyText,
+      podporovatele: z.array(z.object({
+        nazev: volitelnyText,
+        logo: volitelnyText,
+        popis: volitelnyText,
+      })).optional(),
+    }),
   }),
 });
 
