@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
+import ProhlizecFotek from '../components/ProhlizecFotek.astro';
 import { kontakty } from '../data/kontakty';
 import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
 import { ceskaTypografie } from '../utils/typografie';
@@ -197,7 +198,7 @@ const campSchema = maKompletniTermin ? {
           {fotkySRozmery.map((fotka) => (
             <li>
               <figure>
-                <a href={fotka.obrazek} aria-label={`Zobrazit fotografii v plné velikosti: ${fotka.altText}`}>
+                <a href={fotka.obrazek} data-fotka aria-label={`Zobrazit fotografii v plné velikosti: ${fotka.altText}`}>
                   <img
                     src={fotka.obrazek}
                     alt={fotka.altText}
@@ -211,6 +212,7 @@ const campSchema = maKompletniTermin ? {
             </li>
           ))}
         </ul>
+        <ProhlizecFotek galerieId="fotogalerie-tabor" />
       </section>
     )}
 
@@ -447,12 +449,18 @@ const campSchema = maKompletniTermin ? {
     opacity: 0.7;
   }
 
+  .fotogalerie figure :global(.foto-spoustec),
   .fotogalerie figure a {
     display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
     border-radius: var(--polomer-fotek);
     cursor: zoom-in;
   }
 
+  .fotogalerie figure :global(.foto-spoustec:focus-visible),
   .fotogalerie figure a:focus-visible {
     outline: 3px solid var(--barva-text);
     outline-offset: -5px;
