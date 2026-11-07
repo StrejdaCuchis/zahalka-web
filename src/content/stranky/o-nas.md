@@ -1,6 +1,14 @@
 ---
 nazev: Zahálka • kulturní prostor
 metaPopis: Poznejte Zahálku, neziskový kulturní prostor v Teplicích. Propojujeme kulturu, umění a komunitu prostřednictvím akcí a společného tvoření.
+podpora:
+  nadpis: Pomozte Zahálce dál růst
+  text: Vytváříme v Teplicích místo pro kulturu, tvoření a setkávání. Vaším darem přispějete na úpravy, vybavení a fungování našeho prostoru. Děkujeme za každou podporu.
+  pokyny: Přispět můžete libovolnou částkou přes QR platbu nebo převodem na uvedený účet.
+  cisloUctu: ''
+  prijemce: ''
+  qrObrazek: ''
+  podporovatele: []
 ---
 
 ## Místo, kde se v Teplicích potkává kultura, umění a komunita

@@ -1,0 +1,221 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { kontakty } from '../data/kontakty';
+import { ceskaTypografie } from '../utils/typografie';
+
+interface Props {
+  podpora: CollectionEntry<'oNas'>['data']['podpora'];
+}
+
+const { podpora } = Astro.props;
+const maUcet = Boolean(podpora.cisloUctu && podpora.prijemce);
+const maQr = maUcet && Boolean(podpora.qrObrazek);
+const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => podporovatel.nazev && podporovatel.logo);
+---
+
+<section id="podpora" class="podpora" aria-labelledby="podpora-nadpis" tabindex="-1">
+  <h2 id="podpora-nadpis">{ceskaTypografie(podpora.nadpis)}</h2>
+
+  <div class="podpora-rozlozeni">
+    <aside class="platebni-udaje" aria-label="Údaje pro darování">
+      {maQr ? (
+        <figure>
+          <img src={podpora.qrObrazek} alt="QR kód pro finanční podporu Zahálky" width="240" height="240" loading="lazy" />
+          <figcaption>QR platba pro podporu Zahálky</figcaption>
+        </figure>
+        <a href={podpora.qrObrazek} download data-event="podpora_qr" data-akce="Zahálka">Stáhnout QR kód</a>
+      ) : (
+        <p class="qr-placeholder">QR kód <span>připravujeme</span></p>
+      )}
+
+      {maUcet ? (
+        <dl>
+          <dt>Číslo účtu</dt>
+          <dd>{podpora.cisloUctu}</dd>
+          <dt>Příjemce</dt>
+          <dd>{ceskaTypografie(podpora.prijemce!)}</dd>
+        </dl>
+      ) : (
+        <p class="ucet-placeholder">Číslo účtu doplníme.</p>
+      )}
+    </aside>
+
+    <div class="podpora-text">
+      <p>{ceskaTypografie(podpora.text)}</p>
+      {maUcet ? (
+        <p>{ceskaTypografie(maQr ? podpora.pokyny : 'Přispět můžete libovolnou částkou převodem na uvedený účet.')}</p>
+      ) : (
+        <p>QR kód a&nbsp;platební údaje zde brzy doplníme. Pokud chcete Zahálku podpořit už teď, napište nám.</p>
+      )}
+      {maQr && <p class="navod">Na mobilu si QR kód uložte a&nbsp;v&nbsp;bankovní aplikaci zvolte načtení z&nbsp;galerie, pokud ho vaše banka podporuje.</p>}
+      <p class="potvrzeni">
+        Potřebujete potvrzení o&nbsp;daru? Napište nám na{' '}
+        <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>.
+      </p>
+    </div>
+  </div>
+
+  <section class="podporovatele" aria-labelledby="podporovatele-nadpis">
+    <h3 id="podporovatele-nadpis">Zahálku už podpořili</h3>
+    {podporovatele.length > 0 ? (
+      <ul>
+        {podporovatele.map((podporovatel) => (
+          <li>
+            <figure>
+              <img src={podporovatel.logo} alt={podporovatel.nazev} width="200" height="100" loading="lazy" />
+              <figcaption>
+                {ceskaTypografie(podporovatel.nazev!)}
+                {podporovatel.popis && <span>{ceskaTypografie(podporovatel.popis)}</span>}
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>Přehled podporovatelů připravujeme.</p>
+    )}
+  </section>
+</section>
+
+<style>
+  .podpora {
+    margin-top: 4rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid color-mix(in srgb, var(--barva-text) 22%, transparent);
+    border-radius: 2rem;
+    background-color: var(--barva-pozadi);
+    scroll-margin-top: 2rem;
+  }
+
+  .podpora:focus {
+    outline: 3px solid var(--barva-akcent);
+    outline-offset: 4px;
+  }
+
+  h2 {
+    max-width: 24ch;
+    margin-bottom: 2rem;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    text-wrap: balance;
+  }
+
+  .podpora-rozlozeni {
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .platebni-udaje {
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .platebni-udaje img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    border-radius: 0;
+  }
+
+  .platebni-udaje figcaption {
+    margin-block: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .qr-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border: 1.5px dashed color-mix(in srgb, var(--barva-text) 40%, transparent);
+    border-radius: var(--polomer-fotek);
+    background-color: color-mix(in srgb, var(--barva-text) 4%, var(--barva-pozadi));
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .qr-placeholder span,
+  .ucet-placeholder {
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+
+  .ucet-placeholder,
+  dl {
+    margin-top: 1rem;
+  }
+
+  dt {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  dd {
+    font-weight: 600;
+  }
+
+  .podpora-text p + p {
+    margin-top: 1.25rem;
+  }
+
+  .podpora-text a {
+    overflow-wrap: anywhere;
+  }
+
+  .navod,
+  .potvrzeni {
+    font-size: 0.9rem;
+  }
+
+  .podporovatele {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--barva-text) 18%, transparent);
+  }
+
+  h3 {
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .podporovatele ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .podporovatele img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 0;
+  }
+
+  .podporovatele figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .podporovatele figcaption span {
+    display: block;
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 700px) {
+    .podpora-rozlozeni {
+      grid-template-columns: 1fr;
+    }
+
+    .podpora-text {
+      grid-row: 1;
+    }
+
+    .platebni-udaje {
+      width: min(100%, 240px);
+      margin-inline: auto;
+    }
+  }
+</style>
