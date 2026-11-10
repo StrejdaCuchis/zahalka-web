@@ -2,7 +2,6 @@
 import { getCollection, render } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import Podpora from '../components/Podpora.astro';
-import { kontakty } from '../data/kontakty';
 import { ceskaTypografie } from '../utils/typografie';
 
 const [oNas] = await getCollection('oNas');
@@ -44,7 +43,7 @@ const ogImageAlt = 'Skupina účastníků na komentované procházce v parku v T
       <nav class="souvisejici" aria-label="Související odkazy">
         <a href="/program">Prohlédnout program</a>
         <a href="/kontakt">Kontakt</a>
-        <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>
+        <a href="/newsletter">Odebírat newsletter</a>
       </nav>
     </article>
   </main>
