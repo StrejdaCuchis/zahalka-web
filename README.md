@@ -36,17 +36,18 @@ Náhledový obrázek akce nebo článku připravujte v rozměru **1080 × 1350 p
 Karty zachovávají skutečný poměr obrázku: starší podklady na šířku se zobrazí
 bez ořezu i bez doplňovaných prázdných pásů, text navazuje přímo pod obrázkem.
 
-## Propojení newsletteru s Mailchimpem
+## Propojení newsletteru s Google Sheets
 
-Formulář odesílá adresy přímo do Mailchimpu bez API klíče a bez vlastního serveru.
+Formulář ukládá e-mail, nepovinné jméno, datum přihlášení a stav `Nový` do CRM
+v Google Sheets přes Google Apps Script. Web zůstává statický a formulář funguje
+i bez JavaScriptu. Opakované přihlášení nevytváří duplicitní kontakt.
 
-1. V Mailchimpu otevřete **Audience → Signup forms → Embedded form**.
-2. Z vygenerovaného formuláře zkopírujte celou hodnotu atributu `action`.
-3. Na hostingu ji nastavte jako proměnnou `PUBLIC_MAILCHIMP_FORM_ACTION`.
-4. Proveďte nové sestavení webu a vyzkoušejte přihlášení včetně potvrzovacího e-mailu.
+Přijímací skript je v `integrace/newsletter/`. Adresa nasazené webové aplikace je
+uložená v `src/data/newsletter.ts`, takže funguje i sestavení na hostingu.
+Volitelně ji lze přepsat proměnnou `PUBLIC_NEWSLETTER_FORM_ACTION` a znovu sestavit
+web. Neplatná adresa zobrazí kontaktní e-mail místo formuláře.
 
-Doporučujeme mít v Mailchimpu zapnutý double opt-in. Pokud proměnná není nastavená,
-web místo nefunkčního formuláře zobrazí kontaktní e-mail.
+Celý postup nasazení a ověření je v [docs/newsletter.md](docs/newsletter.md).
 
 ## Lokální vývoj
 

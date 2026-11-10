@@ -1,6 +1,7 @@
 ---
 import Zaklad from '../layouts/Zaklad.astro';
 import Newsletter from '../components/Newsletter.astro';
+import { kontakty } from '../data/kontakty';
 ---
 
 <Zaklad
@@ -32,7 +33,7 @@ import Newsletter from '../components/Newsletter.astro';
           <li>nové články ze Zahálky a z Teplic,</li>
           <li>včasné informace o přihláškách na příměstské tábory.</li>
         </ul>
-        <p>Odběr lze kdykoli zrušit odkazem v patičce každého e-mailu.</p>
+        <p>Odběr můžete kdykoli zrušit e-mailem na <a href={`mailto:${kontakty.email}`}>{kontakty.email}</a>.</p>
       </section>
     </article>
   </main>
