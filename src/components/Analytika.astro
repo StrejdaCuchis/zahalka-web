@@ -83,6 +83,23 @@ const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
     if (trackingActive) return;
     trackingActive = true;
     document.addEventListener('click', odeslatUdalost, true);
+    zmeritNewsletter();
+  }
+
+  function zmeritNewsletter() {
+    if (window.location.pathname.replace(/\/$/, '') !== '/thank-you-newsletter') return;
+    try {
+      const klic = 'zahalka_newsletter_potvrzeno_v1';
+      const potvrzeno = Number(sessionStorage.getItem(klic));
+      if (!potvrzeno) return;
+      // Spotřebujeme potvrzení před odesláním: refresh ani opakovaný souhlas neměří podruhé.
+      sessionStorage.removeItem(klic);
+      const stari = Date.now() - potvrzeno;
+      if (!Number.isFinite(stari) || stari < 0 || stari > 30 * 60 * 1000) return;
+      gtag('event', 'newsletter_prihlaseni', { method: 'web_form' });
+    } catch {
+      // Bez přístupu k sessionStorage událost neposíláme, aby se nepočítaly běžné návštěvy.
+    }
   }
 
   function odeprit() {

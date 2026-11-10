@@ -42,6 +42,10 @@ Formulář ukládá e-mail, nepovinné jméno, datum přihlášení a stav `Nov�
 v Google Sheets přes Google Apps Script. Web zůstává statický a formulář funguje
 i bez JavaScriptu. Opakované přihlášení nevytváří duplicitní kontakt.
 
+Po potvrzeném odeslání formulář při zapnutém JavaScriptu přejde ve stejné kartě
+na `/thank-you-newsletter`. Chyby zobrazuje přímo u formuláře. Úspěšné přihlášení
+se po cookie souhlasu měří událostí GA4 `newsletter_prihlaseni`.
+
 Přijímací skript je v `integrace/newsletter/`. Adresa nasazené webové aplikace je
 uložená v `src/data/newsletter.ts`, takže funguje i sestavení na hostingu.
 Volitelně ji lze přepsat proměnnou `PUBLIC_NEWSLETTER_FORM_ACTION` a znovu sestavit

@@ -3,11 +3,36 @@
 Web zůstává statický. HTML formulář posílá údaje přímo do Google Apps Script,
 který je zapíše do [CRM newsletteru](https://docs.google.com/spreadsheets/d/1fs4r_RjF6lAVvmAM-vf6vctGCNK5ilHqvfNyDw5uYKY/edit#gid=0).
 Na webu nejsou přístupové údaje k tabulce. Návštěvník nepotřebuje účet Google ani
-JavaScript. Potvrzení nebo chybu uvidí v nově otevřené kartě po odeslání.
+JavaScript. Při zapnutém JavaScriptu formulář vyčká na potvrzení od Googlu a přejde
+ve stejné kartě na `/thank-you-newsletter`. Při chybě zůstane na původní stránce,
+zobrazí vysvětlení u formuláře a umožní nový pokus. Bez JavaScriptu zůstává funkční
+základní HTML odeslání s textovým potvrzením Google skriptu ve stejné kartě.
 
 Aktuální nasazení je nastavené v `src/data/newsletter.ts`. Produkční sestavení
 jej používá automaticky; na hostingu není potřeba přidávat proměnnou prostředí.
 Proměnná `PUBLIC_NEWSLETTER_FORM_ACTION` slouží jen jako volitelné přepsání adresy.
+
+## Děkovací stránka a měření
+
+Stránka `/thank-you-newsletter` má `noindex` a není v sitemapě. Formulář přechází
+na tuto adresu pouze po přečtení úspěšné odpovědi ze skriptu. Nestačí samotný HTTP
+stav 200, protože Google vrací stejný stav také u odmítnutých nebo neuložených přihlášek.
+Aktuální nasazený skript je kompatibilní, není potřeba ho měnit ani znovu nasazovat.
+Jeho úspěšná odpověď musí začínat samostatným řádkem `Děkujeme za přihlášení`.
+Formulář používá standardní čitelný požadavek CORS; nepoužívá `no-cors` ani časovač
+považovaný za důkaz úspěchu.
+
+Po potvrzeném přihlášení si prohlížeč zapamatuje pouze čas potvrzení v sessionStorage
+pod klíčem `zahalka_newsletter_potvrzeno_v1`. Na děkovací stránce se po souhlasu
+s analytikou odešle událost GA4 **`newsletter_prihlaseni`** s parametrem
+`method: web_form`. Událost neobsahuje e-mail ani jméno. Bez souhlasu se neposílá.
+Přímé otevření stránky ani její obnovení nevyvolá další konverzi. Potvrzení se
+spotřebuje jednou a platí nejvýše 30 minut. Při blokovaném úložišti přihlášení
+funguje dál, ale speciální konverzní událost se neodešle.
+
+V administraci GA4 ručně označte `newsletter_prihlaseni` jako klíčovou událost.
+Pro přehled návštěv lze sledovat i cestu `/thank-you-newsletter`, ale samotná
+návštěva této adresy není spolehlivým důkazem přihlášení.
 
 ## Jednorázové nasazení v Googlu
 
@@ -68,6 +93,8 @@ spamu. Veřejný formulář nemá silnou ochranu proti cílenému automatickému
    Vyzkoušejte i vypnutý JavaScript.
 2. Potvrzení se musí zobrazit bez přihlášení do Googlu a v CRM přibýt jeden řádek
    s datem a stavem `Nový`.
+   Se zapnutým JavaScriptem se musí ve stejné kartě otevřít `/thank-you-newsletter`.
+   Odmítnutá přihláška musí ponechat formulář na původní stránce s chybovou hláškou.
 3. Změňte testovacímu kontaktu stav na `Zařazen do newsletteru`, odešlete stejnou
    adresu s jinou velikostí písmen a ověřte, že nepřibyl řádek a stav zůstal zachovaný.
 4. Ověřte formuláře také na homepage a v blogu. Používají společnou komponentu.
@@ -76,7 +103,7 @@ spamu. Veřejný formulář nemá silnou ochranu proti cílenému automatickému
 Lokální ověření přijímacího skriptu bez zápisu do skutečné tabulky:
 
 ```sh
-node --test tests/newsletter.test.mjs
+node --test tests/*.test.mjs
 npm run build
 ```
 
