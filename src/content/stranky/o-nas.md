@@ -4,10 +4,10 @@ metaPopis: Poznejte Zahálku, neziskový kulturní prostor v Teplicích. Propoju
 podpora:
   nadpis: Pomozte Zahálce dál růst
   text: Vytváříme v Teplicích místo pro kulturu, tvoření a setkávání. Vaším darem přispějete na úpravy, vybavení a fungování našeho prostoru. Děkujeme za každou podporu.
-  pokyny: Přispět můžete libovolnou částkou přes QR platbu nebo převodem na uvedený účet.
-  cisloUctu: ''
+  pokyny: Přispět můžete přes QR platbu s předvyplněnou částkou 100 Kč nebo libovolnou částkou převodem na uvedený účet.
+  cisloUctu: '298341552/0300'
   prijemce: ''
-  qrObrazek: ''
+  qrObrazek: /obrazky/podpora/qr-platba.webp
   podporovatele: []
 ---
 

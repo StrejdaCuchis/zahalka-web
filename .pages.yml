@@ -341,18 +341,18 @@ content:
             label: Pokyny k darování
             type: text
             required: true
-            description: Zobrazí se po doplnění účtu, příjemce a QR kódu.
+            description: Zobrazí se po doplnění účtu a QR kódu.
           - name: cisloUctu
             label: Číslo účtu pro dary
             type: string
-            description: Dokud není vyplněný účet i příjemce, zobrazují se zástupné údaje.
+            description: Číslo účtu se zobrazuje samostatně pod QR kódem. Příjemce je volitelný.
           - name: prijemce
             label: Přesný název příjemce platby
             type: string
           - name: qrObrazek
             label: QR kód pro platbu
             type: image
-            description: Čtvercový QR kód se stejným účtem, jaký je uveden výše. Bez přednastavené částky. Zobrazí se až po doplnění účtu i příjemce.
+            description: Samotný čtvercový QR kód bez okolního textu, se stejným účtem, jaký je uveden výše. Pokud obsahuje přednastavenou částku, uveďte ji v pokynech k darování.
             options:
               media: obrazky
               path: public/obrazky/podpora

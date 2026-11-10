@@ -4,15 +4,15 @@ Sekce je na `/o-nas#podpora`. Vede na ni zelené CTA tlačítko z úvodu stránk
 
 Obsah se upravuje v Pages CMS: **O nás → Finanční podpora Zahálky**, případně ve frontmatteru `src/content/stranky/o-nas.md` v poli `podpora`.
 
-Do dodání podkladů se zobrazuje označené místo pro QR kód, informace o připravovaných platebních údajích a přehledu podporovatelů. Nejde o funkční platební údaje.
+Dodaný QR kód je uložený v `public/obrazky/podpora/qr-platba.webp`. Obsahuje pouze kód s bílým ochranným okrajem; číslo účtu se zobrazuje samostatně pod ním. Kód má předvyplněnou částku 100 Kč, kterou uvádějí pokyny k darování.
 
-Pro spuštění darování doplňte:
+Platební podklady:
 
 - `cisloUctu`: ověřený účet pro dary včetně kódu banky.
-- `prijemce`: přesný název příjemce tohoto účtu.
-- `qrObrazek`: cestu k dodanému QR kódu v `public`, například `/obrazky/podpora/qr-platba.png`. QR musí uvádět stejný účet; pro libovolné dary nemá mít přednastavenou částku.
+- `prijemce`: volitelný přesný název příjemce tohoto účtu.
+- `qrObrazek`: cesta k dodanému QR kódu v `public`, nyní `/obrazky/podpora/qr-platba.webp`. QR musí uvádět stejný účet. Případnou přednastavenou částku uveďte v `pokyny`.
 
-Účet a příjemce se zobrazí pouze po vyplnění obou polí. QR lze doplnit později; pak se automaticky zobrazí i odkaz ke stažení a návod pro mobil. Před zveřejněním načtěte dodaný kód v bankovní aplikaci a ověřte údaje.
+Účet, příjemce a QR se zobrazují podle vyplnění jednotlivých polí. Příjemce se zobrazuje pouze spolu s účtem. S QR se automaticky zobrazí i odkaz ke stažení a návod pro mobil.
 
 Do seznamu `podporovatele` patří název, logo a případně projekt nebo rok podpory. Neúplné položky bez názvu nebo loga se nezobrazují. Prázdný seznam zobrazí text „Přehled podporovatelů připravujeme.“
 
