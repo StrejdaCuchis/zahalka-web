@@ -8,8 +8,8 @@ interface Props {
 }
 
 const { podpora } = Astro.props;
-const maUcet = Boolean(podpora.cisloUctu && podpora.prijemce);
-const maQr = maUcet && Boolean(podpora.qrObrazek);
+const maUcet = Boolean(podpora.cisloUctu);
+const maQr = Boolean(podpora.qrObrazek);
 const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => podporovatel.nazev && podporovatel.logo);
 ---
 
@@ -32,8 +32,10 @@ const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => pod
         <dl>
           <dt>Číslo účtu</dt>
           <dd>{podpora.cisloUctu}</dd>
-          <dt>Příjemce</dt>
-          <dd>{ceskaTypografie(podpora.prijemce!)}</dd>
+          {podpora.prijemce && (
+            <dt>Příjemce</dt>
+            <dd>{ceskaTypografie(podpora.prijemce)}</dd>
+          )}
         </dl>
       ) : (
         <p class="ucet-placeholder">Číslo účtu doplníme.</p>
@@ -42,7 +44,7 @@ const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => pod
 
     <div class="podpora-text">
       <p>{ceskaTypografie(podpora.text)}</p>
-      {maUcet ? (
+      {maUcet || maQr ? (
         <p>{ceskaTypografie(maQr ? podpora.pokyny : 'Přispět můžete libovolnou částkou převodem na uvedený účet.')}</p>
       ) : (
         <p>QR kód a&nbsp;platební údaje zde brzy doplníme. Pokud chcete Zahálku podpořit už teď, napište nám.</p>
