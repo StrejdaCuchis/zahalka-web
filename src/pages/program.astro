@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Zaklad from '../layouts/Zaklad.astro';
 import KartaAkce from '../components/KartaAkce.astro';
+import { typyAkci, formatyAkci } from '../data/formaty-akci';
 const vsechnyAkce = await getCollection('akce');
 
 const dnes = new Date();
@@ -16,7 +17,7 @@ const nadchazejici = vsechnyAkce
 <Zaklad
   pozadi={3}
   title="Program akcí – Zahálka"
-  description="Přehled všech nadcházejících akcí kulturního prostoru Zahálka v Teplicích — besedy, workshopy, festivaly a dílny pro děti."
+  description="Program Zahálky v Teplicích: koncerty, kino, přednášky, workshopy, besedy, procházky, akce pro děti, výstavy a design markety."
   canonicalPath="/program"
 >
   <main>
@@ -24,12 +25,13 @@ const nadchazejici = vsechnyAkce
     <div class="obal">
       <h1>Program</h1>
 
-      <div class="filtry" role="group" aria-label="Filtrovat podle typu akce">
-        <button class="filtr aktivni" data-filtr="vse">Vše</button>
-        <button class="filtr" data-filtr="beseda">Beseda</button>
-        <button class="filtr" data-filtr="workshop">Workshop</button>
-        <button class="filtr" data-filtr="festival">Festival</button>
-        <button class="filtr" data-filtr="deti">Pro děti</button>
+      <div class="filtry" role="group" aria-label="Filtrovat podle formátu akce" hidden>
+        <button type="button" class="filtr aktivni" data-filtr="vse" aria-pressed="true">Vše</button>
+        {typyAkci.map((typ) => (
+          <button type="button" class="filtr" data-filtr={typ} aria-pressed="false">
+            {formatyAkci[typ].nazev}
+          </button>
+        ))}
       </div>
 
       {nadchazejici.length > 0 && (
@@ -43,6 +45,10 @@ const nadchazejici = vsechnyAkce
         </section>
       )}
 
+      <p class="zadne-akce" data-prazdny-filtr role="status" hidden>
+        Pro tento formát momentálně neplánujeme žádné akce. Zkuste jiný filtr nebo Vše.
+      </p>
+
       {nadchazejici.length === 0 && (
         <p class="zadne-akce">Momentálně neplánujeme žádné akce. Sledujte nás na Instagramu.</p>
       )}
@@ -54,16 +60,26 @@ const nadchazejici = vsechnyAkce
 <script>
   const filtry = document.querySelectorAll<HTMLButtonElement>('[data-filtr]');
   const karty  = document.querySelectorAll<HTMLElement>('[data-typ]');
+  const prazdnyFiltr = document.querySelector<HTMLElement>('[data-prazdny-filtr]');
+  const ovladani = document.querySelector<HTMLElement>('.filtry');
+
+  if (ovladani && karty.length > 0) ovladani.hidden = false;
 
   filtry.forEach((btn) => {
     btn.addEventListener('click', () => {
-      filtry.forEach((b) => b.classList.remove('aktivni'));
-      btn.classList.add('aktivni');
+      filtry.forEach((b) => {
+        b.classList.toggle('aktivni', b === btn);
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
 
       const vybrany = btn.dataset.filtr;
       karty.forEach((el) => {
-        el.hidden = vybrany !== 'vse' && el.dataset.typ !== vybrany;
+        const typy = el.dataset.typ?.split(' ') ?? [];
+        el.hidden = vybrany !== 'vse' && !typy.includes(vybrany ?? '');
       });
+      if (prazdnyFiltr) {
+        prazdnyFiltr.hidden = Array.from(karty).some((el) => !el.hidden);
+      }
     });
   });
 </script>
@@ -102,6 +118,10 @@ const nadchazejici = vsechnyAkce
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 3rem;
+  }
+
+  .filtry[hidden] {
+    display: none;
   }
 
   .filtr {

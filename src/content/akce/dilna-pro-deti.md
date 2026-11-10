@@ -2,7 +2,7 @@
 nazev: "Dílna pro děti: prázdninové tvoření"
 datum: 2026-09-11
 cas: 10:00
-typ: deti
+typ: [workshop, deti]
 cena: od 200 Kč
 kapacita: 15 dětí
 odkazFormular: https://forms.gle/dilna-deti-zari-2026

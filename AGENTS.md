@@ -44,7 +44,7 @@ Definuj v `src/content.config.ts` kolekci `akce` s těmito poli:
 nazev: string            # název akce → <h1> a <title>
 datum: date              # datum konání (ISO), např. 2026-02-17
 cas: string              # čas, např. "18:00"
-typ: enum                # "beseda" | "workshop" | "festival" | "deti"
+typ: enum[]              # jeden nebo více formátů: "koncert" | "kino" | "prednaska" | "workshop" | "beseda" | "prochazka" | "deti" | "vystava" | "design-market"
 cena: string             # "zdarma" nebo "od 350 Kč" — text, protože bývá "od"
 kapacita: string?        # volitelné, např. "20 míst"
 odkazFormular: string?   # URL na Google/MS Form; když chybí, tlačítko se nezobrazí

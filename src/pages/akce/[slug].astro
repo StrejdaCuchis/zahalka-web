@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Zaklad from '../../layouts/Zaklad.astro';
 import SchemaEvent from '../../components/SchemaEvent.astro';
 import KartaAkce from '../../components/KartaAkce.astro';
+import StitkyAkce from '../../components/StitkyAkce.astro';
 import { rozmeryVerejnehoObrazku } from '../../utils/obrazky';
 import { ceskaTypografie } from '../../utils/typografie';
 
@@ -19,6 +20,7 @@ const { Content } = await render(akce);
 
 const {
   nazev,
+  typ,
   datum,
   cas,
   cena,
@@ -115,6 +117,7 @@ const breadcrumbSchema = {
 
     <article>
       <header>
+        <StitkyAkce typy={typ} />
         <h1>{ceskaTypografie(nazev)}</h1>
 
         <dl>
@@ -232,6 +235,7 @@ const breadcrumbSchema = {
   h1 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     line-height: 1.2;
+    margin-top: 0.75rem;
     margin-bottom: 1.5rem;
   }
 

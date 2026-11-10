@@ -2,7 +2,7 @@
 nazev: "Beseda s architektem města Teplice"
 datum: 2026-02-17
 cas: "18:00"
-typ: "beseda"
+typ: [prednaska, beseda]
 cena: "zdarma"
 kapacita: "30 míst"
 odkazFormular: "https://forms.gle/beseda-architekt-teplice-2026"

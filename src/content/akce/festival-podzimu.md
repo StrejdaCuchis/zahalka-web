@@ -2,7 +2,7 @@
 nazev: "Festival podzimního tvoření"
 datum: 2026-10-03
 cas: "13:00"
-typ: "festival"
+typ: [koncert, workshop, deti, vystava]
 cena: "zdarma"
 odkazFormular: "https://forms.gle/festival-podzimu-2026"
 obrazek: "/obrazky/akce/festival-podzimu.jpg"

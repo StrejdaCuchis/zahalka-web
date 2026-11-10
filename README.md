@@ -25,6 +25,11 @@ Po uložení změny Pages CMS zapíše nový obsah do GitHubu. Připojený hosti
 
 ## Obsahové soubory
 
+U akcí lze v poli **Formáty akce** vybrat více labelů: Koncert, Kino, Přednáška,
+Workshop, Beseda, Procházka, Pro děti, Výstava a Design market. Ve frontmatteru
+se ukládají jako seznam, například `typ: [workshop, deti]`. Akce se zobrazí pod
+každým přiřazeným filtrem programu.
+
 - `src/content/akce/` — jednotlivé akce
 - `src/content/blog/` — blogové články
 - `src/content/stranky/tabor.md` — stránka Příměšťák
