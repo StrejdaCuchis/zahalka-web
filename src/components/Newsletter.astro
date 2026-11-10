@@ -37,7 +37,7 @@ const jeKontaktniNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zůstaňme v ko
   </header>
 
   {jeNewsletterNastaveny ? (
-    <form action={newsletterAction} method="post" target="_blank" rel="noopener">
+    <form action={newsletterAction} method="post" data-newsletter-form>
       <p class="jmeno">
         <label for="newsletter-jmeno">Vaše jméno (nepovinné)</label>
         <input
@@ -71,6 +71,7 @@ const jeKontaktniNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zůstaňme v ko
       </p>
       <input type="hidden" name="souhlas" value="newsletter-v1" />
 
+      <p class="stav-formulare" data-newsletter-status role="status" tabindex="-1" hidden></p>
       <p class="souhlas" id="newsletter-souhlas">
         Odesláním souhlasíte se zasíláním novinek Zahálky. Odběr můžete kdykoli zrušit
         e-mailem na <a href={`mailto:${kontakty.email}?subject=Odhl%C3%A1%C5%A1en%C3%AD%20newsletteru`}>{kontakty.email}</a>.
@@ -83,6 +84,55 @@ const jeKontaktniNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zůstaňme v ko
     </p>
   )}
 </section>
+
+<script>
+  import { odeslatNewsletter } from '../utils/newsletter-odeslani.mjs';
+
+  document.querySelectorAll<HTMLFormElement>('[data-newsletter-form]').forEach((form) => {
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const status = form.querySelector<HTMLParagraphElement>('[data-newsletter-status]');
+    if (!button || !status) return;
+    const puvodniText = button.textContent;
+
+    window.addEventListener('pageshow', (event) => {
+      if (!event.persisted) return;
+      // Návrat tlačítkem Zpět může obnovit formulář ve stavu před přesměrováním.
+      button.disabled = false;
+      button.textContent = puvodniText;
+      form.removeAttribute('aria-busy');
+      status.hidden = true;
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (button.disabled) return;
+      button.disabled = true;
+      button.textContent = 'Odesílám…';
+      form.setAttribute('aria-busy', 'true');
+      status.hidden = false;
+      status.textContent = 'Chvíli strpení, ukládáme vaše přihlášení.';
+      status.removeAttribute('data-chyba');
+
+      try {
+        await odeslatNewsletter(form.action, new FormData(form));
+        try {
+          // Jen čas potvrzení. E-mail ani jméno se neukládají do prohlížeče nebo analytiky.
+          sessionStorage.setItem('zahalka_newsletter_potvrzeno_v1', String(Date.now()));
+        } catch {
+          // Blokované úložiště nesmí bránit přihlášení ani přesměrování.
+        }
+        window.location.assign('/thank-you-newsletter');
+      } catch {
+        status.textContent = 'Přihlášení se nepodařilo potvrdit. Zkuste to prosím znovu nebo nám napište na e-mail uvedený níže.';
+        status.setAttribute('data-chyba', '');
+        form.removeAttribute('aria-busy');
+        button.disabled = false;
+        button.textContent = puvodniText;
+        status.focus();
+      }
+    });
+  });
+</script>
 
 <style>
   .newsletter {
@@ -193,6 +243,27 @@ const jeKontaktniNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zůstaňme v ko
 
   button:hover {
     background: var(--barva-text-d);
+  }
+
+  button:disabled {
+    cursor: wait;
+  }
+
+  .stav-formulare {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .stav-formulare[data-chyba] {
+    padding: 0.75rem;
+    border: 1.5px solid currentColor;
+    border-radius: 0.5rem;
+  }
+
+  .stav-formulare:focus-visible {
+    outline: 3px solid var(--barva-akcent);
+    outline-offset: 3px;
   }
 
   .souhlas {
