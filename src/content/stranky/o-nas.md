@@ -8,7 +8,23 @@ podpora:
   cisloUctu: '298341552/0300'
   prijemce: ''
   qrObrazek: /obrazky/podpora/qr-platba.webp
-  podporovatele: []
+  podporovatele:
+    - nazev: Statutární město Teplice
+      logo: /obrazky/podpora/teplice.svg
+      popis: Jednorázové dotace a výtěžek z plesu města
+    - nazev: Nadace Via
+      logo: /obrazky/podpora/nadace-via.webp
+      popis: Dokážeme víc
+    - nazev: Nadace ČEZ
+      logo: /obrazky/podpora/nadace-cez.svg
+      popis: Oranžové kolo
+    - nazev: Ústecká komunitní nadace
+      logo: /obrazky/podpora/ustecka-komunitni-nadace.svg
+      popis: Sleva u společnosti Den Braven
+    - nazev: Nadace Divoké husy
+      logo: /obrazky/podpora/nadace-divoke-husy.webp
+    - nazev: Naši podporovatelé přes Donio
+      logo: /obrazky/podpora/donio.svg
 ---
 
 ## Místo, kde se v Teplicích potkává kultura, umění a komunita

@@ -60,19 +60,28 @@ const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => pod
   <section class="podporovatele" aria-labelledby="podporovatele-nadpis">
     <h3 id="podporovatele-nadpis">Zahálku už podpořili</h3>
     {podporovatele.length > 0 ? (
-      <ul>
-        {podporovatele.map((podporovatel) => (
-          <li>
-            <figure>
-              <img src={podporovatel.logo} alt={podporovatel.nazev} width="200" height="100" loading="lazy" />
-              <figcaption>
-                {ceskaTypografie(podporovatel.nazev!)}
-                {podporovatel.popis && <span>{ceskaTypografie(podporovatel.popis)}</span>}
-              </figcaption>
-            </figure>
-          </li>
-        ))}
-      </ul>
+      <>
+        <div class="podporovatele-okno" tabindex="0" role="group" aria-label="Loga podporovatelů. Zaměřením pozastavíte posun.">
+          <div class="podporovatele-pas">
+            {/* Druhá kopie zajišťuje plynulou smyčku; čtečky čtou seznam jen jednou. */}
+            {[false, true].map((kopie) => (
+              <ul class:list={['podporovatele-seznam', { 'podporovatele-kopie': kopie }]} aria-hidden={kopie ? 'true' : undefined} role="list">
+                {podporovatele.map((podporovatel) => (
+                  <li>
+                    <figure>
+                      <img src={podporovatel.logo} alt="" width="200" height="100" loading="lazy" />
+                      <figcaption>
+                        {ceskaTypografie(podporovatel.nazev!)}
+                        {podporovatel.popis && <span>{ceskaTypografie(podporovatel.popis)}</span>}
+                      </figcaption>
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+      </>
     ) : (
       <p>Přehled podporovatelů připravujeme.</p>
     )}
@@ -171,6 +180,8 @@ const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => pod
   }
 
   .podporovatele {
+    --mezera-log: 3rem;
+    min-width: 0;
     margin-top: 2.5rem;
     padding-top: 2rem;
     border-top: 1px solid color-mix(in srgb, var(--barva-text) 18%, transparent);
@@ -181,11 +192,35 @@ const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => pod
     font-size: 0.95rem;
   }
 
-  .podporovatele ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 2rem;
+  .podporovatele-okno:focus-visible {
+    outline: 3px solid var(--barva-akcent);
+    outline-offset: 4px;
+  }
+
+  .podporovatele-okno {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+  }
+
+  .podporovatele-pas {
+    display: flex;
+    width: max-content;
+    background-color: var(--barva-pozadi);
+    animation: posun-podporovatelu 75s linear infinite;
+  }
+
+  .podporovatele-seznam {
+    display: flex;
+    flex-shrink: 0;
+    align-items: flex-start;
+    gap: var(--mezera-log);
+    padding-inline-end: var(--mezera-log);
     list-style: none;
+  }
+
+  .podporovatele-seznam li {
+    flex: 0 0 180px;
+    width: 180px;
   }
 
   .podporovatele img {
@@ -193,6 +228,16 @@ const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => pod
     height: 100px;
     object-fit: contain;
     border-radius: 0;
+  }
+
+  /* Bílá plocha zdrojového loga splyne s krémovým podkladem sekce. */
+  .podporovatele img[src="/obrazky/podpora/nadace-via.webp"] {
+    mix-blend-mode: multiply;
+  }
+
+  .podporovatele-okno:hover .podporovatele-pas,
+  .podporovatele:focus-within .podporovatele-pas {
+    animation-play-state: paused;
   }
 
   .podporovatele figcaption {
@@ -204,6 +249,41 @@ const podporovatele = (podpora.podporovatele ?? []).filter((podporovatel) => pod
   .podporovatele figcaption span {
     display: block;
     margin-top: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  @keyframes posun-podporovatelu {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .podporovatele-kopie {
+      display: none;
+    }
+
+    .podporovatele-okno {
+      overflow: visible;
+      mask-image: none;
+    }
+
+    .podporovatele-pas {
+      display: block;
+      width: auto;
+      animation: none;
+    }
+
+    .podporovatele-seznam:not(.podporovatele-kopie) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+      gap: 2rem;
+      padding: 0;
+    }
+
+    .podporovatele-seznam li {
+      width: auto;
+    }
   }
 
   @media (max-width: 700px) {
