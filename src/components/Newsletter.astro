@@ -1,5 +1,6 @@
 ---
 import { kontakty } from '../data/kontakty';
+import { newsletter } from '../data/newsletter';
 import { ceskaTypografie } from '../utils/typografie';
 
 interface Props {
@@ -14,18 +15,10 @@ const {
   kompaktni = false,
 } = Astro.props;
 
-const mailchimpAction = import.meta.env.PUBLIC_MAILCHIMP_FORM_ACTION?.trim() ?? '';
-const jeMailchimpNastaveny = /^https:\/\/[^/]+\.list-manage\.com\/subscribe\/post/i.test(mailchimpAction);
+const newsletterAction = import.meta.env.PUBLIC_NEWSLETTER_FORM_ACTION?.trim() || newsletter.odkazFormular;
+const jeNewsletterNastaveny = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(newsletterAction);
 const jeVychoziNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zahálka do e-mailu';
 const jeKontaktniNadpis = nadpis.toLocaleLowerCase('cs-CZ') === 'zůstaňme v kontaktu';
-
-let honeypotName = '';
-if (jeMailchimpNastaveny) {
-  const actionUrl = new URL(mailchimpAction);
-  const accountId = actionUrl.searchParams.get('u');
-  const audienceId = actionUrl.searchParams.get('id');
-  if (accountId && audienceId) honeypotName = `b_${accountId}_${audienceId}`;
-}
 ---
 
 <section class:list={['newsletter', { kompaktni }]} aria-labelledby="newsletter-nadpis">
@@ -43,33 +36,45 @@ if (jeMailchimpNastaveny) {
     <p class="uvod">{ceskaTypografie(text)}</p>
   </header>
 
-  {jeMailchimpNastaveny ? (
-    <form action={mailchimpAction} method="post" target="_blank" rel="noopener">
+  {jeNewsletterNastaveny ? (
+    <form action={newsletterAction} method="post" target="_blank" rel="noopener">
+      <p class="jmeno">
+        <label for="newsletter-jmeno">Vaše jméno (nepovinné)</label>
+        <input
+          id="newsletter-jmeno"
+          type="text"
+          name="jmeno"
+          autocomplete="name"
+          placeholder="Vaše jméno (nepovinné)"
+          maxlength="120"
+        />
+      </p>
       <p class="pole">
         <label for="newsletter-email">Váš e-mail</label>
         <input
           id="newsletter-email"
           type="email"
-          name="EMAIL"
+          name="email"
           autocomplete="email"
           inputmode="email"
           placeholder="vy@email.cz"
           required
+          maxlength="254"
           aria-describedby="newsletter-souhlas"
         />
+        <button type="submit">Chci novinky</button>
       </p>
 
-      {honeypotName && (
-        <p class="past" aria-hidden="true">
-          <label for="newsletter-kontrola">Nevyplňujte</label>
-          <input id="newsletter-kontrola" type="text" name={honeypotName} tabindex="-1" autocomplete="off" />
-        </p>
-      )}
+      <p class="past" aria-hidden="true">
+        <label for="newsletter-kontrola">Nevyplňujte</label>
+        <input id="newsletter-kontrola" type="text" name="web" tabindex="-1" autocomplete="off" />
+      </p>
+      <input type="hidden" name="souhlas" value="newsletter-v1" />
 
       <p class="souhlas" id="newsletter-souhlas">
-        Odesláním souhlasíte se zasíláním novinek Zahálky. Odběr můžete kdykoli jedním kliknutím zrušit.
+        Odesláním souhlasíte se zasíláním novinek Zahálky. Odběr můžete kdykoli zrušit
+        e-mailem na <a href={`mailto:${kontakty.email}?subject=Odhl%C3%A1%C5%A1en%C3%AD%20newsletteru`}>{kontakty.email}</a>.
       </p>
-      <button type="submit">Chci novinky</button>
     </form>
   ) : (
     <p class="nenastaveno">
@@ -127,7 +132,16 @@ if (jeMailchimpNastaveny) {
 
   .pole {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .jmeno {
+    margin-bottom: 0.6rem;
+  }
+
+  .jmeno input {
+    width: 100%;
+    border-radius: 100vw;
   }
 
   label {
@@ -139,17 +153,23 @@ if (jeMailchimpNastaveny) {
     white-space: nowrap;
   }
 
-  input[type='email'] {
+  input[type='email'],
+  .jmeno input {
     min-width: 0;
     border: 1.5px solid var(--barva-text);
-    border-radius: 100vw 0 0 100vw;
     background: var(--barva-pozadi);
     color: var(--barva-text-d);
     padding: 0.82rem 1rem;
     font: inherit;
   }
 
-  input[type='email']:focus-visible {
+  input[type='email'] {
+    border-radius: 100vw 0 0 100vw;
+  }
+
+  input[type='email']:focus-visible,
+  .jmeno input:focus-visible,
+  button:focus-visible {
     position: relative;
     z-index: 1;
     outline: 3px solid var(--barva-akcent);
