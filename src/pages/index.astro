@@ -58,7 +58,7 @@ const nejnovejsiClanky = vsechnyClanky
           <nav class="hero-akce" aria-label="Hlavní odkazy">
             <a href="/program" class="btn-cta">Prohlédnout program</a>
             <a href="/newsletter" class="btn-cta btn-newsletter">Odebírat newsletter</a>
-            <a href="/o-nas#podpora" class="btn-cta" data-event="podpora" data-akce="Zahálka">Podpořit Zahálku</a>
+            <a href="/o-nas#podpora" class="odkaz-podpora" data-event="podpora" data-akce="Zahálka">Podpořit Zahálku</a>
           </nav>
         </div>
 
@@ -247,6 +247,13 @@ const nejnovejsiClanky = vsechnyClanky
   .btn-newsletter:focus-visible {
     background-color: color-mix(in srgb, var(--barva-text) 8%, var(--barva-pozadi));
     color: var(--barva-text-d);
+  }
+
+  .odkaz-podpora {
+    justify-self: center;
+    font-size: 0.875rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   /* ── Sections below hero ─────────────────────────────── */
