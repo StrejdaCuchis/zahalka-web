@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { rozmeryVerejnehoObrazku } from '../utils/obrazky';
 import { ceskaTypografie } from '../utils/typografie';
+import StitkyAkce from './StitkyAkce.astro';
 
 interface Props {
   entry: CollectionEntry<'akce'>;
@@ -9,20 +10,6 @@ interface Props {
 
 const { entry } = Astro.props;
 const { nazev, datum, cas, typ, obrazek, altText, kratkyPopis, misto } = entry.data;
-
-const typLabely: Record<string, string> = {
-  beseda:   'Beseda',
-  workshop: 'Workshop',
-  festival: 'Festival',
-  deti:     'Pro děti',
-};
-
-const typBarvy: Record<string, string> = {
-  beseda:   'var(--levandule)',
-  workshop: 'var(--oranzova)',
-  festival: 'var(--fialova)',
-  deti:     'var(--limetka)',
-};
 
 const moznostMisto = misto ?? 'Benešovo nám. 3282, Teplice';
 const rozmery = await rozmeryVerejnehoObrazku(obrazek);
@@ -34,7 +21,7 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
 });
 ---
 
-<article class="karta" data-typ={typ}>
+<article class="karta" data-typ={typ.join(' ')}>
   <a href={`/akce/${entry.id}`} class="karta-odkaz">
     <figure class="karta-obrazek">
       <img
@@ -47,9 +34,7 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
     </figure>
 
     <div class="karta-telo">
-      <span class="karta-typ" style={`background-color: ${typBarvy[typ]}`}>
-        {typLabely[typ]}
-      </span>
+      <StitkyAkce typy={typ} />
 
       <h3 class="karta-nazev">{ceskaTypografie(nazev)}</h3>
 
@@ -112,19 +97,6 @@ const datumFormatovany = datum.toLocaleDateString('cs-CZ', {
     flex-direction: column;
     gap: 0.4rem;
     flex: 1;
-  }
-
-  .karta-typ {
-    display: inline-block;
-    align-self: flex-start;
-    font-family: var(--pismo-nadpisy);
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 0.2rem 0.6rem;
-    border-radius: 100vw;
-    color: var(--barva-text-d);
   }
 
   .karta-nazev {

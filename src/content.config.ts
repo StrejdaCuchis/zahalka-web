@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { typyAkci } from './data/formaty-akci';
 
 // Pages CMS can temporarily save an empty gallery row while an editor is
 // preparing content. Pages filter incomplete rows before rendering.
@@ -26,7 +27,7 @@ const akce = defineCollection({
     nazev: z.string(),
     datum: z.coerce.date(),
     cas: z.string(),
-    typ: z.enum(['beseda', 'workshop', 'festival', 'deti']),
+    typ: z.array(z.enum(typyAkci)).min(1),
     cena: z.string(),
     kapacita: z.string().optional(),
     odkazFormular: z.string().optional(),

@@ -2,7 +2,7 @@
 nazev: "Beseda o komunitním zahradnictví"
 datum: 2026-05-13
 cas: "17:30"
-typ: "beseda"
+typ: [beseda]
 cena: "zdarma"
 kapacita: "25 míst"
 odkazFormular: "https://forms.gle/beseda-zahradnictvi-2026"

@@ -2,7 +2,7 @@
 nazev: "Voda ve městě: Fontány a kašny"
 datum: 2026-08-10
 cas: "08:00"
-typ: "deti"
+typ: [workshop, prochazka, deti]
 cena: "od 890 Kč"
 kapacita: "15 dětí"
 odkazFormular: "https://forms.gle/vodni-turnus-2026"

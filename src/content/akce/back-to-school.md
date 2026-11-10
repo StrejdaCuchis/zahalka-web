@@ -2,7 +2,7 @@
 nazev: Back to School Party
 datum: 2026-09-12
 cas: 15:00
-typ: festival
+typ: [workshop, deti, vystava]
 cena: zdarma
 obrazek: /obrazky/akce/snimek-obrazovky-2026-08-26-v-133111-1.png
 altText: Lidé stojí a sedí v zaplněném kulturním prostoru Zahálka během akce

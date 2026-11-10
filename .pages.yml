@@ -77,19 +77,32 @@ content:
           regex: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
           message: Čas musí být ve formátu HH:MM, například 18:00.
       - name: typ
-        label: Typ akce
+        label: Formáty akce
         type: select
         required: true
+        description: Vyberte jeden nebo více formátů, například Workshop a Pro děti.
         options:
+          multiple: true
+          min: 1
           values:
-            - name: beseda
-              label: Beseda
+            - name: koncert
+              label: Koncert
+            - name: kino
+              label: Kino
+            - name: prednaska
+              label: Přednáška
             - name: workshop
               label: Workshop
-            - name: festival
-              label: Festival
+            - name: beseda
+              label: Beseda
+            - name: prochazka
+              label: Procházka
             - name: deti
               label: Pro děti
+            - name: vystava
+              label: Výstava
+            - name: design-market
+              label: Design market
       - name: cena
         label: Cena
         type: string

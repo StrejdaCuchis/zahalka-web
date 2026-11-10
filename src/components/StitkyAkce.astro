@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatyAkci } from '../data/formaty-akci';
+
+interface Props {
+  typy: CollectionEntry<'akce'>['data']['typ'];
+}
+
+const { typy } = Astro.props;
+---
+
+<ul class="stitky-akce" aria-label="Formáty akce">
+  {typy.map((typ) => (
+    <li class="karta-typ" style={`background-color: ${formatyAkci[typ].barva}`}>
+      {formatyAkci[typ].nazev}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .stitky-akce {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .karta-typ {
+    font-family: var(--pismo-nadpisy);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100vw;
+    color: var(--barva-text-d);
+  }
+</style>
