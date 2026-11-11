@@ -43,8 +43,7 @@ const nejnovejsiClanky = vsechnyClanky
         <div class="hero-text-blok">
           <h1>
             <span class="znacka-prvni">ZAHÁLKA</span>{' '}
-            <span class="znacka-spojeni">• KULTURNÍ</span>{' '}
-            <span>PROSTOR</span>
+            <span class="znacka-druhy"><span aria-hidden="true">•</span> KULTURNÍ PROSTOR</span>
           </h1>
           <p class="hero-hashtagy">
             <span>#zahalkaspresahem</span>
@@ -144,6 +143,7 @@ const nejnovejsiClanky = vsechnyClanky
 
   .hero-text-blok {
     position: relative;
+    min-width: 0;
     padding-bottom: 4rem;
   }
 
@@ -173,14 +173,26 @@ const nejnovejsiClanky = vsechnyClanky
   }
 
   h1 {
-    max-width: 12ch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    width: max-content;
     font-size: clamp(2rem, 5.4vw, 3.9rem);
-    margin-bottom: 1.25rem;
-    text-wrap: balance;
+    margin-bottom: 1.8rem;
   }
 
-  .znacka-spojeni {
+  .znacka-prvni,
+  .znacka-druhy {
     white-space: nowrap;
+  }
+
+  .znacka-druhy {
+    /* Poměr podle metrik LFT Etica: oba řádky mají stejnou šířku. */
+    font-size: 0.4922em;
+    line-height: 1.3;
+    letter-spacing: 0.015em;
+    font-weight: 400;
   }
 
   .hero-hashtagy {
@@ -319,10 +331,11 @@ const nejnovejsiClanky = vsechnyClanky
     padding: 4rem 2rem 5rem;
   }
 
-  @media (max-width: 520px) {
-    .znacka-prvni {
-      display: block;
+  @media (max-width: 700px) {
+    h1 {
+      width: auto;
     }
+
   }
 
 </style>
